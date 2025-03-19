@@ -10,6 +10,6 @@ class ShipmentItem(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
 
     stored_item_id: Mapped[int] = mapped_column(ForeignKey("stored_items.id"))
-    stored_items : Mapped["StoredItem"] = relationship(back_populates="stored_items")
+    stored_item : Mapped["StoredItem"] = relationship(back_populates="stored_items")
 
-    qunatity : Mapped[int] = mapped_column(Integer, default = 0)
+    quantity : Mapped[int] = mapped_column(Integer, default = 0)

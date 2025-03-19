@@ -11,5 +11,5 @@ class Courier(db.Model):
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     user: Mapped["User"] = relationship(back_populates="users")
-    order_id: Mapped[int] = mapped_column(ForeignKey("orders.id"))
-    order: Mapped["Order"] = relationship(back_populates="orders")
+
+    orders: Mapped[list["Order"]] = relationship(back_populates="couriers")

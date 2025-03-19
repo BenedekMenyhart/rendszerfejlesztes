@@ -1,7 +1,9 @@
-from sqlalchemy import String, ForeignKey
+from typing import List
+
+from sqlalchemy import String, ForeignKey, Table, Column
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.extensions import db
+from app.extensions import db, Base
 from app.models.order import Order
 from app.models.storeditem import StoredItem
 from app.models.shipment import Shipment
@@ -25,5 +27,4 @@ class OrderItem(db.Model):
 
     quantity: Mapped[int] = mapped_column(nullable=False)
 
-    shipment_id: Mapped[int] = mapped_column(ForeignKey("shipments.id"))
-    shipment: Mapped["Shipment"] = relationship(back_populates="shipments") 
+    shipment: Mapped[List["Shipment"]] = relationship(back_populates="shipments", secondary=OrderItemsShipments)

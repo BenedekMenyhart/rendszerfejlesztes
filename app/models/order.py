@@ -1,11 +1,12 @@
 import enum
 from typing import List
 
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, Table, Column
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.extensions import db
+from app.extensions import db, Base
 from app.models.customer import Customer
 from app.models.courier import Courier
+from app.models.orderfeedback import OrderFeedback
 from app.models.orderitem import OrderItem
 
 class Statuses(enum.Enum):
@@ -17,9 +18,15 @@ class Statuses(enum.Enum):
     Delivered = "delivered"
     RecipientConfirmed = "recipient_confirmed"
 
+OrdersCouriers = Table(
+    "orders_couriers",
+    Base.metadata,
+    Column("order_id", ForeignKey("orders.id")),
+    Column("courier_id", ForeignKey("couriers.id"))
+)
 
 class Order(db.Model):
-    tablename = 'orders'
+    __tablename__ = 'orders'
     id: Mapped[int] = mapped_column(primary_key=True)
 
     status : Mapped[Statuses] = mapped_column()
@@ -27,10 +34,11 @@ class Order(db.Model):
     customer_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
     customer: Mapped["Customer"] = relationship(back_populates="customers")
 
-    courier_id: Mapped[int] = mapped_column(ForeignKey("couriers.id"))
-    courier: Mapped["Courier"] = relationship(back_populates="couriers")
+    courier: Mapped[List["Courier"]] = relationship(back_populates="couriers", secondary=OrdersCouriers)
 
     items: Mapped[List["OrderItem"]] = relationship(back_populates="orders")
+
+    feedback: Mapped["OrderFeedback"] = relationship(back_populates="orders")
 
     created_at: Mapped[str] = mapped_column(String(64), nullable=False)
 

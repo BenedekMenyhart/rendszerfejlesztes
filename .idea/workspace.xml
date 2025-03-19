@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="database előkészítése">
-      <change afterPath="$PROJECT_DIR$/.flaskenv" afterDir="false" />
+    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="flaskenv update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leiras.md" beforeDir="false" afterPath="$PROJECT_DIR$/leiras.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/courier.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/courier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/customer.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/customer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/orderitem.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/orderitem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/shipment.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/shipment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/storeditem.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/storeditem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +123,7 @@
       <workItem from="1742241553101" duration="1971000" />
       <workItem from="1742314495846" duration="18000" />
       <workItem from="1742366393533" duration="45000" />
-      <workItem from="1742389315330" duration="9664000" />
+      <workItem from="1742389315330" duration="10390000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -168,7 +173,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742395781125</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="flaskenv update">
+      <option name="closed" value="true" />
+      <created>1742399014524</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1742399014524</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -180,7 +193,8 @@
     <MESSAGE value="__init__ files hotfixed&#10;&#10;leiras.md veglegesitve" />
     <MESSAGE value="elirasok javitasa" />
     <MESSAGE value="database előkészítése" />
-    <option name="LAST_COMMIT_MESSAGE" value="database előkészítése" />
+    <MESSAGE value="flaskenv update" />
+    <option name="LAST_COMMIT_MESSAGE" value="flaskenv update" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1742394553758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
