@@ -1,18 +1,36 @@
+import enum
+from typing import List
+
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.extensions import db
+from app.models.customer import Customer
+from app.models.courier import Courier
+from app.models.orderitem import OrderItem
+
+class Statuses(enum.Enum):
+    Received = "received"
+    Processing = "processing"
+    Processed = "processed"
+    AssignedToCourier = "assigned_to_courier"
+    DeliveryStarted = "delivery_started"
+    Delivered = "delivered"
+    RecipientConfirmed = "recipient_confirmed"
 
 
 class Order(db.Model):
-    __tablename__ = 'orders'
+    tablename = 'orders'
     id: Mapped[int] = mapped_column(primary_key=True)
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    user: Mapped["User"] = relationship(back_populates="users")
+    status : Mapped[Statuses] = mapped_column()
 
-    phone: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
-    email: Mapped[str] = mapped_column(String(64), nullable=False)
+    customer_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
+    customer: Mapped["Customer"] = relationship(back_populates="customers")
 
-    locality: Mapped[str] = mapped_column(String(64), nullable=False)  # város vagy falu neve
-    zip_code: Mapped[str] = mapped_column(String(64), nullable=False)
-    address: Mapped[str] = mapped_column(String(64), nullable=False)
+    courier_id: Mapped[int] = mapped_column(ForeignKey("couriers.id"))
+    courier: Mapped["Courier"] = relationship(back_populates="couriers")
+
+    items: Mapped[List["OrderItem"]] = relationship(back_populates="orders")
+
+    created_at: Mapped[str] = mapped_column(String(64), nullable=False)
+
