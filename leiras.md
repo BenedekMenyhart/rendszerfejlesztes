@@ -42,7 +42,7 @@
 
 - created_at
 
-## OrderItem
+## OrderItem -> Domi
 
 - order_id
 
@@ -52,17 +52,17 @@
 
 - (shipment**s**)
 
-## OrderFeedback
+## OrderFeedback -> Geri
 
 - content
 
 - order_id
 
-## Supplier
+## Supplier -> Dani
 
 - user_id
 
-## StoredItem
+## StoredItem -> Geri
 
 - name
 
@@ -72,7 +72,7 @@
 
 - quantity_requested (Ez jelzi, hogy hány darab termék kell még az összes rendelés teljesítéséhez)
 
-## Shipment
+## Shipment -> Domi
 
 - supplier_id
 
@@ -80,18 +80,21 @@
 
 - received
 
-## ShipmentItem
+## ShipmentItem -> Dani
 
 - stored_item_id
 
 - quantity
 
-## Courier
+## Courier -> Dani
 
 - user_id
 
-## Storekeeper
+## Storekeeper -> Dani
 
 - user_id
 
--
+
+filenames = csupakicsiegybe.py
+class names = KicsiEsNagy
+table names and variable names = csupa_kicsi_es_alahuzas

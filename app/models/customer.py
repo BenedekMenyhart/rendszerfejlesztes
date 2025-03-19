@@ -18,4 +18,3 @@ class Customer(db.Model):
     locality: Mapped[str] = mapped_column(String(64), nullable=False) #város vagy falu neve
     zip_code: Mapped[str] = mapped_column(String(64), nullable=False)
     address: Mapped[str] = mapped_column(String(64), nullable=False)
-
