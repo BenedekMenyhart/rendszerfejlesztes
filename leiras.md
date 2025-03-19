@@ -89,6 +89,7 @@
 ## Courier -> Dani
 
 - user_id
+- order_id
 
 ## Storekeeper -> Dani
 
@@ -96,5 +97,7 @@
 
 Névkonvenciók:
 ilenames = csupakicsiegybe.py -> pl.: storeditem.py
+
 class names = KicsiEsNagy -> ÉS EGYES SZÁM!! -> pl.:  StoredItem
+
 table names and variable names = csupa_kicsi_es_alahuzas -> táblánál többesszám!! -> pl. : stored_items
