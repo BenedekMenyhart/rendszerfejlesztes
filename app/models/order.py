@@ -5,7 +5,7 @@ from sqlalchemy import String, ForeignKey, Table, Column
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.extensions import db, Base
 from app.models.customer import Customer
-from app.models.courier import Courier
+#from app.models.courier import Courier
 from app.models.orderfeedback import OrderFeedback
 from app.models.orderitem import OrderItem
 

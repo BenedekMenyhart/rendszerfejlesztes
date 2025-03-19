@@ -4,7 +4,7 @@ from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app import db
-from app.models.orderitem import OrderItem
+#from app.models.orderitem import OrderItem
 
 
 class StoredItem(db.Model):

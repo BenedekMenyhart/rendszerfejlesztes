@@ -2,7 +2,7 @@ from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.extensions import db
-from app.models.order import Order
+#from app.models.order import Order
 
 class OrderFeedback(db.Model):
     __tablename__ = 'order_feedbacks'
