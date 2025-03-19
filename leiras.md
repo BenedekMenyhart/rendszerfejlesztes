@@ -1,12 +1,12 @@
 # Raktár
 
-## User
+## User -> Beni
 
 - username
 
 - password
 
-## Customer
+## Customer -> Beni
 
 - user_id
 
@@ -16,7 +16,7 @@
 
 - address
 
-## Order
+## Order -> Beni
 
 - (items)
 
@@ -94,7 +94,7 @@
 
 - user_id
 
-
-filenames = csupakicsiegybe.py
-class names = KicsiEsNagy
-table names and variable names = csupa_kicsi_es_alahuzas
+Névkonvenciók:
+ilenames = csupakicsiegybe.py -> pl.: storeditem.py
+class names = KicsiEsNagy -> ÉS EGYES SZÁM!! -> pl.:  StoredItem
+table names and variable names = csupa_kicsi_es_alahuzas -> táblánál többesszám!! -> pl. : stored_items
