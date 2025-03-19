@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="leiras.md frissitve">
+    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="elirasok javitasa">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leiras.md" beforeDir="false" afterPath="$PROJECT_DIR$/leiras.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +117,7 @@
       <workItem from="1742241553101" duration="1971000" />
       <workItem from="1742314495846" duration="18000" />
       <workItem from="1742366393533" duration="45000" />
-      <workItem from="1742389315330" duration="5507000" />
+      <workItem from="1742389315330" duration="6382000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -144,7 +143,23 @@
       <option name="project" value="LOCAL" />
       <updated>1742393872844</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="__init__ files hotfixed&#10;&#10;leiras.md veglegesitve">
+      <option name="closed" value="true" />
+      <created>1742394936387</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1742394936387</updated>
+    </task>
+    <task id="LOCAL-00005" summary="elirasok javitasa">
+      <option name="closed" value="true" />
+      <created>1742395164789</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1742395164789</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -153,7 +168,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
     <MESSAGE value="leiras.md frissitve" />
-    <option name="LAST_COMMIT_MESSAGE" value="leiras.md frissitve" />
+    <MESSAGE value="__init__ files hotfixed&#10;&#10;leiras.md veglegesitve" />
+    <MESSAGE value="elirasok javitasa" />
+    <option name="LAST_COMMIT_MESSAGE" value="elirasok javitasa" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1742394553758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
