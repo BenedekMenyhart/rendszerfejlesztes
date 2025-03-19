@@ -1,12 +1,5 @@
 from flask import Flask
-
-app = Flask(__name__)
-
-
-@app.route('/')
-def hello_world():  # put application's code here
-    return 'Hello World!'
-
-
+from app import create_app
+from config import Config
 if __name__ == '__main__':
-    app.run()
+    create_app(config_class=Config).run("localhost", 8080)

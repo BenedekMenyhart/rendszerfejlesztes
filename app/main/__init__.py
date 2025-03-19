@@ -3,4 +3,4 @@ from flask import Blueprint
 bp = Blueprint('main', __name__)
 
 #from app.main import routes
-#from app.models import *
+from app.models import *
