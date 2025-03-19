@@ -3,6 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.extensions import db
 from app.models.user import User
+from app.models.order import Order
 
 class Courier(db.Model):
     __tablename__ = 'couriers'
@@ -10,3 +11,5 @@ class Courier(db.Model):
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     user: Mapped["User"] = relationship(back_populates="users")
+    order_id: Mapped[int] = mapped_column(ForeignKey("orders.id"))
+    order: Mapped["Order"] = relationship(back_populates="orders")
