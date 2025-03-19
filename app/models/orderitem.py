@@ -6,6 +6,12 @@ from app.models.order import Order
 from app.models.storeditem import StoredItem
 from app.models.shipment import Shipment
 
+OrderItemsShipments = Table(
+    "order_items_shipments",
+    Base.metadata,
+    Column("order_item_id", ForeignKey("order_items.id")),
+    Column("shipment_id", ForeignKey("shipments.id"))
+)
 
 class OrderItem(db.Model):
     __tablename__ = 'order_items'
