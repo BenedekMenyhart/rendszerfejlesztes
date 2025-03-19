@@ -1,0 +1,158 @@
+Index: leiras.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># Raktár\n\n## User -> Beni\n\n- username\n\n- password\n\n## Customer -> Beni\n\n- user_id\n\n- phone\n\n- email\n\n- address\n\n## Order -> Beni\n\n- (items)\n\n- customer_id\n\n- status: Enum\n  \n  - recieved\n  \n  - processing (Pl ha nincs minden raktáron és rendelni kell)\n  \n  - processed (Ha minden van raktáron, de még nincs futárnak átadva)\n  \n  - assigned_to_courier\n  \n  - delivery_started\n  \n  - delivered\n  \n  - recipient_confirmed\n\n- courier_id\n\n- created_at\n\n## OrderItem -> Domi\n\n- order_id\n\n- stored_item_id\n\n- quantity\n\n- (shipment**s**)\n\n## OrderFeedback -> Geri\n\n- content\n\n- order_id\n\n## Supplier -> Dani\n\n- user_id\n\n## StoredItem -> Geri\n\n- name\n\n- quantity_available\n\n- quantity_reserved (Kimenő rendelésekre lefoglalt termékek)\n\n- quantity_requested (Ez jelzi, hogy hány darab termék kell még az összes rendelés teljesítéséhez)\n\n## Shipment -> Domi\n\n- supplier_id\n\n- expected_at\n\n- received\n\n## ShipmentItem -> Dani\n\n- stored_item_id\n\n- quantity\n\n## Courier -> Dani\n\n- user_id\n\n## Storekeeper -> Dani\n\n- user_id\n\nNévkonvenciók:\nilenames = csupakicsiegybe.py -> pl.: storeditem.py\nclass names = KicsiEsNagy -> ÉS EGYES SZÁM!! -> pl.:  StoredItem\ntable names and variable names = csupa_kicsi_es_alahuzas -> táblánál többesszám!! -> pl. : stored_items\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/leiras.md b/leiras.md
+--- a/leiras.md	(revision 1beab7961964480f5a90b5f4dc6e33a4cf65f246)
++++ b/leiras.md	(date 1742396878360)
+@@ -96,5 +96,7 @@
+ 
+ Névkonvenciók:
+ ilenames = csupakicsiegybe.py -> pl.: storeditem.py
++
+ class names = KicsiEsNagy -> ÉS EGYES SZÁM!! -> pl.:  StoredItem
++
+ table names and variable names = csupa_kicsi_es_alahuzas -> táblánál többesszám!! -> pl. : stored_items
+Index: app/models/order.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from sqlalchemy import String, ForeignKey\nfrom sqlalchemy.orm import Mapped, mapped_column, relationship\nfrom app.extensions import db\n\n\nclass Order(db.Model):\n    __tablename__ = 'orders'\n    id: Mapped[int] = mapped_column(primary_key=True)\n\n    user_id: Mapped[int] = mapped_column(ForeignKey(\"users.id\"))\n    user: Mapped[\"User\"] = relationship(back_populates=\"users\")\n\n    phone: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)\n    email: Mapped[str] = mapped_column(String(64), nullable=False)\n\n    locality: Mapped[str] = mapped_column(String(64), nullable=False)  # város vagy falu neve\n    zip_code: Mapped[str] = mapped_column(String(64), nullable=False)\n    address: Mapped[str] = mapped_column(String(64), nullable=False)\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/models/order.py b/app/models/order.py
+--- a/app/models/order.py	(revision 1beab7961964480f5a90b5f4dc6e33a4cf65f246)
++++ b/app/models/order.py	(date 1742397067414)
+@@ -1,14 +1,15 @@
+ from sqlalchemy import String, ForeignKey
+ from sqlalchemy.orm import Mapped, mapped_column, relationship
+ from app.extensions import db
++from app.models.customer import Customer
+ 
+ 
+ class Order(db.Model):
+     __tablename__ = 'orders'
+     id: Mapped[int] = mapped_column(primary_key=True)
+ 
+-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+-    user: Mapped["User"] = relationship(back_populates="users")
++    customer_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
++    customer: Mapped["Customer"] = relationship(back_populates="customers")
+ 
+     phone: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
+     email: Mapped[str] = mapped_column(String(64), nullable=False)
+Index: .flaskenv
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.flaskenv b/.flaskenv
+new file mode 100644
+--- /dev/null	(date 1742396945058)
++++ b/.flaskenv	(date 1742396945058)
+@@ -0,0 +1,4 @@
++FLASK_RUN_HOST = "localhost"
++FLASK_RUN_PORT = "8080"
++FLASK_ENV = development
++FLASK_APP = app
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"64909a3e-3ff2-4e01-974c-7308c1db5d95\" name=\"Changes\" comment=\"elirasok javitasa\">\n      <change afterPath=\"$PROJECT_DIR$/.gitignore\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/app/models/__init__.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/app/models/__init__.py\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Flask Main\" />\n        <option value=\"Python Script\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"FlaskConsoleOptions\" custom-start-script=\"import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass\">\n    <envs>\n      <env key=\"FLASK_APP\" value=\"app\" />\n    </envs>\n    <option name=\"myCustomStartScript\" value=\"import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass\" />\n    <option name=\"myEnvs\">\n      <map>\n        <entry key=\"FLASK_APP\" value=\"app\" />\n      </map>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"PREVIOUS_COMMIT_AUTHORS\">\n      <list>\n        <option value=\"BenedekMenyhart &lt;m.b.k.classroom@gmail.com&gt;\" />\n      </list>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"GitHubPullRequestSearchHistory\">{\n  &quot;lastFilter&quot;: {\n    &quot;state&quot;: &quot;OPEN&quot;,\n    &quot;assignee&quot;: &quot;BenedekMenyhart&quot;\n  }\n}</component>\n  <component name=\"GithubPullRequestsUISettings\">{\n  &quot;selectedUrlAndAccountId&quot;: {\n    &quot;url&quot;: &quot;https://github.com/BenedekMenyhart/rendszerfejlesztes.git&quot;,\n    &quot;accountId&quot;: &quot;2649a91a-9d27-43ff-9996-5537f673e676&quot;\n  }\n}</component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 6\n}</component>\n  <component name=\"ProjectId\" id=\"2uSJb8uYIuHPntgtUfqjzlM1bWF\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\n  </component>\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;Flask server.rendszerfejlesztes.executor&quot;: &quot;Run&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\n    &quot;last_opened_file_path&quot;: &quot;/home/the_bibi/Documents/Pannon Egyetem/4szem/rendszerfejlesztes&quot;,\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\n  }\n}</component>\n  <component name=\"RunManager\">\n    <configuration name=\"rendszerfejlesztes\" type=\"Python.FlaskServer\">\n      <module name=\"rendszerfejlesztes\" />\n      <option name=\"target\" value=\"$PROJECT_DIR$/app.py\" />\n      <option name=\"targetType\" value=\"PATH\" />\n      <option name=\"ENV_FILES\" value=\"\" />\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\n      <option name=\"PARENT_ENVS\" value=\"true\" />\n      <option name=\"SDK_HOME\" value=\"\" />\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\n      <option name=\"IS_MODULE_SDK\" value=\"false\" />\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\n      <EXTENSION ID=\"PythonCoverageRunConfigurationExtension\" runner=\"coverage.py\" />\n      <option name=\"launchJavascriptDebuger\" value=\"false\" />\n      <method v=\"2\" />\n    </configuration>\n  </component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-PY-243.25659.43\" />\n        <option value=\"bundled-python-sdk-181015f7ab06-4df51de95216-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.25659.43\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"64909a3e-3ff2-4e01-974c-7308c1db5d95\" name=\"Changes\" comment=\"\" />\n      <created>1742236110865</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1742236110865</updated>\n      <workItem from=\"1742236111889\" duration=\"3154000\" />\n      <workItem from=\"1742241553101\" duration=\"1971000\" />\n      <workItem from=\"1742314495846\" duration=\"18000\" />\n      <workItem from=\"1742366393533\" duration=\"45000\" />\n      <workItem from=\"1742389315330\" duration=\"6382000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"initial commit\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1742242959289</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1742242959289</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"initial commit\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1742242974765</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1742242974765</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"leiras.md frissitve\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1742393872844</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1742393872844</updated>\n    </task>\n    <task id=\"LOCAL-00004\" summary=\"__init__ files hotfixed&#10;&#10;leiras.md veglegesitve\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1742394936387</created>\n      <option name=\"number\" value=\"00004\" />\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1742394936387</updated>\n    </task>\n    <task id=\"LOCAL-00005\" summary=\"elirasok javitasa\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1742395164789</created>\n      <option name=\"number\" value=\"00005\" />\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1742395164789</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"6\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"initial commit\" />\n    <MESSAGE value=\"leiras.md frissitve\" />\n    <MESSAGE value=\"__init__ files hotfixed&#10;&#10;leiras.md veglegesitve\" />\n    <MESSAGE value=\"elirasok javitasa\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"elirasok javitasa\" />\n  </component>\n  <component name=\"com.intellij.coverage.CoverageDataManagerImpl\">\n    <SUITE FILE_PATH=\"coverage/rendszerfejlesztes$rendszerfejlesztes.coverage\" NAME=\"rendszerfejlesztes Coverage Results\" MODIFIED=\"1742394553758\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 1beab7961964480f5a90b5f4dc6e33a4cf65f246)
++++ b/.idea/workspace.xml	(date 1742396945084)
+@@ -4,10 +4,10 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="elirasok javitasa">
+-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
++    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="database előkészítése">
++      <change afterPath="$PROJECT_DIR$/.flaskenv" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/app/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/leiras.md" beforeDir="false" afterPath="$PROJECT_DIR$/leiras.md" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -64,21 +64,22 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;Flask server.rendszerfejlesztes.executor&quot;: &quot;Run&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;/home/the_bibi/Documents/Pannon Egyetem/4szem/rendszerfejlesztes&quot;,
+-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "Flask server.rendszerfejlesztes.executor": "Run",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "RunOnceActivity.git.unshallow": "true",
++    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
++    "git-widget-placeholder": "master",
++    "last_opened_file_path": "/home/the_bibi/Documents/Pannon Egyetem/4szem/rendszerfejlesztes",
++    "node.js.detected.package.eslint": "true",
++    "node.js.detected.package.tslint": "true",
++    "node.js.selected.package.eslint": "(autodetect)",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "nodejs_package_manager_path": "npm",
++    "vue.rearranger.settings.migration": "true"
+   }
+-}</component>
++}]]></component>
+   <component name="RunManager">
+     <configuration name="rendszerfejlesztes" type="Python.FlaskServer">
+       <module name="rendszerfejlesztes" />
+@@ -117,7 +118,7 @@
+       <workItem from="1742241553101" duration="1971000" />
+       <workItem from="1742314495846" duration="18000" />
+       <workItem from="1742366393533" duration="45000" />
+-      <workItem from="1742389315330" duration="6382000" />
++      <workItem from="1742389315330" duration="7607000" />
+     </task>
+     <task id="LOCAL-00001" summary="initial commit">
+       <option name="closed" value="true" />
+@@ -159,7 +160,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1742395164789</updated>
+     </task>
+-    <option name="localTasksCounter" value="6" />
++    <task id="LOCAL-00006" summary="database előkészítése">
++      <option name="closed" value="true" />
++      <created>1742395781125</created>
++      <option name="number" value="00006" />
++      <option name="presentableId" value="LOCAL-00006" />
++      <option name="project" value="LOCAL" />
++      <updated>1742395781125</updated>
++    </task>
++    <option name="localTasksCounter" value="7" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -170,7 +179,8 @@
+     <MESSAGE value="leiras.md frissitve" />
+     <MESSAGE value="__init__ files hotfixed&#10;&#10;leiras.md veglegesitve" />
+     <MESSAGE value="elirasok javitasa" />
+-    <option name="LAST_COMMIT_MESSAGE" value="elirasok javitasa" />
++    <MESSAGE value="database előkészítése" />
++    <option name="LAST_COMMIT_MESSAGE" value="database előkészítése" />
+   </component>
+   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+     <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1742394553758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
