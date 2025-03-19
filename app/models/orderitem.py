@@ -14,7 +14,7 @@ class OrderItem(db.Model):
     order_id: Mapped[int] = mapped_column(ForeignKey("orders.id"))
     order: Mapped["Order"] = relationship(back_populates="orders")
 
-    stored_item_id: Mapped[int] = mapped_column(ForeingKey("stored_items.id")
+    stored_item_id: Mapped[int] = mapped_column(ForeignKey("stored_items.id"))
     stored_item: Mapped["StoredItem"] = relationship(back_populates="orders")
 
     quantity: Mapped[int] = mapped_column(nullable=False)
