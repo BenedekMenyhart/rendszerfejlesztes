@@ -4,23 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/rendszerfejlesztes.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/extensions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/main/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/main/routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/customer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/order.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leiras.md" afterDir="false" />
+    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="initial commit">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/customer.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/customer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leiras.md" beforeDir="false" afterPath="$PROJECT_DIR$/leiras.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,8 +36,25 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="BenedekMenyhart &lt;m.b.k.classroom@gmail.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;BenedekMenyhart&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/BenedekMenyhart/rendszerfejlesztes.git&quot;,
+    &quot;accountId&quot;: &quot;2649a91a-9d27-43ff-9996-5537f673e676&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -110,14 +116,38 @@
       <option name="presentableId" value="Default" />
       <updated>1742236110865</updated>
       <workItem from="1742236111889" duration="3154000" />
-      <workItem from="1742241553101" duration="1290000" />
+      <workItem from="1742241553101" duration="1971000" />
+      <workItem from="1742314495846" duration="18000" />
+      <workItem from="1742366393533" duration="45000" />
+      <workItem from="1742389315330" duration="4482000" />
     </task>
+    <task id="LOCAL-00001" summary="initial commit">
+      <option name="closed" value="true" />
+      <created>1742242959289</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1742242959289</updated>
+    </task>
+    <task id="LOCAL-00002" summary="initial commit">
+      <option name="closed" value="true" />
+      <created>1742242974765</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1742242974765</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="initial commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1742236145184" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1742390303341" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
