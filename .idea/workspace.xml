@@ -15,6 +15,7 @@
       <change beforePath="$PROJECT_DIR$/app/models/shipmentitem.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/shipmentitem.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/storeditem.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/storeditem.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
