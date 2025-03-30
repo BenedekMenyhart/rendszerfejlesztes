@@ -1,3 +1,6 @@
+
+APIFlask~=2.4.0
+marshmallow~=3.26.1
 alembic==1.15.1
 anyio==4.8.0
 backports.tarfile==1.2.0
