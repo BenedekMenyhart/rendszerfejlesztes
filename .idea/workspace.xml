@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="relationok javitva&#10;qunatity javitva">
+    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="Added requirements.txt">
+      <change afterPath="$PROJECT_DIR$/app/blueprints/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/blueprints/user/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/blueprints/user/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e3980b90-44af-4c62-b4c8-fad374df991a.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_19_03_2025,_16_11_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_19_03_2025,_16_43_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_19_03_2025__16_11__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_19_03_2025__16_43__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/courier.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/courier.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/customer.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/customer.py" afterDir="false" />
@@ -15,7 +24,6 @@
       <change beforePath="$PROJECT_DIR$/app/models/shipmentitem.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/shipmentitem.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/storeditem.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/storeditem.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +55,11 @@
         <option value="BenedekMenyhart &lt;m.b.k.classroom@gmail.com&gt;" />
       </list>
     </option>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -58,7 +71,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/BenedekMenyhart/rendszerfejlesztes.git&quot;,
-    &quot;accountId&quot;: &quot;2649a91a-9d27-43ff-9996-5537f673e676&quot;
+    &quot;accountId&quot;: &quot;0bcb617a-76f6-4f54-a847-4b7d3030d23b&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -79,7 +92,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/the_bibi/Documents/Pannon Egyetem/4szem/rendszerfejlesztes&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/the_bibi/Documents/Programming/Python&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -109,8 +122,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-PY-243.25659.43" />
-        <option value="bundled-python-sdk-181015f7ab06-4df51de95216-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.25659.43" />
+        <option value="bundled-python-sdk-14705d77f0bb-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.25659.43" />
       </set>
     </attachedChunks>
   </component>
@@ -127,6 +139,14 @@
       <workItem from="1742314495846" duration="18000" />
       <workItem from="1742366393533" duration="45000" />
       <workItem from="1742389315330" duration="10821000" />
+      <workItem from="1742402435494" duration="14000" />
+      <workItem from="1742402454596" duration="40000" />
+      <workItem from="1742402500784" duration="221000" />
+      <workItem from="1742802931829" duration="9000" />
+      <workItem from="1742841335968" duration="703000" />
+      <workItem from="1742972442285" duration="5000" />
+      <workItem from="1743001910030" duration="82000" />
+      <workItem from="1743002033329" duration="3322000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -192,7 +212,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742400159867</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Added requirements.txt">
+      <option name="closed" value="true" />
+      <created>1742402599215</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1742402599215</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,9 +234,10 @@
     <MESSAGE value="database előkészítése" />
     <MESSAGE value="flaskenv update" />
     <MESSAGE value="relationok javitva&#10;qunatity javitva" />
-    <option name="LAST_COMMIT_MESSAGE" value="relationok javitva&#10;qunatity javitva" />
+    <MESSAGE value="Added requirements.txt" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added requirements.txt" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1742394553758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743004720222" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
