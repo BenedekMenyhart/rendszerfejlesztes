@@ -12,4 +12,7 @@ def index():
 from app.blueprints.user import bp as bp_user
 bp.register_blueprint(bp_user, url_prefix='/user')
 
+from app.blueprints.item import bp as bp_item
+bp.register_blueprint(bp_item, url_prefix='/item')
+
 from app.models import *
