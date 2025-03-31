@@ -22,6 +22,7 @@ bp.register_blueprint(bp_order, url_prefix='/order')
 
 
 
-
+from app.blueprints.storekeeper import bp as bp_storekeeper
+bp.register_blueprint(bp_storekeeper, url_prefix='/storekeeper')
 
 from app.models import *
