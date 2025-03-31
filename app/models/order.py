@@ -29,6 +29,9 @@ class Order(db.Model):
     address: Mapped["Address"] = relationship(back_populates="orders")
 
 
+    created_at: Mapped[str] = mapped_column(String(64), nullable=False)
+
+
     status: Mapped[Statuses] = mapped_column()
     feedback: Mapped[Optional[str]] = mapped_column(nullable=True)
     items: Mapped[List["OrderItem"]] = relationship(back_populates="orders")

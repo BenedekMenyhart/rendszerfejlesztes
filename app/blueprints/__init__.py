@@ -15,4 +15,13 @@ bp.register_blueprint(bp_user, url_prefix='/user')
 from app.blueprints.item import bp as bp_item
 bp.register_blueprint(bp_item, url_prefix='/item')
 
+from app.blueprints.order import bp as bp_order
+bp.register_blueprint(bp_order, url_prefix='/order')
+
+
+
+
+
+
+
 from app.models import *
