@@ -5,9 +5,6 @@ from app.extensions import db
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import String, Integer
 
-from app.models.order import Order
-from app.models.user import User
-
 
 
 class Address(db.Model):

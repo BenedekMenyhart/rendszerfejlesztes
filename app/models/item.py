@@ -15,4 +15,9 @@ class Item(db.Model):
     price: Mapped[int]
     quantity_available: Mapped[int]=mapped_column(nullable=False)
 
+    shipment_id : Mapped[int] = mapped_column(ForeignKey("shipments.id"))
+    shipment : Mapped[Shipment] = relationship(back_populates="items")
+
+
+
     deleted: Mapped[int] = mapped_column(default=0)

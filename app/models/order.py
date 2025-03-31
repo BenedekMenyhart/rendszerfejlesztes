@@ -4,10 +4,7 @@ from typing import List,Optional
 from sqlalchemy import String, ForeignKey, Table, Column
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.extensions import db, Base
-from app.models.address import Address
-from app.models.orderfeedback import OrderFeedback
-from app.models.orderitem import OrderItem
-from app.models.user import User
+
 
 
 class Statuses(enum.Enum):
@@ -19,12 +16,6 @@ class Statuses(enum.Enum):
     Delivered = "delivered"
     RecipientConfirmed = "recipient_confirmed"
 
-OrdersCouriers = Table(
-    "orders_couriers",
-    Base.metadata,
-    Column("order_id", ForeignKey("orders.id")),
-    Column("courier_id", ForeignKey("couriers.id"))
-)
 
 
 class Order(db.Model):

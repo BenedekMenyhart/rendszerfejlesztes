@@ -4,8 +4,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import String, Integer
 from sqlalchemy import ForeignKey
 
-from app.models.item import Item
-from app.models.order import Order
 
 
 class OrderItem(db.Model):
@@ -16,5 +14,6 @@ class OrderItem(db.Model):
 
     item_id: Mapped[int] = mapped_column(ForeignKey("items.id"))
     item: Mapped["Item"] = relationship()
+
 
     quantity: Mapped[int]
