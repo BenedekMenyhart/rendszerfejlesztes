@@ -18,11 +18,11 @@ bp.register_blueprint(bp_item, url_prefix='/item')
 from app.blueprints.order import bp as bp_order
 bp.register_blueprint(bp_order, url_prefix='/order')
 
-
-
-
-
 from app.blueprints.storekeeper import bp as bp_storekeeper
 bp.register_blueprint(bp_storekeeper, url_prefix='/storekeeper')
+
+from app.blueprints.courier import bp as bp_courier
+bp.register_blueprint(bp_courier, url_prefix='/courier')
+
 
 from app.models import *
