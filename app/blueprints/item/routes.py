@@ -1,6 +1,6 @@
 from app.blueprints.item import bp
 from app.blueprints.item.schemas import ItemRequestSchema, ItemResponseSchema, ItemListSchema
-from app.blueprints.item.service import ItemService
+#from app.blueprints.item.service import ItemService
 from apiflask.fields import String, Integer
 from apiflask import HTTPError
 
