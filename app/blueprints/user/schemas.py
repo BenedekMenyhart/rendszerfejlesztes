@@ -28,3 +28,7 @@ class UserResponseSchema(Schema):
 class UserLoginSchema(Schema):
     email = String(validate=Email())
     password = fields.String()
+
+class RoleSchema(Schema):
+    id = fields.Integer()
+    name = fields.String()

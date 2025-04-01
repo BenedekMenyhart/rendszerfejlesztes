@@ -14,7 +14,6 @@ class Statuses(enum.Enum):
     AssignedToCourier = "assigned_to_courier"
     DeliveryStarted = "delivery_started"
     Delivered = "delivered"
-    RecipientConfirmed = "recipient_confirmed"
 
 
 
