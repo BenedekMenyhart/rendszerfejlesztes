@@ -3,10 +3,12 @@ from app.blueprints.item.schemas import ItemRequestSchema, ItemResponseSchema, I
 #from app.blueprints.item.service import ItemService
 from apiflask.fields import String, Integer
 from apiflask import HTTPError
+from app.blueprints.item.service import ItemService
+
 
 @bp.route('/')
 def index():
-    return 'This is The Food Blueprint'
+    return 'This is the item blueprint'
 
 @bp.get('/list/')
 @bp.output(ItemListSchema(many = True))
