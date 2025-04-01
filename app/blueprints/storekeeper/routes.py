@@ -9,34 +9,34 @@ def index():
     return 'This is The StoreKeeper Blueprint'
 
 
-@bp.get("/orders/list/created/<int:rid>")
+@bp.get("/orders/list/received/<int:rid>")
 @bp.output(OrderResponseSchema(many = True))
-def storekeeper_orders_list_created(rid):
-    success, response = StorekeeperService.storekeeper_orders_list_created(rid)
+def storekeeper_orders_list_received(uid):
+    success, response = StorekeeperService.storekeeper_orders_list_received(uid)
     if success:
         return response, 200
     raise HTTPError(message=response, status_code=400)
 
-@bp.get("/orders/list/prepare/<int:rid>")
+@bp.get("/orders/list/processing/<int:rid>")
 @bp.output(OrderResponseSchema(many = True))
-def storekeeper_orders_list_prepare(rid):
-    success, response = StorekeeperService.storekeeper_orders_list_prepare(rid)
+def storekeeper_orders_list_processing(uid):
+    success, response = StorekeeperService.storekeeper_orders_list_processing(uid)
     if success:
         return response, 200
     raise HTTPError(message=response, status_code=400)
 
 
-@bp.put("/orders/set/prepare/<int:oid>")
-def storekeeper_orders_prepare(oid):
-    success, response = StorekeeperService.order_prepare(oid)
+@bp.put("/orders/set/processing/<int:oid>")
+def storekeeper_orders_processing(oid):
+    success, response = StorekeeperService.order_processing(oid)
     if success:
         return response, 200
     raise HTTPError(message=response, status_code=400)
 
 
-@bp.put("/orders/set/ready/<int:oid>")
-def storekeeper_orders_ready(oid):
-    success, response = StorekeeperService.order_ready(oid)
+@bp.put("/orders/set/processed/<int:oid>")
+def storekeeper_orders_processed(oid):
+    success, response = StorekeeperService.order_processed(oid)
     if success:
         return response, 200
     raise HTTPError(message=response, status_code=400)
