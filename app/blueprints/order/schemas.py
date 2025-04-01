@@ -21,3 +21,13 @@ class OrderResponseSchema(Schema):
     address = fields.Nested(AddressSchema)
     items = fields.Nested(OrderItemSchema(many=True))
 
+class FeedbackRequestSchema(Schema):
+    order = fields.Nested(OrderResponseSchema(many=True))
+    feedback = fields.String()
+
+class FeedbackResponseSchema(Schema):
+    id = fields.Integer()
+    order = fields.Nested(OrderResponseSchema(many=True))
+    feedback = fields.String()
+
+
