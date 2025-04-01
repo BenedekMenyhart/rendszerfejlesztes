@@ -13,16 +13,7 @@ def index():
 @bp.get('/list/')
 @bp.output(ItemListSchema(many = True))
 def item_list_all():
-    success, response = ItemService.food_list_all()
-    if success:
-        return response, 200
-    raise HTTPError(message=response, status_code=400)
-
-@bp.get('/list/<int:rid>')
-@bp.input({'cid': Integer()}, location='query')
-@bp.output(ItemListSchema(many = True))
-def item_list_category(query_data, rid):
-    success, response = ItemService.item_list_category(rid, query_data.get("cid"))
+    success, response = ItemService.item_list_all()
     if success:
         return response, 200
     raise HTTPError(message=response, status_code=400)

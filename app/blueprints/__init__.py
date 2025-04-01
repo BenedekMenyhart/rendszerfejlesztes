@@ -27,4 +27,7 @@ bp.register_blueprint(bp_courier, url_prefix='/courier')
 from app.blueprints.shipment import bp as bp_shipment
 bp.register_blueprint(bp_shipment, url_prefix='/shipment')
 
+from app.blueprints.supplier import bp as bp_supplier
+bp.register_blueprint(bp_supplier, url_prefix='/supplier')
+
 from app.models import *
