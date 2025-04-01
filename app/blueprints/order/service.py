@@ -23,12 +23,8 @@ class OrderService:
             return False, "order_add() error!"
         return True, OrderResponseSchema().dump(order)
 
-    @staticmethod
-    def get_feedback():
-        feedback = input("Enter feedback: ")
-        return feedback
 
-    @staticmethod
+
     @staticmethod
     def feedback_add(order_id):
         try:
