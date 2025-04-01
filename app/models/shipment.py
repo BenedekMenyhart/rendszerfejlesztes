@@ -14,4 +14,4 @@ class Shipment(db.Model):
     expected_at: Mapped[str] = mapped_column(String(64), nullable=False)
     received: Mapped[bool] = mapped_column(nullable=False)
 
-    items : Mapped[List["Shipment"]] = relationship(back_populates="shipment")
+    items : Mapped[List["ShipmentItem"]] = relationship(back_populates="shipment")
