@@ -7,7 +7,7 @@ from apiflask import HTTPError
 
 
 @bp.route('/')
-def index():
+def order_index():
     return 'This is The Order Blueprint'
 
 

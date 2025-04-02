@@ -7,7 +7,7 @@ from app.blueprints.shipment.service import ShipmentService
 
 
 @bp.route('/')
-def index():
+def shipment_index():
     return 'This is The Shipment Blueprint'
 
 

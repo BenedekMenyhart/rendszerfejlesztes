@@ -7,8 +7,7 @@ from apiflask.fields import String, Email, Nested, Integer, List
 
 
 @bp.route('/')
-
-def index():
+def user_index():
     return 'This is The User Blueprint'
 
 

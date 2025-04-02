@@ -5,7 +5,7 @@ from apiflask.fields import String, Integer
 from apiflask import HTTPError
 
 @bp.route('/')
-def index():
+def storekeeper_index():
     return 'This is The StoreKeeper Blueprint'
 
 

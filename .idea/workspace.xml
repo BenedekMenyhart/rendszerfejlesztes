@@ -4,19 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="order schema create">
-      <change afterPath="$PROJECT_DIR$/app/blueprints/supplier/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/blueprints/supplier/routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/blueprints/supplier/schemas.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/blueprints/supplier/service.py" afterDir="false" />
+    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="04.01-es futási hiba kijavítása">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/rendszerfejlesztes.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/rendszerfejlesztes.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/item/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/item/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/shipment.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/shipment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/order/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/order/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/shipment/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/shipment/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/storekeeper/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/storekeeper/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/supplier/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/supplier/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/supplier/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/supplier/service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/user/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/user/routes.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +62,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/BenedekMenyhart/rendszerfejlesztes.git&quot;,
-    &quot;accountId&quot;: &quot;7719c68d-5373-4fdf-8240-2599f55666f3&quot;
+    &quot;accountId&quot;: &quot;f5c1454b-6cd3-485d-ab7a-39fd1fb902e8&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -134,6 +132,8 @@
       <workItem from="1742366393533" duration="45000" />
       <workItem from="1742389315330" duration="10821000" />
       <workItem from="1743517417857" duration="2688000" />
+      <workItem from="1743542310080" duration="272000" />
+      <workItem from="1743574277796" duration="1558000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -213,15 +213,16 @@
     <MESSAGE value="database előkészítése" />
     <MESSAGE value="flaskenv update" />
     <MESSAGE value="relationok javitva&#10;qunatity javitva" />
-    <option name="LAST_COMMIT_MESSAGE" value="relationok javitva&#10;qunatity javitva" />
+    <MESSAGE value="04.01-es futási hiba kijavítása" />
+    <option name="LAST_COMMIT_MESSAGE" value="04.01-es futási hiba kijavítása" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1743437805104" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/blueprints" />
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$order.coverage" NAME="order Coverage Results" MODIFIED="1743438760621" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/models" />
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1742394553758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743577155826" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$shipment.coverage" NAME="shipment Coverage Results" MODIFIED="1743438187440" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/models" />
     <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743527756041" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$order.coverage" NAME="order Coverage Results" MODIFIED="1743438760621" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/models" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1743437805104" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/blueprints" />
     <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$app.coverage" NAME="app Coverage Results" MODIFIED="1743437496895" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Rebdszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743439198590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$shipment.coverage" NAME="shipment Coverage Results" MODIFIED="1743438187440" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/models" />
   </component>
 </project>

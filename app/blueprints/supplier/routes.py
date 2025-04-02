@@ -12,11 +12,11 @@ from app.blueprints.supplier.service import SupplierService
 
 
 @bp.route('/')
-def index():
+def supplier_index():
     return 'This is The Supplier Blueprint'
 
 
-@bp.get("/items/list/<int:iid>")
+@bp.get("/items/few/<int:iid>")
 @bp.output(FewItemResponseSchema(many = True))
 def supplier_orders_list_few(iid):
     success, response = SupplierService.items_list_few(iid)
@@ -24,10 +24,10 @@ def supplier_orders_list_few(iid):
         return response, 200
     raise HTTPError(message=response, status_code=400)
 
-@bp.get("/items/list/<int:iid>")
+@bp.get("/items/shipment/<int:iid>")
 @bp.output(ShipmentResponseSchema(many = True))
 def shipment_add(iid):
-    success, response = SupplierService.items_list_few(iid)
+    success, response = SupplierService.shipment_add(iid)
     if success:
         return response, 200
     raise HTTPError(message=response, status_code=400)

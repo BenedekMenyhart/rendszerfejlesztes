@@ -1,4 +1,4 @@
-from sqlalchemy.testing.suite.test_reflection import users
+from flask_login import current_user
 
 from app.blueprints import supplier
 from app.blueprints.item.schemas import ItemResponseSchema
@@ -39,6 +39,6 @@ class SupplierService:
             return False, "shipment_add() error!"
         return True, ShipmentResponseSchema().dump({
             "id": shipment.id,
-            "supplier_id": users.get_current_user().id,
+            "supplier_id": current_user.id,
             "items": ItemResponseSchema().dump(items, many=True),
         })
