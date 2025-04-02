@@ -25,7 +25,7 @@ class SupplierService:
         return True, FewItemResponseSchema().dump(items, many=True)
 
     @staticmethod
-    def shipment_add(iid):
+    def shipment_add(iid, sid):
         try:
             items = SupplierService.items_list_few(iid)
             if items:
@@ -35,10 +35,11 @@ class SupplierService:
                 db.session.add(shipment)
                 db.session.commit()
 
+                return True, ShipmentResponseSchema().dump({
+                    "id": shipment.id,
+                    "supplier_id": sid,
+                    "items": ItemResponseSchema().dump(items, many=True),
+                })
+
         except Exception as ex:
             return False, "shipment_add() error!"
-        return True, ShipmentResponseSchema().dump({
-            "id": shipment.id,
-            "supplier_id": current_user.id,
-            "items": ItemResponseSchema().dump(items, many=True),
-        })
