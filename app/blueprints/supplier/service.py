@@ -1,4 +1,4 @@
-#from flask_login import current_user
+from flask_login import current_user
 
 from app.blueprints import supplier
 from app.blueprints.item.schemas import ItemResponseSchema

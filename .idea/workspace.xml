@@ -4,11 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="kis javítás">
+    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="order schema create">
+      <change afterPath="$PROJECT_DIR$/.ssh/private-key.pem" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/rendszerfejlesztes.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/rendszerfejlesztes.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/blueprints/supplier/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/supplier/service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/user/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/user/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/user/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/user/schemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/user/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/user/service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/extensions.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/extensions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,15 +198,7 @@
       <option name="project" value="LOCAL" />
       <updated>1742400159867</updated>
     </task>
-    <task id="LOCAL-00009" summary="kis javítás">
-      <option name="closed" value="true" />
-      <created>1743520719972</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1743520719972</updated>
-    </task>
-    <option name="localTasksCounter" value="10" />
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,11 +212,10 @@
     <MESSAGE value="database előkészítése" />
     <MESSAGE value="flaskenv update" />
     <MESSAGE value="relationok javitva&#10;qunatity javitva" />
-    <MESSAGE value="kis javítás" />
-    <option name="LAST_COMMIT_MESSAGE" value="kis javítás" />
+    <option name="LAST_COMMIT_MESSAGE" value="relationok javitva&#10;qunatity javitva" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Rebdszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743439198590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743948242672" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743440970661" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Rebdszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1744640602047" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -32,3 +32,8 @@ class UserLoginSchema(Schema):
 class RoleSchema(Schema):
     id = fields.Integer()
     name = fields.String()
+
+class PayloadSchema(Schema):
+    user_id = fields.Integer()
+    roles  = fields.List(fields.Nested(RoleSchema))
+    exp = fields.Integer()
