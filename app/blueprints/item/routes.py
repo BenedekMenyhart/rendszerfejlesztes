@@ -1,3 +1,5 @@
+from flask import render_template
+
 from app.blueprints import role_required
 from app.blueprints.item import bp
 from app.blueprints.item.schemas import ItemRequestSchema, ItemResponseSchema, ItemListSchema
@@ -9,8 +11,8 @@ from app.extensions import auth
 
 
 @bp.route('/')
-def index():
-    return 'This is the item blueprint'
+def item_index():
+    return render_template('item.html', title='Item\'s page')
 
 @bp.get('/list/')
 @bp.output(ItemListSchema(many = True))

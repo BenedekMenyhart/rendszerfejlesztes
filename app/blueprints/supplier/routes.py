@@ -1,3 +1,5 @@
+from flask import render_template
+
 from app.blueprints import role_required
 from app.blueprints.supplier import bp
 from app.blueprints.courier.service import CourierService
@@ -15,7 +17,7 @@ from app.extensions import auth
 
 @bp.route('/')
 def supplier_index():
-    return 'This is The Supplier Blueprint'
+    return render_template('supplier.html', title='Supplier\'s page')
 
 
 @bp.get("/items/few/<int:iid>")
