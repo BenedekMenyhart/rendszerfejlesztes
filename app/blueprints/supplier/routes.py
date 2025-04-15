@@ -1,3 +1,4 @@
+from app.blueprints import role_required
 from app.blueprints.supplier import bp
 from app.blueprints.courier.service import CourierService
 
@@ -9,6 +10,7 @@ from apiflask import HTTPError
 from app.blueprints.shipment.schemas import ShipmentResponseSchema
 from app.blueprints.supplier.schemas import FewItemResponseSchema
 from app.blueprints.supplier.service import SupplierService
+from app.extensions import auth
 
 
 @bp.route('/')
@@ -18,6 +20,8 @@ def supplier_index():
 
 @bp.get("/items/few/<int:iid>")
 @bp.output(FewItemResponseSchema(many = True))
+@bp.auth_required(auth)
+@role_required(["Supplier"])
 def supplier_orders_list_few(iid):
     success, response = SupplierService.items_list_few(iid)
     if success:
@@ -26,6 +30,8 @@ def supplier_orders_list_few(iid):
 
 @bp.get("/items/shipment/<int:iid>/<int:sid>")
 @bp.output(ShipmentResponseSchema(many = True))
+@bp.auth_required(auth)
+@role_required(["Supplier"])
 def shipment_add(iid, sid):
     success, response = SupplierService.shipment_add(iid, sid)
     if success:

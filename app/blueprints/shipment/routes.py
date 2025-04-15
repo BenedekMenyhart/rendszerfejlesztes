@@ -1,9 +1,11 @@
+from app.blueprints import role_required
 from app.blueprints.order import bp
 from apiflask.fields import String, Integer
 from apiflask import HTTPError
 
 from app.blueprints.shipment.schemas import ShipmentRequestSchema, ShipmentResponseSchema
 from app.blueprints.shipment.service import ShipmentService
+from app.extensions import auth
 
 
 @bp.route('/')
@@ -15,6 +17,8 @@ def shipment_index():
 @bp.doc(tags=["shipment"])
 @bp.input(ShipmentRequestSchema, location="json")
 @bp.output(ShipmentResponseSchema)
+@bp.auth_required(auth)
+@role_required(["Courier"])
 def shipment_registrate(json_data):
     success, response = ShipmentService.shipment_add(json_data)
     if success:
