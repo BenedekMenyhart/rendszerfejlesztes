@@ -11,7 +11,7 @@ from apiflask.fields import String, Email, Nested, Integer, List
 
 @bp.route('/')
 def user_index():
-    return 'This is The User Blueprint'
+    return render_template('user.html',  title='User\'s page')
 
 
 @bp.post('/registrate')

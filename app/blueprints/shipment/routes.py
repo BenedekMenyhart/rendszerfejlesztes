@@ -10,7 +10,7 @@ from app.extensions import auth
 
 @bp.route('/')
 def shipment_index():
-    return 'This is The Shipment Blueprint'
+    return render_template('shipment.html',  title='Shipment\'s page')
 
 
 @bp.post('/add')
