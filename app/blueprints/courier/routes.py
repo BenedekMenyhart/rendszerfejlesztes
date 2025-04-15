@@ -1,7 +1,7 @@
 from app.blueprints import role_required
 from app.blueprints.courier import bp
 from app.blueprints.courier.service import CourierService
-
+from flask import render_template
 from app.blueprints.order.schemas import OrderResponseSchema
 from app.blueprints.courier.service import CourierService
 from apiflask.fields import String, Integer
@@ -12,7 +12,7 @@ from app.extensions import auth
 
 @bp.route('/')
 def index():
-    return 'This is The Courier Blueprint'
+    return render_template('courier.html',  title='Courier\'s page')
 
 
 @bp.get("/orders/list/processed/<int:rid>")
