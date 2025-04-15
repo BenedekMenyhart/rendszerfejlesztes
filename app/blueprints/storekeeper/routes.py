@@ -1,3 +1,5 @@
+from flask import render_template
+
 from app.blueprints import role_required
 from app.blueprints.storekeeper import bp
 from app.blueprints.order.schemas import OrderResponseSchema
@@ -10,7 +12,7 @@ from app.extensions import auth
 
 @bp.route('/')
 def storekeeper_index():
-    return 'This is The StoreKeeper Blueprint'
+    return render_template('storekeeper.html',  title='Storekeeper\'s page')
 
 
 @bp.get("/orders/list/received/<int:rid>")

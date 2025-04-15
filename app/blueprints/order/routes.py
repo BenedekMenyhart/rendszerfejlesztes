@@ -1,3 +1,5 @@
+from flask import render_template
+
 from app.blueprints import role_required
 from app.blueprints.order import bp
 from app.blueprints.order.schemas import OrderItemSchema, OrderRequestSchema, OrderResponseSchema, \
@@ -11,7 +13,7 @@ from app.extensions import auth
 
 @bp.route('/')
 def order_index():
-    return 'This is The Order Blueprint'
+    return render_template('order.html',  title='Order\'s page')
 
 
 @bp.post('/add')
