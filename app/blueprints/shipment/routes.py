@@ -1,3 +1,5 @@
+from flask import render_template
+
 from app.blueprints import role_required
 from app.blueprints.order import bp
 from apiflask.fields import String, Integer

@@ -7,13 +7,20 @@
     <body>
     <!-- Menu bar-->
     <div>
-        <a href="/index">Home</a>
-        <a href="/login">Login</a>
+        <button type="button" onclick="window.location.href='/api/'">Home</button>
+        <button type="button" onclick="window.location.href='/api/login'">Login</button>
+        <button type="button" onclick="window.location.href='/api/user'">User's page</button>
+        <button type="button" onclick="window.location.href='/api/courier'">Courier's page</button>
+        <button type="button" onclick="window.location.href='/api/storekeeper'">Storekeeper's page</button>
+        <button type="button" onclick="window.location.href='/api/supplier'">Supplier's page</button>
+        <button type="button" onclick="window.location.href='/api/item'">Items page</button>
+        <button type="button" onclick="window.location.href='/api/order'">Order page</button>
+        <button type="button" onclick="window.location.href='/api/shipment'">Shipment page</button>
     </div>
 
     <!-- Content -->
     {% block content %}
-        <h3>block content</h3>
+        <h3>This is the home page!</h3>
     {% endblock %}
 
     <!-- Footer -->

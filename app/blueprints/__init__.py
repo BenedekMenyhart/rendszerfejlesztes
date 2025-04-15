@@ -3,7 +3,7 @@ from apiflask import APIBlueprint
 bp = APIBlueprint('main', __name__, tag="default")
 from functools import wraps
 from app.extensions import auth
-from flask import current_app
+from flask import current_app, render_template
 from authlib.jose import jwt
 from datetime import datetime
 from apiflask import HTTPError
@@ -36,7 +36,7 @@ def role_required(roles):
 
 @bp.route('/')
 def index():
-    return 'his is The Main Blueprint'
+    return render_template('base.html',  title='Base page')
 
 #register blueprints here
 from app.blueprints.user import bp as bp_user

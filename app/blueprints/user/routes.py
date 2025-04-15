@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, render_template
 
 from app.extensions import auth
 from app.blueprints import role_required
