@@ -7,6 +7,10 @@ from flask import current_app, render_template
 from authlib.jose import jwt
 from datetime import datetime
 from apiflask import HTTPError
+from flask import render_template
+from app.forms.loginForm import LoginForm
+from flask import render_template, flash, redirect
+from app.forms.loginForm import LoginForm
 
 @auth.verify_token
 def verify_token(token):
@@ -38,6 +42,16 @@ def role_required(roles):
 def index():
     return render_template('base.html',  title='Base page')
 
+@bp.route('/login', methods=["GET", "POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        flash("Login requested for user {}".format(form.username.data))
+        return redirect("/api/")
+    return render_template("login.html",
+                           title="Login page",
+                           form=form
+                           )
 #register blueprints here
 from app.blueprints.user import bp as bp_user
 bp.register_blueprint(bp_user, url_prefix='/user')

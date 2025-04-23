@@ -1,10 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta charset="utf-8" />
-        <title> Home page - {{title}}</title>
-    </head>
-    <body>
+<head>
+    <meta charset="utf-8" />
+    <title> Home page - {{title}}</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .wrapper {
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        footer {
+            background: #f1f1f1;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
     <!-- Menu bar-->
     <div>
         <button type="button" onclick="window.location.href='/api/'">Home</button>
@@ -18,12 +43,25 @@
         <button type="button" onclick="window.location.href='/api/shipment'">Shipment page</button>
     </div>
 
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <span style="color:red;">{{ message }}</span><br />
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
     <!-- Content -->
-    {% block content %}
-        <h3>This is the home page!</h3>
-    {% endblock %}
+    <div class="content">
+        {% block content %}
+            <h3>This is the home page!</h3>
+        {% endblock %}
+    </div>
 
     <!-- Footer -->
-    {% include 'footer.html' %}
-    </body>
-    </html>
+    <footer>
+        {% include 'footer.html' %}
+    </footer>
+</div>
+</body>
+</html>
