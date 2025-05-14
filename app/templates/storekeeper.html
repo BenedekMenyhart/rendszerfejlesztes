@@ -15,10 +15,33 @@
 {% extends "index.html" %}
 
 {% block content %}
-<h3>Orders</h3>
+<h3>Items</h3>
+    <table border="1" class="table">
+    <thead>
+        <tr>
+            <th>Item Id</th>
+            <th>Item</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Available quantity</th>
 
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.quantity_available }}</td>
 
-<!-- Write your solution here!-->
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+    <h3>Orders</h3>
 <table border="1" class="table">
     <thead>
         <tr>
@@ -38,7 +61,6 @@
             <td>{{ order.address_id }}</td>
             <td>{{ order.created_at }}</td>
             <td>{{ order.status }}</td>
-            <td>{{ order.feedback }}</td>
 
 
         </tr>
@@ -87,6 +109,14 @@
         {% endfor %}
     </tbody>
 </table>
+
+    <h3>Add shipment to storage</h3>
+<form method="POST" action="{{ url_for('main.storekeeper.process_shipment') }}">
+    <label for="shipment_id">Shipment ID:</label>
+    <input type="number" id="shipment_id" name="shipment_id" required>
+    <button type="submit">Process Shipment</button>
+</form>
+
 
 
 {% endblock %}

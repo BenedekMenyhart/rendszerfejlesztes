@@ -42,6 +42,3 @@ class Order(db.Model):
     status: Mapped[Statuses] = mapped_column()
     feedback: Mapped[Optional[str]] = mapped_column(nullable=True)
     items: Mapped[List["OrderItem"]] = relationship(back_populates="order")
-
-    courier_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"))
-    courier: Mapped[Optional["User"]] = relationship(back_populates="courier_orders")
