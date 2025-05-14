@@ -11,12 +11,24 @@ from flask import render_template
 from app.forms.loginForm import LoginForm
 from flask import render_template, flash, redirect, url_for
 from app.forms.loginForm import LoginForm
-from flask_login import login_user
+from flask_login import login_user, current_user
 from app.models.user import User
 
 from werkzeug.security import check_password_hash
 import time
+from flask import g
+@bp.app_context_processor
+def inject_user_roles():
+    roles = [role["name"] for role in auth.current_user.get("roles", [])] if auth.current_user else []
+    return dict(user_roles=roles)
 
+@bp.app_context_processor
+def inject_user_roles():
+    if current_user.is_authenticated:
+        roles = [role.name for role in current_user.roles]  # Lekérdezzük a "Role" táblából
+    else:
+        roles = []
+    return {'user_roles': roles}
 
 @auth.verify_token
 def verify_token(token):
@@ -48,14 +60,17 @@ def role_required(roles):
 def index():
     return render_template('base.html',  title='Base page')
 
+@bp.route('/index')
+def index2():
+    return render_template('index.html',  title='Base page')
+
 
 @bp.route('/login', methods=["GET", "POST"])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(name=form.name.data).first()
-        if user and user.password == form.password.data:  # Közvetlen összehasonlítás
-            # Sikeres bejelentkezés
+        if user and user.password == form.password.data:
             token_data = {
                 "sub": user.name,
                 "id": user.id,
@@ -71,7 +86,7 @@ def login():
 
             login_user(user)
             flash("Sikeres bejelentkezés!")
-            return redirect('/api')
+            return render_template('index.html',  title='Index page')
 
         else:
             flash("Helytelen felhasználónév vagy jelszó!")
@@ -80,7 +95,6 @@ def login():
                          title="Bejelentkezés",
                          form=form
                          )
-
 
 
 

@@ -4,20 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="token generálások befejezése">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/rendszerfejlesztes.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/rendszerfejlesztes.iml" afterDir="false" />
+    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="sikeres bejelentkezesi fazis 1">
+      <change afterPath="$PROJECT_DIR$/app/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/blueprints/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/user/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/user/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/forms/loginForm.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms/loginForm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/item.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/item.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/orderitem.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/orderitem.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/shipmentitem.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/shipmentitem.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/courier.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/courier.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/item.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/item.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/order.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/order.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/shipment.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/shipment.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/storekeeper.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/storekeeper.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/supplier.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/supplier.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/user.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +87,7 @@
     "git-widget-placeholder": "master__2",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/Users/DaNeL/Documents/Python/FlaskWebProject.I - Órai projekt_v3",
+    "last_opened_file_path": "C:/Users/bibig/Documents/ZH/rendszerfejlesztes/app/templates",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -97,6 +96,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\bibig\Documents\ZH\rendszerfejlesztes\app\templates" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="rendszerfejlesztes" type="Python.FlaskServer">
       <module name="rendszerfejlesztes" />
@@ -139,7 +143,7 @@
       <workItem from="1743517417857" duration="2688000" />
       <workItem from="1745417395492" duration="3658000" />
       <workItem from="1747225752279" duration="902000" />
-      <workItem from="1747226682709" duration="3680000" />
+      <workItem from="1747226682709" duration="7319000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -221,7 +225,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744716887838</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="sikeres bejelentkezesi fazis 1">
+      <option name="closed" value="true" />
+      <created>1747230667451</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1747230667451</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -237,10 +249,11 @@
     <MESSAGE value="relationok javitva&#10;qunatity javitva" />
     <MESSAGE value="kis javítás" />
     <MESSAGE value="token generálások befejezése" />
-    <option name="LAST_COMMIT_MESSAGE" value="token generálások befejezése" />
+    <MESSAGE value="sikeres bejelentkezesi fazis 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="sikeres bejelentkezesi fazis 1" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1747230382569" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1747234048666" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1745421215202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Rebdszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743439198590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
