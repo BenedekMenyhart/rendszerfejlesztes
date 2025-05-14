@@ -8,13 +8,13 @@ from app.extensions import db, Base
 
 
 class Statuses(enum.Enum):
-    Received = "received"
-    Processing = "processing"
-    Processed = "processed"
-    AssignedToCourier = "assigned_to_courier"
-    DeliveryStarted = "delivery_started"
-    Delivered = "delivered"
-    ReceptionConfirmed = "reception_confirmed"
+    Received = "Received"
+    Processing = "Processing"
+    Processed = "Processed"
+    AssignedToCourier = "Assigned_to_courier"
+    DeliveryStarted = "Delivery_started"
+    Delivered = "Delivered"
+    ReceptionConfirmed = "Reception_confirmed"
 
     @classmethod
     def _missing_(cls, value):

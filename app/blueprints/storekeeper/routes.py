@@ -29,17 +29,17 @@ def process_shipment():
     shipment_id = request.form.get("shipment_id", type=int)
     if not shipment_id:
         flash("Invalid Shipment ID.", "error")
-        return redirect(url_for("storekeeper.storekeeper_index"))
+        return redirect(url_for("main.storekeeper.storekeeper_index"))
 
     shipment = db.session.query(Shipment).filter_by(id=shipment_id).first()
 
     if not shipment:
         flash(f"Shipment with ID {shipment_id} does not exist.", "error")
-        return redirect(url_for("storekeeper.storekeeper_index"))
+        return redirect(url_for("main.storekeeper.storekeeper_index"))
 
     if shipment.received:
         flash(f"Shipment with ID {shipment_id} has already been processed.", "info")
-        return redirect(url_for("storekeeper.storekeeper_index"))
+        return redirect(url_for("main.storekeeper.storekeeper_index"))
 
     try:
         for shipment_item in shipment.items:
@@ -57,4 +57,32 @@ def process_shipment():
         db.session.rollback()
         flash(f"An error occurred while processing shipment: {str(e)}", "error")
 
-    return redirect(url_for("storekeeper.storekeeper_index"))
+    return redirect(url_for("main.storekeeper.storekeeper_index"))
+
+@bp.route('/update_order_status', methods=['POST'])
+def update_order_status():
+    # Az űrlap adatok lekérése
+    order_id = request.form.get("order_id", type=int)
+    status = request.form.get("status")
+
+    if not order_id or not status:
+        flash("Order ID or Status is missing.", "error")
+        return redirect(url_for("main.storekeeper.storekeeper_index"))
+
+    # A rendelés lekérése
+    order = db.session.query(Order).filter_by(id=order_id).first()
+    if not order:
+        flash(f"Order with ID {order_id} does not exist.", "error")
+        return redirect(url_for("main.storekeeper.storekeeper_index"))
+
+    # Státusz frissítése
+    try:
+        order.status = status
+        db.session.add(order)
+        db.session.commit()
+        flash(f"Order with ID {order_id} updated to status '{status}'.", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"An error occurred while updating the order status: {str(e)}", "error")
+
+    return redirect(url_for("main.storekeeper.storekeeper_index"))

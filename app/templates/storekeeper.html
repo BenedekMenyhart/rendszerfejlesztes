@@ -68,6 +68,28 @@
     </tbody>
 </table>
 
+    <h4>Modify Order Status</h4>
+<form method="POST" action="{{ url_for('main.storekeeper.update_order_status') }}">
+    <label for="order_id">Order ID:</label>
+    <input type="number" id="order_id" name="order_id" required>
+
+    <label for="status">Status:</label>
+    <select id="status" name="status" required>
+        <option value="Received">Received</option>
+        <option value="Processing">Processing</option>
+        <option value="Processed">Processed</option>
+        <option value="Assigned_to_courier">Assigned to Courier</option>
+        <option value="Delivery_started">Delivery Started</option>
+        <option value="Delivered">Delivered</option>
+        <option value="Reception_confirmed">Reception Confirmed</option>
+    </select>
+
+    <button type="submit">Update Status</button>
+</form>
+
+
+
+
     <h3>Shipments</h3>
 <table class="table" border="1" class="table">
     <thead>
@@ -110,7 +132,7 @@
     </tbody>
 </table>
 
-    <h3>Add shipment to storage</h3>
+    <h4>Add shipment to storage</h4>
 <form method="POST" action="{{ url_for('main.storekeeper.process_shipment') }}">
     <label for="shipment_id">Shipment ID:</label>
     <input type="number" id="shipment_id" name="shipment_id" required>
