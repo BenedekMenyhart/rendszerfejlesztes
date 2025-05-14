@@ -1,5 +1,92 @@
-{%extends "index.html" %}
+<style>
+    table {
+        width: 100%; /* Mindkét táblázat teljes szélességet fog kikérni */
+        table-layout: fixed; /* Oszlopok egyenletes elosztása */
+        text-align: center;
+    }
+
+    th, td {
+        word-wrap: break-word; /* Hosszú szövegek tördelése */
+        text-align: center; /* Balra igazítás */
+    }
+</style>
+
+
+{% extends "index.html" %}
 
 {% block content %}
-        <h2>Storekeeper's page</h2>
+<h3>Orders</h3>
+
+
+<!-- Write your solution here!-->
+<table border="1" class="table">
+    <thead>
+        <tr>
+            <th>Order Id</th>
+            <th>User Id</th>
+            <th>Address Id</th>
+            <th>Created At</th>
+            <th>Status</th>
+            <th>Feedback</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.user_id }}</td>
+            <td>{{ order.address_id }}</td>
+            <td>{{ order.created_at }}</td>
+            <td>{{ order.status }}</td>
+            <td>{{ order.feedback }}</td>
+
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+    <h3>Shipments</h3>
+<table class="table" border="1" class="table">
+    <thead>
+        <tr>
+            <th>Shipment Id</th>
+            <th>Expected At</th>
+            <th>Recieved</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for shipment in shipments %}
+        <tr>
+            <td>{{ shipment.id }}</td>
+            <td>{{ shipment.expected_at }}</td>
+            <td>{{ shipment.received }}</td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    <table class="table" border="1"  class="table">
+    <thead>
+        <tr>
+            <th>Shipment Item Id</th>
+            <th>Shipment Id</th>
+            <th>Item Id</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for shipmentitem in shipmentitems %}
+        <tr>
+            <td>{{ shipmentitem.id }}</td>
+            <td>{{ shipmentitem.shipment_id }}</td>
+            <td>{{ shipmentitem.item_id }}</td>
+            <td>{{ shipmentitem.quantity }}</td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
 {% endblock %}

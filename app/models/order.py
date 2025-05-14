@@ -16,6 +16,13 @@ class Statuses(enum.Enum):
     Delivered = "delivered"
     ReceptionConfirmed = "reception_confirmed"
 
+    @classmethod
+    def _missing_(cls, value):
+        for member in cls:
+            if member.value.lower() == value.lower():
+                return member
+        raise LookupError(
+            f"'{value}' is not among the defined enum values. Enum name: {cls.__name__}. Possible values: {', '.join([m.value for m in cls])}.")
 
 
 class Order(db.Model):
@@ -36,4 +43,5 @@ class Order(db.Model):
     feedback: Mapped[Optional[str]] = mapped_column(nullable=True)
     items: Mapped[List["OrderItem"]] = relationship(back_populates="order")
 
-
+    courier_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"))
+    courier: Mapped[Optional["User"]] = relationship(back_populates="courier_orders")

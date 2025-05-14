@@ -16,4 +16,5 @@ class ShipmentItem(db.Model):
     item: Mapped["Item"] = relationship()
 
 
+
     quantity: Mapped[int]

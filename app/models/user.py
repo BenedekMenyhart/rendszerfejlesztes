@@ -35,6 +35,8 @@ class User(UserMixin, db.Model):
 
     orders: Mapped[List["Order"]] = relationship(back_populates="user", lazy=True)
 
+    courier_orders: Mapped[List["Order"]] = relationship(back_populates="user", lazy=True)
+
     def __repr__(self) -> str:
         return f"User(id={self.id!r}, name={self.name!s}, email={self.email!r})"
 
