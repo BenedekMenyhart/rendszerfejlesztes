@@ -50,6 +50,7 @@
             <th>Address Id</th>
             <th>Created At</th>
             <th>Status</th>
+            <th>Courier Id</th>
             <th>Feedback</th>
         </tr>
     </thead>
@@ -61,6 +62,8 @@
             <td>{{ order.address_id }}</td>
             <td>{{ order.created_at }}</td>
             <td>{{ order.status }}</td>
+            <td>{{ order.courier_id }}</td>
+            <td>{{ order.feedback }}</td>
 
 
         </tr>
@@ -78,10 +81,10 @@
         <option value="Received">Received</option>
         <option value="Processing">Processing</option>
         <option value="Processed">Processed</option>
-        <option value="Assigned_to_courier">Assigned to Courier</option>
-        <option value="Delivery_started">Delivery Started</option>
+        <option value="AssignedToCourier">Assigned to Courier</option>
+        <option value="DeliveryStarted">Delivery Started</option>
         <option value="Delivered">Delivered</option>
-        <option value="Reception_confirmed">Reception Confirmed</option>
+        <option value="ReceptionConfirmed">Reception Confirmed</option>
     </select>
 
     <button type="submit">Update Status</button>

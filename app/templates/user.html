@@ -1,5 +1,65 @@
 {%extends "index.html" %}
 
 {% block content %}
-        <h2>User's page</h2>
+<h2>Available Items</h2>
+<table class="table" border="1">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price (Ft)</th>
+            <th>Quantity Available</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.quantity_available }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    <h4>Modify Contact Information</h4>
+<form method="POST" action="{{ url_for('main.user.update_contact_info') }}">
+    <label for="field">Frissíteni kívánt adat:</label>
+    <select id="field" name="field" required>
+        <option value="email">Email</option>
+        <option value="phone">Telefon</option>
+    </select>
+
+     <label for="username">Felhasználónév:</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="new_value">Új adat:</label>
+    <input type="text" id="new_value" name="new_value" required>
+
+
+    <button type="submit">Adat módosítás</button>
+</form>
+    <h4>Rendelés leadása</h4>
+        <form method="POST" action="{{ url_for('main.user.create_order') }}">
+        <label for="item_id">Termék ID:</label>
+        <input type="number" name="item_id" required>
+
+        <label for="quantity">Mennyiség:</label>
+        <input type="number" name="quantity" min="1" required>
+
+        <button type="submit">Rendelés leadása</button>
+        </form>
+
+    <h4>Megjegyzés hozzáadása rendeléshez</h4>
+<form method="POST" action="{{ url_for('main.user.add_feedback') }}">
+    <label for="order_id">Order ID:</label>
+    <input type="number" id="order_id" name="order_id" required>
+
+    <label for="feedback">Megjegyzés:</label>
+    <textarea id="feedback" name="feedback" rows="4" cols="50" required></textarea>
+
+    <button type="submit">Küldés</button>
+</form>
 {% endblock %}

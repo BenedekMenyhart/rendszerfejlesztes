@@ -6,3 +6,4 @@ import app.models.address
 import app.models.item
 import app.models.role
 import app.models.shipmentitem
+import app.models.courier

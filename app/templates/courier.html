@@ -2,4 +2,43 @@
 
 {% block content %}
         <h2>Courier's page</h2>
+
+    <table border="1" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+        <thead>
+            <tr style="background-color: #f4f4f4;">
+                <th>Order ID</th>
+                <th>User ID</th>
+                <th>Courier ID</th>
+                <th>Address ID</th>
+                <th>Created At</th>
+                <th>Status</th>
+                <th>Update Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td style="text-align: center;">{{ order.id }}</td>
+                <td style="text-align: center;">{{ order.user_id }}</td>
+                <td style="text-align: center;">{{ order.courier_id }}</td>
+                <td style="text-align: center;">{{ order.address_id }}</td>
+                <td style="text-align: center;">{{ order.created_at }}</td>
+                <td style="text-align: center;">{{ order.status.value }}</td>
+                <td style="text-align: center;">
+                    <form action="{{ url_for('main.courier.update_order_status_as_courier') }}" method="POST" style="margin: 0;">
+                        <input type="hidden" name="order_id" value="{{ order.id }}">
+                        <select name="new_status" required>
+                            {% for status in statuses %}
+                            <option value="{{ status }}"
+                                {% if order.status.value == status %}selected{% endif %}> {{ status.replace("_", " ").title() }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" style="margin-top: 5px;">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
