@@ -12,6 +12,7 @@ class OrderItem(db.Model):
     order_id: Mapped[int] = mapped_column(ForeignKey("orders.id"))
     order: Mapped["Order"] = relationship(back_populates="items")
 
+
     item_id: Mapped[int] = mapped_column(ForeignKey("items.id"))
     item: Mapped["Item"] = relationship()
 

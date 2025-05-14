@@ -4,6 +4,7 @@ from sqlalchemy.types import String, Integer
 from sqlalchemy import ForeignKey, Column, Table
 from typing import List, Optional
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 
 UserRole = Table(
@@ -15,7 +16,7 @@ UserRole = Table(
 
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))

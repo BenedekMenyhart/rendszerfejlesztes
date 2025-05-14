@@ -9,8 +9,14 @@ from datetime import datetime
 from apiflask import HTTPError
 from flask import render_template
 from app.forms.loginForm import LoginForm
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, url_for
 from app.forms.loginForm import LoginForm
+from flask_login import login_user
+from app.models.user import User
+
+from werkzeug.security import check_password_hash
+import time
+
 
 @auth.verify_token
 def verify_token(token):
@@ -42,16 +48,42 @@ def role_required(roles):
 def index():
     return render_template('base.html',  title='Base page')
 
+
 @bp.route('/login', methods=["GET", "POST"])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        flash("Login requested for user {}".format(form.username.data))
-        return redirect("/api/")
+        user = User.query.filter_by(name=form.name.data).first()
+        if user and user.password == form.password.data:  # Közvetlen összehasonlítás
+            # Sikeres bejelentkezés
+            token_data = {
+                "sub": user.name,
+                "id": user.id,
+                "roles": [{"name": role.name} for role in user.roles],
+                "exp": int(time.time()) + 3600
+            }
+
+            token = jwt.encode(
+                {"alg": "HS256"},
+                token_data,
+                current_app.config['SECRET_KEY']
+            )
+
+            login_user(user)
+            flash("Sikeres bejelentkezés!")
+            return redirect('/api')
+
+        else:
+            flash("Helytelen felhasználónév vagy jelszó!")
+
     return render_template("login.html",
-                           title="Login page",
-                           form=form
-                           )
+                         title="Bejelentkezés",
+                         form=form
+                         )
+
+
+
+
 #register blueprints here
 from app.blueprints.user import bp as bp_user
 bp.register_blueprint(bp_user, url_prefix='/user')

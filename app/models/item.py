@@ -15,8 +15,6 @@ class Item(db.Model):
     price: Mapped[int]
     quantity_available: Mapped[int]=mapped_column(nullable=False)
 
-
-
-
+    order_items: Mapped[List["OrderItem"]] = relationship(back_populates="item")
 
     deleted: Mapped[int] = mapped_column(default=0)

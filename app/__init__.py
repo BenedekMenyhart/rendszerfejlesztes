@@ -1,11 +1,11 @@
 from apiflask import APIFlask
-
+from flask_login import LoginManager
 from app.extensions import db
 from config import Config
+from app.models.user import User  # Importáljuk a User modellt
 
 
 def create_app(config_class=Config):
-    # app = Flask(__name__)
     app = APIFlask(__name__, json_errors=True,
                    title="Raktar API",
                    docs_path="/swagger")
@@ -13,6 +13,19 @@ def create_app(config_class=Config):
 
     # Initialize Flask extensions here
     db.init_app(app)
+
+    # LoginManager helyes inicializálása
+    login_manager = LoginManager()
+    login_manager.init_app(app)  # Flask app inicializálása
+
+    # Bejelentkezési oldal URL megadása
+    login_manager.login_view = 'user_index'
+
+    # Felhasználó betöltése felhasználó ID alapján
+    @login_manager.user_loader
+    def load_user(user_id):
+        # Itt az adatbázisból töltjük be a felhasználót
+        return db.session.get(User, int(user_id))
 
     from flask_migrate import Migrate
     migrate = Migrate(app, db, render_as_batch=True)
