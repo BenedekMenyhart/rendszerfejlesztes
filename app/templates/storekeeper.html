@@ -90,7 +90,36 @@
     <button type="submit">Update Status</button>
 </form>
 
+    <h3>List Couriers</h3>
+    <table border="1" class="table">
+    <thead>
+        <tr>
+            <th>Courier Id</th>
+            <th>Courier Name</th>
+            <th>Courier Email</th>
+            <th>Courier Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for courier in couriers %}
+        <tr>
+            <td>{{ courier.id }}</td>
+            <td>{{ courier.name }}</td>
+            <td>{{ courier.email }}</td>
+            <td>{{ courier.phone }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
+    <h4>Add Courier to order</h4>
+<form method="POST" action="{{ url_for('main.storekeeper.sign_courier_to_order') }}">
+    <label for="order_id">Order ID:</label>
+    <input type="number" id="order_id" name="order_id" required>
+    <label for="courier_id">Courier ID:</label>
+    <input type="number" id="courier_id" name="courier_id" required>
+    <button type="submit">Process Shipment</button>
+</form>
 
 
     <h3>Shipments</h3>

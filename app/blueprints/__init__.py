@@ -3,7 +3,7 @@ from apiflask import APIBlueprint
 bp = APIBlueprint('main', __name__, tag="default")
 from functools import wraps
 from app.extensions import auth
-from flask import current_app, render_template
+from flask import current_app, render_template, session
 from authlib.jose import jwt
 from datetime import datetime
 from apiflask import HTTPError
@@ -63,6 +63,14 @@ def index():
 @bp.route('/index')
 def index2():
     return render_template('index.html',  title='Base page')
+
+
+@bp.route('/logout')
+def logout():
+    if auth.current_user:
+        auth.current_user = None
+    session.clear()
+    return redirect(url_for('main.index'))
 
 
 @bp.route('/login', methods=["GET", "POST"])

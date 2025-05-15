@@ -35,33 +35,6 @@
         <button type="button" onclick="window.location.href='/api/'">Home</button>
         <button type="button" onclick="window.location.href='/api/login'">Login</button>
 
-        {% if 'User' in user_roles %}
-        <button type="button" onclick="window.location.href='/api/user'">User's page</button>
-        {% endif %}
-
-        {% if 'Courier' in user_roles %}
-        <button type="button" onclick="window.location.href='/api/courier'">Courier's page</button>
-        {% endif %}
-
-        {% if 'Storekeeper' in user_roles %}
-        <button type="button" onclick="window.location.href='/api/storekeeper'">Storekeeper's page</button>
-        {% endif %}
-
-        {% if 'Supplier' in user_roles %}
-        <button type="button" onclick="window.location.href='/api/supplier'">Supplier's page</button>
-        {% endif %}
-
-        {% if 'User' in user_roles or 'Supplier' in user_roles %}
-        <button type="button" onclick="window.location.href='/api/item'">Items page</button>
-        {% endif %}
-
-        {% if 'User' in user_roles %}
-        <button type="button" onclick="window.location.href='/api/order'">Order page</button>
-        {% endif %}
-
-        {% if 'Courier' in user_roles %}
-        <button type="button" onclick="window.location.href='/api/shipment'">Shipment page</button>
-        {% endif %}
     </div>
 
     {% with messages = get_flashed_messages() %}
