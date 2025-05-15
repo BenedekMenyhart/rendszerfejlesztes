@@ -1,8 +1,13 @@
 #from flask import Blueprint
 from apiflask import APIBlueprint
+from sqlalchemy import func
+
+from app.forms.registrationForm import RegistrationForm
+from app.models.role import Role
+
 bp = APIBlueprint('main', __name__, tag="default")
 from functools import wraps
-from app.extensions import auth
+from app.extensions import auth, db
 from flask import current_app, render_template, session
 from authlib.jose import jwt
 from datetime import datetime
@@ -104,7 +109,45 @@ def login():
                          form=form
                          )
 
+@bp.route('/register', methods=["GET", "POST"])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            flash("Email already registered.")
+            return render_template("register.html", title="Register", form=form)
 
+        max_id = db.session.query(func.max(User.id)).scalar() or 0
+
+        default_role = Role.query.filter_by(id=1).first()
+        if not default_role:
+            flash("Default role with ID 1 is not found in the database.", "error")
+            return render_template("register.html", title="Register", form=form)
+
+        # Új User létrehozása
+        new_user = User(
+            id=max_id + 1,
+            name=form.name.data,
+            email=form.email.data,
+            password=form.password.data,
+            phone=form.phone.data,
+            address_id=1
+        )
+
+        new_user.roles.append(default_role)
+
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            flash("Registration successful! Please log in.")
+            return redirect(url_for("main.login"))
+
+        except Exception as e:
+            db.session.rollback()
+            flash(f"An error occurred during registration: {str(e)}", "error")
+
+    return render_template("register.html", title="Register", form=form)
 
 #register blueprints here
 from app.blueprints.user import bp as bp_user
