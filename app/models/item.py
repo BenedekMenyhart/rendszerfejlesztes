@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 from app.extensions import db
-from typing import List, Optional
+from typing import List
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.types import String, Integer
-from sqlalchemy import Boolean, ForeignKey
+from sqlalchemy.types import String
 
 
 class Item(db.Model):

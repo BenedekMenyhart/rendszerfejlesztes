@@ -2,7 +2,7 @@ from app.extensions import db
 from app.blueprints.order.schemas import OrderResponseSchema
 from app.models.order import Order, Statuses
 
-from sqlalchemy import select, and_
+from sqlalchemy import select
 
 
 class StorekeeperService:

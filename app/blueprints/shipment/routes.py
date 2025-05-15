@@ -2,7 +2,6 @@ from flask import render_template
 
 from app.blueprints import role_required
 from app.blueprints.shipment import bp
-from apiflask.fields import String, Integer
 from apiflask import HTTPError
 
 from app.blueprints.shipment.schemas import ShipmentRequestSchema, ShipmentResponseSchema

@@ -1,9 +1,9 @@
 from app.extensions import db
-from app.blueprints.item.schemas import ItemRequestSchema, ItemResponseSchema, ItemListSchema
+from app.blueprints.item.schemas import ItemResponseSchema
 
 from app.models.item import Item
 
-from sqlalchemy import select, and_
+from sqlalchemy import select
 
 class ItemService:
 

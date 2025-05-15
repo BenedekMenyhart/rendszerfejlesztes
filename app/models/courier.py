@@ -1,10 +1,8 @@
-from app.extensions import db, Base
+from app.extensions import db
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.types import String, Integer
-from sqlalchemy import ForeignKey, Column, Table
+from sqlalchemy.types import String
 from typing import List, Optional
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
 
 class Courier(db.Model):
     __tablename__ = "couriers"

@@ -1,18 +1,12 @@
-from flask_login import current_user
-
-from app.blueprints import supplier
 from app.blueprints.item.schemas import ItemResponseSchema
 from app.blueprints.shipment.schemas import ShipmentResponseSchema
-from app.blueprints.supplier.schemas import FewItemSchema, FewItemResponseSchema
+from app.blueprints.supplier.schemas import FewItemResponseSchema
 from datetime import datetime, timedelta
 from app.extensions import db
-from app.blueprints.order.schemas import OrderResponseSchema
-from app.models.user import User
+
 from app.models.item import Item
-from app.models.order import Order, Statuses
 
-from sqlalchemy import select, and_
-
+from sqlalchemy import select
 from app.models.shipment import Shipment
 
 

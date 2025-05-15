@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import List
 from app.extensions import db
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.types import String, Integer
+from sqlalchemy.types import String
 
 
 

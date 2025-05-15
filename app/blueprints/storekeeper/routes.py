@@ -27,7 +27,6 @@ def storekeeper_index():
 @bp.route('/process_shipment', methods=['GET', 'POST'])
 def process_shipment():
 
-    # POST feldolgozása (ahogyan már most is van)
     shipment_id = request.form.get("shipment_id", type=int)
     if not shipment_id:
         flash("Invalid Shipment ID.", "error")
@@ -63,7 +62,6 @@ def process_shipment():
 
 @bp.route('/update_order_status', methods=['POST'])
 def update_order_status():
-    # Az űrlap adatok lekérése
     order_id = request.form.get("order_id", type=int)
     status = request.form.get("status")
 
@@ -71,13 +69,11 @@ def update_order_status():
         flash("Order ID or Status is missing.", "error")
         return redirect(url_for("main.storekeeper.storekeeper_index"))
 
-    # A rendelés lekérése
     order = db.session.query(Order).filter_by(id=order_id).first()
     if not order:
         flash(f"Order with ID {order_id} does not exist.", "error")
         return redirect(url_for("main.storekeeper.storekeeper_index"))
 
-    # Státusz frissítése
     try:
         order.status = status
         db.session.add(order)

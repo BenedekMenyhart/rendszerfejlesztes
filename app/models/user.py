@@ -1,6 +1,6 @@
 from app.extensions import db, Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.types import String, Integer
+from sqlalchemy.types import String
 from sqlalchemy import ForeignKey, Column, Table
 from typing import List, Optional
 from werkzeug.security import generate_password_hash, check_password_hash

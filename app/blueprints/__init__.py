@@ -8,12 +8,10 @@ from app.models.role import Role
 bp = APIBlueprint('main', __name__, tag="default")
 from functools import wraps
 from app.extensions import auth, db
-from flask import current_app, render_template, session
+from flask import current_app, session
 from authlib.jose import jwt
 from datetime import datetime
 from apiflask import HTTPError
-from flask import render_template
-from app.forms.loginForm import LoginForm
 from flask import render_template, flash, redirect, url_for
 from app.forms.loginForm import LoginForm
 from flask_login import login_user, current_user
@@ -21,7 +19,6 @@ from app.models.user import User
 
 from werkzeug.security import check_password_hash
 import time
-from flask import g
 @bp.app_context_processor
 def inject_user_roles():
     roles = [role["name"] for role in auth.current_user.get("roles", [])] if auth.current_user else []
@@ -30,7 +27,7 @@ def inject_user_roles():
 @bp.app_context_processor
 def inject_user_roles():
     if current_user.is_authenticated:
-        roles = [role.name for role in current_user.roles]  # Lekérdezzük a "Role" táblából
+        roles = [role.name for role in current_user.roles]
     else:
         roles = []
     return {'user_roles': roles}
@@ -125,7 +122,6 @@ def register():
             flash("Default role with ID 1 is not found in the database.", "error")
             return render_template("register.html", title="Register", form=form)
 
-        # Új User létrehozása
         new_user = User(
             id=max_id + 1,
             name=form.name.data,

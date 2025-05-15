@@ -2,10 +2,10 @@ from flask import render_template
 
 from app.blueprints import role_required
 from app.blueprints.order import bp
-from app.blueprints.order.schemas import OrderItemSchema, OrderRequestSchema, OrderResponseSchema, \
+from app.blueprints.order.schemas import OrderRequestSchema, OrderResponseSchema, \
     FeedbackRequestSchema, FeedbackResponseSchema
 from app.blueprints.order.service import OrderService
-from apiflask.fields import String, Integer
+
 from apiflask import HTTPError
 
 from app.extensions import auth

@@ -2,11 +2,6 @@ from flask import render_template, request, flash, redirect
 
 from app.blueprints import role_required
 from app.blueprints.supplier import bp
-from app.blueprints.courier.service import CourierService
-
-from app.blueprints.order.schemas import OrderResponseSchema
-from app.blueprints.courier.service import CourierService
-from apiflask.fields import String, Integer
 from apiflask import HTTPError
 
 from app.blueprints.shipment.schemas import ShipmentResponseSchema
@@ -17,32 +12,6 @@ from app.models.item import Item
 from app.models.shipment import Shipment
 from app.models.shipmentitem import ShipmentItem
 
-"""
-@bp.route('/')
-def supplier_index():
-    return render_template('supplier.html', title='Supplier\'s page')
-
-
-@bp.get("/items/few/<int:iid>")
-@bp.output(FewItemResponseSchema(many = True))
-@bp.auth_required(auth)
-@role_required(["Supplier"])
-def supplier_orders_list_few(iid):
-    success, response = SupplierService.items_list_few(iid)
-    if success:
-        return response, 200
-    raise HTTPError(message=response, status_code=400)
-
-@bp.get("/items/shipment/<int:iid>/<int:sid>")
-@bp.output(ShipmentResponseSchema(many = True))
-@bp.auth_required(auth)
-@role_required(["Supplier"])
-def shipment_add(iid, sid):
-    success, response = SupplierService.shipment_add(iid, sid)
-    if success:
-        return response, 200
-    raise HTTPError(message=response, status_code=400)
-"""
 
 @bp.route('/')
 def supplier_index():
@@ -50,7 +19,6 @@ def supplier_index():
     items = Item.query.all()
     return render_template('supplier.html', title="Supplier's page", items=items)
 
-# Route for submitting shipment data via the form
 @bp.route('/api/supplier/submit_shipment_form', methods=['POST'])
 def submit_shipment_form():
         # Get form data
@@ -82,7 +50,6 @@ def submit_shipment_form():
         )
         db.session.add(shipment_item)
 
-        item.quantity_available += shipment_quantity
 
 
         try:

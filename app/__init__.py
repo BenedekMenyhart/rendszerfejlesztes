@@ -2,7 +2,7 @@ from apiflask import APIFlask
 from flask_login import LoginManager
 from app.extensions import db
 from config import Config
-from app.models.user import User  # Importáljuk a User modellt
+from app.models.user import User
 
 
 def create_app(config_class=Config):
@@ -11,20 +11,15 @@ def create_app(config_class=Config):
                    docs_path="/swagger")
     app.config.from_object(config_class)
 
-    # Initialize Flask extensions here
     db.init_app(app)
 
-    # LoginManager helyes inicializálása
     login_manager = LoginManager()
-    login_manager.init_app(app)  # Flask app inicializálása
+    login_manager.init_app(app)
 
-    # Bejelentkezési oldal URL megadása
     login_manager.login_view = 'user_index'
 
-    # Felhasználó betöltése felhasználó ID alapján
     @login_manager.user_loader
     def load_user(user_id):
-        # Itt az adatbázisból töltjük be a felhasználót
         return db.session.get(User, int(user_id))
 
     from flask_migrate import Migrate

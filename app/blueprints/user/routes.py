@@ -1,16 +1,15 @@
 from datetime import datetime
 
-from flask import jsonify, render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user
 
 from app import User
 from app.extensions import auth, db
 from app.blueprints import role_required
 from app.blueprints.user import bp
-from app.blueprints.user.schemas import UserResponseSchema, UserRequestSchema, UserLoginSchema, RoleSchema, AddressSchema
+from app.blueprints.user.schemas import UserResponseSchema, UserRequestSchema, RoleSchema
 from app.blueprints.user.service import UserService
 from apiflask import HTTPError
-from apiflask.fields import String, Email, Nested, Integer, List
 
 from app.models.item import Item
 from app.models.order import Order, Statuses
