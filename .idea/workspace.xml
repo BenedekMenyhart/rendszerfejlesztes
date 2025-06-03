@@ -4,33 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="registration fekület">
+    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="projekt veglegesitese">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/blueprints/courier/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/courier/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/courier/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/courier/service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/item/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/item/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/item/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/item/service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/order/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/order/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/order/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/order/service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/shipment/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/shipment/routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/blueprints/storekeeper/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/storekeeper/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/storekeeper/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/storekeeper/service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/supplier/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/supplier/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/supplier/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/supplier/service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/user/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/user/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/forms/loginForm.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms/loginForm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/forms/registrationForm.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms/registrationForm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/address.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/address.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/courier.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/courier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/item.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/item.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/orderitem.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/orderitem.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/shipment.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/shipment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/shipmentitem.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/shipmentitem.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/courier.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/courier.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/storekeeper.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/storekeeper.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leiras.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +143,13 @@
       <workItem from="1747226682709" duration="18813000" />
       <workItem from="1747245640726" duration="13276000" />
       <workItem from="1747288859822" duration="4393000" />
-      <workItem from="1747293338725" duration="81000" />
+      <workItem from="1747293338725" duration="115000" />
+      <workItem from="1747294306869" duration="630000" />
+      <workItem from="1747330607966" duration="349000" />
+      <workItem from="1747388669701" duration="528000" />
+      <workItem from="1747740627297" duration="164000" />
+      <workItem from="1747740953718" duration="44000" />
+      <workItem from="1748932985260" duration="5397000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -316,7 +303,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747292176599</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="projekt veglegesitese">
+      <option name="closed" value="true" />
+      <created>1747293440697</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1747293440697</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -341,10 +336,11 @@
     <MESSAGE value="minden mukodik" />
     <MESSAGE value="storekeeper befejezése" />
     <MESSAGE value="registration fekület" />
-    <option name="LAST_COMMIT_MESSAGE" value="registration fekület" />
+    <MESSAGE value="projekt veglegesitese" />
+    <option name="LAST_COMMIT_MESSAGE" value="projekt veglegesitese" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1747293351423" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1748938310314" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1745421215202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Rebdszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743439198590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

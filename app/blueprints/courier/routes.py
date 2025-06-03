@@ -1,4 +1,5 @@
 from app.blueprints.courier import bp
+from app.models.address import Address
 
 from app.models.order import Order, Statuses
 from flask import render_template, request, redirect, flash
@@ -11,7 +12,9 @@ def courier_page():
 
     all_statuses = [status.value for status in Statuses]
 
-    return render_template("courier.html", orders=orders, statuses=all_statuses)
+    addresses = {address.id: address for address in db.session.query(Address).all()}
+
+    return render_template("courier.html", orders=orders, statuses=all_statuses, addresses=addresses)
 
 
 @bp.route("/api/courier/update_order_status", methods=["POST"])

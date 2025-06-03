@@ -9,7 +9,7 @@
                 <th>Order ID</th>
                 <th>User ID</th>
                 <th>Courier ID</th>
-                <th>Address ID</th>
+                <th>Address</th>
                 <th>Created At</th>
                 <th>Status</th>
                 <th>Update Status</th>
@@ -21,7 +21,15 @@
                 <td style="text-align: center;">{{ order.id }}</td>
                 <td style="text-align: center;">{{ order.user_id }}</td>
                 <td style="text-align: center;">{{ order.courier_id }}</td>
-                <td style="text-align: center;">{{ order.address_id }}</td>
+                <td>
+                {% if order.address_id in addresses %}
+                    {{ addresses[order.address_id].postalcode }}
+                    {{ addresses[order.address_id].city }},
+                    {{ addresses[order.address_id].street }}
+                {% else %}
+                    Unknown Address
+                {% endif %}
+            </td>
                 <td style="text-align: center;">{{ order.created_at }}</td>
                 <td style="text-align: center;">{{ order.status.value }}</td>
                 <td style="text-align: center;">

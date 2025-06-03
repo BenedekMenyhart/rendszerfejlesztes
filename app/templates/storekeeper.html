@@ -1,22 +1,22 @@
 <style>
     table {
-        width: 100%; /* Mindkét táblázat teljes szélességet fog kikérni */
-        table-layout: fixed; /* Oszlopok egyenletes elosztása */
+        width: 100%;
+        table-layout: fixed;
         text-align: center;
     }
 
     th, td {
-        word-wrap: break-word; /* Hosszú szövegek tördelése */
-        text-align: center; /* Balra igazítás */
+        word-wrap: break-word;
+        text-align: center;
     }
 </style>
-
 
 {% extends "index.html" %}
 
 {% block content %}
+
 <h3>Items</h3>
-    <table border="1" class="table">
+<table border="1" class="table">
     <thead>
         <tr>
             <th>Item Id</th>
@@ -24,7 +24,6 @@
             <th>Description</th>
             <th>Price</th>
             <th>Available quantity</th>
-
         </tr>
     </thead>
     <tbody>
@@ -35,22 +34,22 @@
             <td>{{ item.description }}</td>
             <td>{{ item.price }}</td>
             <td>{{ item.quantity_available }}</td>
-
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-    <h3>Orders</h3>
+<h3>Orders</h3>
 <table border="1" class="table">
     <thead>
         <tr>
             <th>Order Id</th>
             <th>User Id</th>
-            <th>Address Id</th>
+            <th>Address</th>
             <th>Created At</th>
             <th>Status</th>
-            <th>Courier Id</th>
+            <th>Update Status</th>
+            <th>Courier ID</th>
             <th>Feedback</th>
         </tr>
     </thead>
@@ -59,76 +58,102 @@
         <tr>
             <td>{{ order.id }}</td>
             <td>{{ order.user_id }}</td>
-            <td>{{ order.address_id }}</td>
+            <td>
+                {% if order.address_id in addresses %}
+                    {{ addresses[order.address_id].postalcode }}
+                    {{ addresses[order.address_id].city }},
+                    {{ addresses[order.address_id].street }}
+                {% else %}
+                    Unknown Address
+                {% endif %}
+            </td>
             <td>{{ order.created_at }}</td>
-            <td>{{ order.status }}</td>
-            <td>{{ order.courier_id }}</td>
+            <td>{{ order.status.value }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('main.storekeeper.update_order_status') }}" style="margin: 0;">
+                    <input type="hidden" name="order_id" value="{{ order.id }}">
+                    <select name="status" required>
+                        <option value="Received" {% if order.status == 'Received' %}selected{% endif %}>Received</option>
+                        <option value="Processing" {% if order.status == 'Processing' %}selected{% endif %}>Processing</option>
+                        <option value="Processed" {% if order.status == 'Processed' %}selected{% endif %}>Processed</option>
+                        <option value="AssignedToCourier" {% if order.status == 'AssignedToCourier' %}selected{% endif %}>Assigned to Courier</option>
+                        <option value="DeliveryStarted" {% if order.status == 'DeliveryStarted' %}selected{% endif %}>Delivery Started</option>
+                        <option value="Delivered" {% if order.status == 'Delivered' %}selected{% endif %}>Delivered</option>
+                        <option value="ReceptionConfirmed" {% if order.status == 'ReceptionConfirmed' %}selected{% endif %}>Reception Confirmed</option>
+                    </select>
+                    <button type="submit" style="margin-top: 5px;">Update</button>
+                </form>
+            </td>
+            <td>
+                {% if order.courier_id %}
+                    {{ order.courier_id }}
+                {% else %}
+                    <button onclick="showCourierForm({{ order.id }})">Assign Courier</button>
+                    <div id="courier-form-{{ order.id }}" style="display: none; margin-top: 10px;">
+                        <form method="POST" action="{{ url_for('main.storekeeper.sign_courier_to_order') }}">
+                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                            <label for="courier_id">Select Courier:</label>
+                            <select id="courier_id" name="courier_id" required>
+                                {% for courier in couriers %}
+                                <option value="{{ courier.id }}">{{ courier.name }} (ID: {{ courier.id }})</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" style="margin-top: 5px;">Assign</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </td>
             <td>{{ order.feedback }}</td>
-
-
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-    <h4>Modify Order Status</h4>
-<form method="POST" action="{{ url_for('main.storekeeper.update_order_status') }}">
-    <label for="order_id">Order ID:</label>
-    <input type="number" id="order_id" name="order_id" required>
+<script>
+    function showCourierForm(orderId) {
+        let form = document.getElementById(`courier-form-${orderId}`);
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
+    }
+</script>
 
-    <label for="status">Status:</label>
-    <select id="status" name="status" required>
-        <option value="Received">Received</option>
-        <option value="Processing">Processing</option>
-        <option value="Processed">Processed</option>
-        <option value="AssignedToCourier">Assigned to Courier</option>
-        <option value="DeliveryStarted">Delivery Started</option>
-        <option value="Delivered">Delivered</option>
-        <option value="ReceptionConfirmed">Reception Confirmed</option>
-    </select>
-
-    <button type="submit">Update Status</button>
-</form>
-
-    <h3>List Couriers</h3>
-    <table border="1" class="table">
+<h3>Couriers</h3>
+<table border="1" class="table">
     <thead>
         <tr>
             <th>Courier Id</th>
-            <th>Courier Name</th>
-            <th>Courier Email</th>
-            <th>Courier Phone</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Orders</th>
         </tr>
     </thead>
     <tbody>
         {% for courier in couriers %}
-        <tr>
             <td>{{ courier.id }}</td>
             <td>{{ courier.name }}</td>
-            <td>{{ courier.email }}</td>
             <td>{{ courier.phone }}</td>
-        </tr>
+            <td>{{ courier.email }}</td>
+            <td>
+                {% for order in orders if order.courier_id == courier.id %}
+                    {{ order.id }}
+                {% endfor %}
         {% endfor %}
     </tbody>
 </table>
 
-    <h4>Add Courier to order</h4>
-<form method="POST" action="{{ url_for('main.storekeeper.sign_courier_to_order') }}">
-    <label for="order_id">Order ID:</label>
-    <input type="number" id="order_id" name="order_id" required>
-    <label for="courier_id">Courier ID:</label>
-    <input type="number" id="courier_id" name="courier_id" required>
-    <button type="submit">Process Shipment</button>
-</form>
 
-
-    <h3>Shipments</h3>
+<h3>Shipments</h3>
 <table class="table" border="1" class="table">
     <thead>
         <tr>
             <th>Shipment Id</th>
             <th>Expected At</th>
-            <th>Recieved</th>
+            <th>Received</th>
+            <th>Shipment Items</th>
         </tr>
     </thead>
     <tbody>
@@ -136,41 +161,58 @@
         <tr>
             <td>{{ shipment.id }}</td>
             <td>{{ shipment.expected_at }}</td>
-            <td>{{ shipment.received }}</td>
-
+            <td>
+                {% if shipment.received %}
+                    True
+                {% else %}
+                    <form method="POST" action="{{ url_for('main.storekeeper.process_shipment') }}" style="margin: 0;">
+                        <input type="hidden" name="shipment_id" value="{{ shipment.id }}">
+                        <button type="submit">Mark as Received</button>
+                    </form>
+                {% endif %}
+            </td>
+            <td>
+                <button onclick="toggleShipmentItems({{ shipment.id }})">View Items</button>
+            </td>
+        </tr>
+        <tr id="shipment-items-{{ shipment.id }}" style="display: none;">
+            <td colspan="4">
+                <table border="1" style="width: 100%; margin-top: 10px;">
+                    <thead>
+                        <tr>
+                            <th>Item ID</th>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for shipmentitem in shipmentitems if shipmentitem.shipment_id == shipment.id %}
+                        <tr>
+                            <td>{{ shipmentitem.item_id }}</td>
+                            <td>
+                                {% set item = items | selectattr("id", "equalto", shipmentitem.item_id) | first %}
+                                {{ item.name if item else "Unknown" }}
+                            </td>
+                            <td>{{ shipmentitem.quantity }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-    <table class="table" border="1"  class="table">
-    <thead>
-        <tr>
-            <th>Shipment Item Id</th>
-            <th>Shipment Id</th>
-            <th>Item Id</th>
-            <th>Quantity</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for shipmentitem in shipmentitems %}
-        <tr>
-            <td>{{ shipmentitem.id }}</td>
-            <td>{{ shipmentitem.shipment_id }}</td>
-            <td>{{ shipmentitem.item_id }}</td>
-            <td>{{ shipmentitem.quantity }}</td>
 
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-    <h4>Add shipment to storage</h4>
-<form method="POST" action="{{ url_for('main.storekeeper.process_shipment') }}">
-    <label for="shipment_id">Shipment ID:</label>
-    <input type="number" id="shipment_id" name="shipment_id" required>
-    <button type="submit">Process Shipment</button>
-</form>
-
-
+<script>
+    function toggleShipmentItems(shipmentId) {
+        const row = document.getElementById(`shipment-items-${shipmentId}`);
+        if (row.style.display === 'none') {
+            row.style.display = 'table-row';
+        } else {
+            row.style.display = 'none';
+        }
+    }
+</script>
 
 {% endblock %}

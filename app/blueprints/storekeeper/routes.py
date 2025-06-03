@@ -6,6 +6,7 @@ from app.models.shipment import Shipment
 from app.models.shipmentitem import ShipmentItem
 from app.models.order import Order, Statuses
 from app.models.item import Item
+from app.models.address import Address
 
 
 @bp.route('/')
@@ -16,12 +17,20 @@ def storekeeper_index():
         shipments = db.session.query(Shipment).all()
         shipmentitems = db.session.query(ShipmentItem).all()
         couriers = db.session.query(Courier).all()
+        addresses = {address.id: address for address in db.session.query(Address).all()}
     except LookupError as e:
         flash(str(e), 'error')
         orders = []
         shipments = []
         shipmentitems = []
-    return render_template("storekeeper.html",items=items, orders=orders, shipments=shipments, shipmentitems=shipmentitems, couriers=couriers)
+        addresses = {}
+    return render_template("storekeeper.html",
+                           items=items,
+                           orders=orders,
+                           shipments=shipments,
+                           shipmentitems=shipmentitems,
+                           couriers=couriers,
+                           addresses=addresses)
 
 
 @bp.route('/process_shipment', methods=['GET', 'POST'])
