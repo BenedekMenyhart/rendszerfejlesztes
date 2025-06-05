@@ -11,4 +11,7 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField(
         "Confirm Password", validators=[DataRequired(), EqualTo("password")]
     )
+    postalcode=StringField("Postal code", validators=[DataRequired()])
+    city=StringField("City", validators=[DataRequired()])
+    street=StringField("Street", validators=[DataRequired()])
     submit = SubmitField("Register")

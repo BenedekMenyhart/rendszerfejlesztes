@@ -1,10 +1,9 @@
 #from flask import Blueprint
 from apiflask import APIBlueprint
-from sqlalchemy import func
-
+from sqlalchemy import func, and_
 from app.forms.registrationForm import RegistrationForm
+from app.models.address import Address
 from app.models.role import Role
-
 bp = APIBlueprint('main', __name__, tag="default")
 from functools import wraps
 from app.extensions import auth, db
@@ -16,9 +15,9 @@ from flask import render_template, flash, redirect, url_for
 from app.forms.loginForm import LoginForm
 from flask_login import login_user, current_user
 from app.models.user import User
-
 from werkzeug.security import check_password_hash
 import time
+
 @bp.app_context_processor
 def inject_user_roles():
     roles = [role["name"] for role in auth.current_user.get("roles", [])] if auth.current_user else []
@@ -106,6 +105,21 @@ def login():
                          form=form
                          )
 
+def get_address_id(postalcode, city, street):
+    address = Address.query.filter(
+        and_(
+            Address.postalcode == postalcode,
+            Address.city == city,
+            Address.street == street
+        )
+    ).first()
+
+    if address:
+        return address.id
+    else:
+        return None
+
+
 @bp.route('/register', methods=["GET", "POST"])
 def register():
     form = RegistrationForm()
@@ -115,20 +129,36 @@ def register():
             flash("Email already registered.")
             return render_template("register.html", title="Register", form=form)
 
-        max_id = db.session.query(func.max(User.id)).scalar() or 0
-
         default_role = Role.query.filter_by(id=1).first()
         if not default_role:
             flash("Default role with ID 1 is not found in the database.", "error")
             return render_template("register.html", title="Register", form=form)
 
+        address_id = get_address_id(
+            form.postalcode.data,
+            form.city.data,
+            form.street.data
+        )
+        if not address_id:
+            max_address_id = db.session.query(func.max(Address.id)).scalar() or 0
+            new_address = Address(
+                id=max_address_id + 1,
+                postalcode=form.postalcode.data,
+                city=form.city.data,
+                street=form.street.data
+            )
+            db.session.add(new_address)
+            db.session.commit()
+            address_id = new_address.id
+
+        max_user_id = db.session.query(func.max(User.id)).scalar() or 0
         new_user = User(
-            id=max_id + 1,
+            id=max_user_id + 1,
             name=form.name.data,
             email=form.email.data,
             password=form.password.data,
             phone=form.phone.data,
-            address_id=1
+            address_id=address_id
         )
 
         new_user.roles.append(default_role)
@@ -144,6 +174,7 @@ def register():
             flash(f"An error occurred during registration: {str(e)}", "error")
 
     return render_template("register.html", title="Register", form=form)
+
 
 #register blueprints here
 from app.blueprints.user import bp as bp_user

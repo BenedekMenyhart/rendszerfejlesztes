@@ -46,6 +46,30 @@
         </p>
 
         <p>
+            {{ form.postalcode.label }}<br />
+            {{ form.postalcode(size=32) }}<br />
+            {% for error in form.postalcode.errors %}
+                <span style="color:red;">[{{error}}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.city.label }}<br />
+            {{ form.city(size=32) }}<br />
+            {% for error in form.city.errors %}
+                <span style="color:red;">[{{error}}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.street.label }}<br />
+            {{ form.street(size=32) }}<br />
+            {% for error in form.street.errors %}
+                <span style="color:red;">[{{error}}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
             {{ form.submit() }}
         </p>
     </form>
