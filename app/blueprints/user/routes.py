@@ -63,7 +63,7 @@ def update_contact_info():
 
     if not field or not new_value or not username:
         flash("Hiányzó mezők a kérésben.", "error")
-        return redirect(url_for("main.user.list_items"))  # Itt állítsd be a megfelelő céloldalt
+        return redirect(url_for("main.user.list_items"))
 
     user = db.session.query(User).filter_by(name=username).first()
     if not user:

@@ -1,4 +1,4 @@
-{%extends "index.html" %}
+{% extends "index.html" %}
 
 {% block content %}
 <h2>Available Items</h2>
@@ -10,49 +10,43 @@
             <th>Description</th>
             <th>Price (Ft)</th>
             <th>Quantity Available</th>
+            <th>Order Quantity</th>
+            <th>Confirm order</th>
         </tr>
     </thead>
     <tbody>
         {% for item in items %}
-        <tr>
-            <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.description }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.quantity_available }}</td>
-        </tr>
+            {% if item.quantity_available > 0 %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.quantity_available }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('main.user.create_order') }}">
+                            <input
+                                type="number"
+                                name="quantity"
+                                min="1"
+                                max="{{ item.quantity_available }}"
+                                required
+                                placeholder="Quantity"
+                                style="width: 100%;">
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+
+                    </td>
+                    <td>
+                            <button type="submit">Place order</button>
+                    </td>
+                    </form>
+                </tr>
+            {% endif %}
         {% endfor %}
     </tbody>
 </table>
-    <h4>Modify Contact Information</h4>
-<form method="POST" action="{{ url_for('main.user.update_contact_info') }}">
-    <label for="field">Frissíteni kívánt adat:</label>
-    <select id="field" name="field" required>
-        <option value="email">Email</option>
-        <option value="phone">Telefon</option>
-    </select>
 
-     <label for="username">Felhasználónév:</label>
-    <input type="text" id="username" name="username" required>
-
-    <label for="new_value">Új adat:</label>
-    <input type="text" id="new_value" name="new_value" required>
-
-
-    <button type="submit">Adat módosítás</button>
-</form>
-    <h4>Rendelés leadása</h4>
-        <form method="POST" action="{{ url_for('main.user.create_order') }}">
-        <label for="item_id">Termék ID:</label>
-        <input type="number" name="item_id" required>
-
-        <label for="quantity">Mennyiség:</label>
-        <input type="number" name="quantity" min="1" required>
-
-        <button type="submit">Rendelés leadása</button>
-        </form>
-
-    <h4>Megjegyzés hozzáadása rendeléshez</h4>
+<h4>Megjegyzés hozzáadása rendeléshez</h4>
 <form method="POST" action="{{ url_for('main.user.add_feedback') }}">
     <label for="order_id">Order ID:</label>
     <input type="number" id="order_id" name="order_id" required>
@@ -62,4 +56,23 @@
 
     <button type="submit">Küldés</button>
 </form>
+
+<h4>Modify Contact Information</h4>
+<form method="POST" action="{{ url_for('main.user.update_contact_info') }}">
+    <label for="field">Frissíteni kívánt adat:</label>
+    <select id="field" name="field" required>
+        <option value="email">Email</option>
+        <option value="phone">Telefon</option>
+    </select>
+
+    <label for="username">Felhasználónév:</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="new_value">Új adat:</label>
+    <input type="text" id="new_value" name="new_value" required>
+
+    <button type="submit">Adat módosítás</button>
+</form>
+
+
 {% endblock %}

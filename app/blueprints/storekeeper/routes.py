@@ -1,4 +1,5 @@
 from flask import render_template, redirect, url_for, flash, request
+from sqlalchemy import and_, func
 from app.blueprints.storekeeper import bp
 from app.extensions import db
 from app.models.courier import Courier
@@ -7,6 +8,7 @@ from app.models.shipmentitem import ShipmentItem
 from app.models.order import Order, Statuses
 from app.models.item import Item
 from app.models.address import Address
+from app.forms.newItemForm import NewItemForm
 
 
 @bp.route('/')
@@ -18,19 +20,25 @@ def storekeeper_index():
         shipmentitems = db.session.query(ShipmentItem).all()
         couriers = db.session.query(Courier).all()
         addresses = {address.id: address for address in db.session.query(Address).all()}
+
+        form = NewItemForm()
+
     except LookupError as e:
         flash(str(e), 'error')
         orders = []
         shipments = []
         shipmentitems = []
         addresses = {}
+        form = None
+
     return render_template("storekeeper.html",
                            items=items,
                            orders=orders,
                            shipments=shipments,
                            shipmentitems=shipmentitems,
                            couriers=couriers,
-                           addresses=addresses)
+                           addresses=addresses,
+                           form=form)
 
 
 @bp.route('/process_shipment', methods=['GET', 'POST'])
@@ -135,3 +143,80 @@ def sign_courier_to_order():
         flash(f"An error occurred while assigning the courier: {str(e)}", "error")
 
     return redirect(url_for("main.storekeeper.storekeeper_index"))
+
+def check_if_item_exists(item_name):
+    item = Item.query.filter(
+        and_(
+            Item.name == item_name
+        )
+    ).first()
+
+    if item:
+        return item
+    else:
+        return None
+
+@bp.route('/add_new_item', methods=["GET", "POST"])
+def add_new_item():
+    form = NewItemForm()
+    if form.validate_on_submit():
+        item_name = form.item_name.data
+
+        item = check_if_item_exists(item_name)
+
+        if item:
+            if item.deleted==1:
+                item.deleted=0
+                item.description=form.description.data
+                item.price=form.price.data
+                item.quantity_available=0
+                db.session.add(item)
+                db.session.commit()
+                flash("Item is successfully restored and updated from the database!")
+            else:
+                flash("Item already exists.", "error")
+        else:
+            description = form.description.data
+            price = form.price.data
+
+            max_item_id = db.session.query(func.max(Item.id)).scalar() or 0
+
+            new_item = Item(
+                id=max_item_id + 1,
+                name=item_name,
+                description=description,
+                price=price,
+                quantity_available=0,
+                deleted=0
+            )
+            try:
+                db.session.add(new_item)
+                db.session.commit()
+                flash("New item successfully added to the database!")
+
+            except Exception as e:
+                db.session.rollback()
+                flash(f"An error occurred during adding the new item: {str(e)}", "error")
+
+    return redirect(url_for("main.storekeeper.storekeeper_index"))
+
+@bp.route('/delete_item', methods=['POST'])
+def delete_item():
+    item_id = request.form.get("item_id", type=int)
+    if not item_id:
+        flash("Invalid Item ID.", "error")
+        return redirect(url_for("main.storekeeper.storekeeper_index"))
+    else:
+        item = db.session.query(Item).filter_by(id=item_id).first()
+        if not item:
+            flash(f"Item with ID {item_id} does not exist.", "error")
+        else:
+            try:
+                item.deleted = 1
+                db.session.add(item)
+                db.session.commit()
+                flash(f"Item with ID {item_id} deleted successfully.", "success")
+            except Exception as e:
+                db.session.rollback()
+                flash(f"An error occurred while deleting the item: {str(e)}", "error")
+        return redirect(url_for("main.storekeeper.storekeeper_index"))
