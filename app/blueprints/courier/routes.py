@@ -10,11 +10,11 @@ from app.extensions import db
 def courier_page():
     orders = Order.query.all()
 
-    all_statuses = [status.value for status in Statuses]
+    statuses = ["DeliveryStarted", "Delivered"]
 
     addresses = {address.id: address for address in db.session.query(Address).all()}
 
-    return render_template("courier.html", orders=orders, statuses=all_statuses, addresses=addresses)
+    return render_template("courier.html", orders=orders, statuses=statuses, addresses=addresses)
 
 
 @bp.route("/api/courier/update_order_status", methods=["POST"])
@@ -36,6 +36,10 @@ def update_order_status_as_courier():
 
     if not any(new_status == status.value for status in Statuses):
         flash(f"Invalid status selected: {new_status}.", "error")
+        return redirect("/api/courier")
+
+    if order.courier_id == None:
+        flash(f"Order {order_id} is not assigned to a courier.", "error")
         return redirect("/api/courier")
 
     try:

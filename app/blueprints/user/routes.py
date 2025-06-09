@@ -89,55 +89,69 @@ def update_contact_info():
 
     return redirect(url_for("main.user.list_items"))
 
+
 @bp.route("/create_order", methods=["GET", "POST"])
 def create_order():
     if request.method == "POST":
-        item_id = request.form.get("item_id", type=int)
-        quantity = request.form.get("quantity", type=int)
+        form_data = request.form.to_dict(flat=False)
 
-        if not item_id or not quantity:
-            flash("Kérlek, töltsd ki az összes mezőt!", "error")
-            return redirect(url_for("main.user.create_order"))
+        try:
+            items = {int(key.replace('items[', '').replace(']', '')): int(value[0])
+                     for key, value in form_data.items()
+                     if key.startswith('items[') and value[0].strip() and int(value[0]) > 0}
 
-        item = db.session.query(Item).filter_by(id=item_id).first()
-        if not item:
-            flash("A megadott termék nem létezik.", "error")
-            return redirect(url_for("main.user.create_order"))
+        except ValueError:
 
-        if quantity > item.quantity_available:
-            flash(f"Csak {item.quantity_available} darab elérhető ebből a termékből.", "error")
-            return redirect(url_for("main.user.create_order"))
+            flash("Invalid or missing quantity in one or more selected items.", "error")
+            return redirect(url_for("main.user.list_items"))
 
-        item.quantity_available -= quantity
-        db.session.commit()
+        if not items:
+            flash("All selected quantities are zero. Please select a valid quantity.", "error")
+            return redirect(url_for("main.user.list_items"))
 
         try:
             new_order = Order(
                 user_id=current_user.id,
                 address_id=current_user.address_id,
-                created_at=datetime.utcnow().isoformat(),
+                created_at=datetime.utcnow(),
                 status="Received"
             )
             db.session.add(new_order)
             db.session.flush()
 
-            order_item = OrderItem(
-                order_id=new_order.id,
-                item_id=item_id,
-                quantity=quantity
-            )
-            db.session.add(order_item)
+            order_items = []
+
+            for item_id, quantity in items.items():
+                item = db.session.query(Item).filter_by(id=item_id).first()
+
+                if not item:
+                    flash(f"Item with ID {item_id} not found.", "error")
+                    return redirect(url_for("main.user.list_items"))
+
+                if quantity > item.quantity_available:
+                    flash(f"Only {item.quantity_available} units of {item.name} are available.", "error")
+                    return redirect(url_for("main.user.list_items"))
+
+                item.quantity_available -= quantity
+                order_items.append(OrderItem(
+                    order_id=new_order.id,
+                    item_id=item_id,
+                    quantity=quantity
+                ))
+
+            db.session.add_all(order_items)
             db.session.commit()
 
-            flash("Sikeresen leadtad a rendelést!", "success")
+            flash("Your order has been placed successfully!", "success")
             return redirect(url_for("main.user.list_items"))
 
         except Exception as e:
             db.session.rollback()
-            flash(f"Hiba történt a rendelés során: {str(e)}", "error")
-            return redirect(url_for("main.user.create_order"))
+            flash(f"An error occurred while placing the order: {str(e)}", "error")
+            return redirect(url_for("main.user.list_items"))
 
     return render_template("user.html")
+
 
 @bp.route("/add_feedback", methods=["POST"])
 def add_feedback():

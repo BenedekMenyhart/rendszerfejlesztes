@@ -1,5 +1,8 @@
 from flask import render_template, redirect, url_for, flash, request
 from sqlalchemy import and_, func
+
+from app.models.role import Role
+from app.models.user import User
 from app.blueprints.storekeeper import bp
 from app.extensions import db
 from app.models.courier import Courier
@@ -20,8 +23,15 @@ def storekeeper_index():
         shipmentitems = db.session.query(ShipmentItem).all()
         couriers = db.session.query(Courier).all()
         addresses = {address.id: address for address in db.session.query(Address).all()}
+        users = db.session.query(User).all()
+        roles = db.session.query(Role).all()
 
         form = NewItemForm()
+
+        available_roles = {
+            user.id: set(roles) - set(user.roles)
+            for user in users
+        }
 
     except LookupError as e:
         flash(str(e), 'error')
@@ -29,7 +39,10 @@ def storekeeper_index():
         shipments = []
         shipmentitems = []
         addresses = {}
+        users = []
+        roles = []
         form = None
+        available_roles = {}
 
     return render_template("storekeeper.html",
                            items=items,
@@ -38,7 +51,11 @@ def storekeeper_index():
                            shipmentitems=shipmentitems,
                            couriers=couriers,
                            addresses=addresses,
+                           users=users,
+                           roles=roles,
+                           available_roles=available_roles,
                            form=form)
+
 
 
 @bp.route('/process_shipment', methods=['GET', 'POST'])
@@ -93,6 +110,10 @@ def update_order_status():
 
     try:
         order.status = status
+
+        if status == Statuses.Received.value or status == Statuses.Processing.value or status == Statuses.Processed.value:
+            order.courier_id = None
+
         db.session.add(order)
         db.session.commit()
         flash(f"Order with ID {order_id} updated to status '{status}'.", "success")
@@ -219,4 +240,54 @@ def delete_item():
             except Exception as e:
                 db.session.rollback()
                 flash(f"An error occurred while deleting the item: {str(e)}", "error")
+        return redirect(url_for("main.storekeeper.storekeeper_index"))
+
+@bp.route('/assign_role', methods=['POST'])
+def assign_role():
+    user_id = request.form.get("user_id", type=int)
+    role_id = request.form.get("role_id", type=int)
+
+    if not user_id or not role_id:
+        flash("Invalid user or role ID.", "error")
+        return redirect(url_for("main.storekeeper.storekeeper_index"))
+
+    user = db.session.query(User).filter_by(id=user_id).first()
+    role = db.session.query(Role).filter_by(id=role_id).first()
+
+    if not user or not role:
+        flash("Invalid user or role.", "error")
+        return redirect(url_for("main.storekeeper.storekeeper_index"))
+
+    try:
+        user.roles.append(role)
+        db.session.add(user)
+        db.session.commit()
+        flash(f"Role '{role.name}' successfully assigned to user '{user.name}'.", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"An error occurred while assigning the role: {str(e)}", "error")
+
+    return redirect(url_for("main.storekeeper.storekeeper_index"))
+
+@bp.route('/remove_role', methods=['POST'])
+def remove_role():
+    user_id = request.form.get("user_id", type=int)
+    role_id = request.form.get("role_id", type=int)
+    if not user_id or not role_id:
+        flash("Invalid user or role ID.", "error")
+        return redirect(url_for("main.storekeeper.storekeeper_index"))
+    else:
+        user = db.session.query(User).filter_by(id=user_id).first()
+        role = db.session.query(Role).filter_by(id=role_id).first()
+        if not user or not role:
+            flash("Invalid user or role.", "error")
+            return redirect(url_for("main.storekeeper.storekeeper_index"))
+        try:
+            user.roles.remove(role)
+            db.session.add(user)
+            db.session.commit()
+            flash(f"Role '{role.name}' successfully removed from user '{user.name} (id={user.id})'.", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"An error occurred while removing the role: {str(e)}", "error")
         return redirect(url_for("main.storekeeper.storekeeper_index"))

@@ -1,50 +1,53 @@
 {% extends "index.html" %}
 
 {% block content %}
+
 <h2>Available Items</h2>
-<table class="table" border="1">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price (Ft)</th>
-            <th>Quantity Available</th>
-            <th>Order Quantity</th>
-            <th>Confirm order</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in items %}
-            {% if item.quantity_available > 0 %}
-                <tr>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.description }}</td>
-                    <td>{{ item.price }}</td>
-                    <td>{{ item.quantity_available }}</td>
-                    <td>
-                        <form method="POST" action="{{ url_for('main.user.create_order') }}">
+<form method="POST" action="{{ url_for('main.user.create_order') }}">
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price (Ft)</th>
+                <th>Quantity Available</th>
+                <th>Order Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+                {% if item.quantity_available > 0 %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.quantity_available }}</td>
+                        <td>
                             <input
                                 type="number"
-                                name="quantity"
-                                min="1"
+                                name="items[{{ item.id }}]"
+                                min="0"
                                 max="{{ item.quantity_available }}"
-                                required
                                 placeholder="Quantity"
                                 style="width: 100%;">
-                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
 
-                    </td>
-                    <td>
-                            <button type="submit">Place order</button>
-                    </td>
-                    </form>
-                </tr>
-            {% endif %}
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="left-align">
+        <button type="submit">Place order</button>
+    </div>
+
+
+
+</form>
+
+
 
 <h4>Megjegyzés hozzáadása rendeléshez</h4>
 <form method="POST" action="{{ url_for('main.user.add_feedback') }}">

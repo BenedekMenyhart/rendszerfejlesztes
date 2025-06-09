@@ -1,0 +1,89 @@
+/* Alapértelmezett táblázat-stílus */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Az egymás mellett lévő szegélyek összeolvadnak */
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+/* Mind a fejléci, mind az adatcelláknak szegély */
+table th,
+table td {
+    border: 1px solid #ddd; /* Szegélyszín */
+    padding: 10px; /* Kis belső margó a cellákon belül */
+    text-align: center; /* Középre igazítás */
+}
+
+/* Fejléc formázása */
+table thead tr {
+    background-color: #f4f4f4; /* Világos szürke az átláthatóságért */
+}
+
+/* Törzs sorainak formázása */
+table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9; /* Világosabb szín minden páratlan sor */
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #ffffff; /* Fehér minden páros sor */
+}
+
+/* Sor kijelölés effektek egérrel */
+table tbody tr:hover {
+    background-color: #f1f1f1; /* Passzív szürke szín kiemeléshez */
+    cursor: pointer;
+}
+
+/* Táblázat beágyazott elemeinek stílusa (gombok, űrlap-elemek) */
+table button {
+    padding: 5px 10px;
+    border: none;
+    border: 1px black;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+table button:hover {
+    background-color: #0056b3;
+    color:white;
+}
+
+table input,
+table select {
+    width: 90%;
+    padding: 5px; /* Belső margó */
+    font-size: 12px; /* Betűméret */
+    border: 1px solid #ccc; /* Szegély a mezőknek */
+}
+
+table input:focus,
+table select:focus {
+    outline: none;
+    border: 1px solid #007bff; /* Szegély, amikor aktív az elem */
+}
+
+.left-align {
+    text-align: left;
+    margin-top: 20px;
+}
+
+/* Egy sorban elhelyezkedő elemek stílusa */
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.form-row label {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: flex-start;
+    flex: 1;
+}
+
+.form-row input {
+    flex: 2;
+}

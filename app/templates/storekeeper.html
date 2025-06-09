@@ -1,22 +1,9 @@
-<style>
-    table {
-        width: 100%;
-        table-layout: fixed;
-        text-align: center;
-    }
-
-    th, td {
-        word-wrap: break-word;
-        text-align: center;
-    }
-</style>
-
 {% extends "index.html" %}
 
 {% block content %}
 
 <h3>Items</h3>
-<table border="1" class="table">
+<table>
     <thead>
         <tr>
             <th>Item Id</th>
@@ -278,5 +265,72 @@
         }
     }
 </script>
+
+<h3>Users</h3>
+<table border="1" class="table">
+    <thead>
+        <tr>
+            <th>User Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Roles</th>
+            <th>Add Role</th>
+            <th>Remove Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.phone }}</td>
+            <td>
+                {% if user.roles %}
+                    {% for role in user.roles %}
+                        {{ role.name }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                {% else %}
+                    No roles assigned
+                {% endif %}
+            </td>
+            <td>
+                {% set available_roles = available_roles[user.id] %}
+                {% if available_roles %}
+                <form method="POST" action="{{ url_for('main.storekeeper.assign_role') }}">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <select name="role_id" required>
+                        {% for role in available_roles %}
+                            <option value="{{ role.id }}">{{ role.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Add</button>
+                </form>
+                {% else %}
+                    All roles reserved
+                {% endif %}
+            </td>
+            <td>
+                {% if user.roles %}
+                    <form method="POST" action="{{ url_for('main.storekeeper.remove_role') }}">
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                        <select name="role_id" required>
+                            {% for role in user.roles %}
+                                <option value="{{ role.id }}">{{ role.name }}</option>
+                            {% endfor %}
+                        </select>
+                    <button type="submit">Remove</button>
+                    </form>
+                    {% else %}
+                    All roles taken
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
 
 {% endblock %}
