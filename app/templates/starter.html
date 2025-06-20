@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta charset="utf-8" />
     <title>{{ title }}</title>
     <style>
@@ -33,23 +32,13 @@
 <div class="wrapper">
     <!-- Menü sáv -->
     <div>
-        <button type="button" onclick="window.location.href='/api/index'">Home</button>
-        <button type="button" onclick="window.location.href='/api/logout'">Logout</button>
-
-        <!-- Dinamikusan megjelenő gombok a szerepkörök alapján -->
-        {% if 'user' in roles %}
-        <button type="button" onclick="window.location.href='/api/user'">User's page</button>
-        {% endif %}
-        {% if 'courier' in roles %}
-        <button type="button" onclick="window.location.href='/api/courier'">Courier's page</button>
-        {% endif %}
-        {% if 'storekeeper' in roles %}
-        <button type="button" onclick="window.location.href='/api/storekeeper'">Storekeeper's page</button>
-        {% endif %}
-        {% if 'supplier' in roles %}
-        <button type="button" onclick="window.location.href='/api/supplier'">Supplier's page</button>
-        {% endif %}
+        <button type="button" onclick="window.location.href='/api/'">Home</button>
+        <button type="button" onclick="window.location.href='/api/login'">Login</button>
     </div>
+
+
+    <h3>This is the login page</h3>
+
 
     <!-- Üzenetek megjelenítése -->
     {% with messages = get_flashed_messages() %}

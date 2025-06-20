@@ -5,11 +5,9 @@ from flask_login import current_user
 
 from app import User
 from app.extensions import auth, db
-from app.blueprints import role_required
+
 from app.blueprints.user import bp
-from app.blueprints.user.schemas import UserResponseSchema, UserRequestSchema, RoleSchema
-from app.blueprints.user.service import UserService
-from apiflask import HTTPError
+from app.blueprints import role_required, auth_required
 
 from app.models.item import Item
 from app.models.order import Order, Statuses
@@ -17,45 +15,16 @@ from app.models.orderitem import OrderItem
 
 
 @bp.route("/")
+@auth_required(auth)
+@role_required(["user"])
 def list_items():
     items = Item.query.filter_by(deleted=0).all()
     return render_template("user.html", items=items)
 
 
-@bp.post('/registrate')
-@bp.doc(tags=["user"])
-@bp.input(UserRequestSchema, location="json")
-@bp.output(UserResponseSchema)
-def user_registrate(json_data):
-    success, response = UserService.user_registrate(json_data)
-    if success:
-        return response, 200
-    raise HTTPError(message=response, status_code=400)
-
-
-
-@bp.get('/roles')
-@bp.output(RoleSchema(many=True))
-@bp.auth_required(auth)
-@role_required(["User"])
-def user_list_roles():
-    success, response = UserService.user_list_roles()
-    if success:
-        return response, 200
-    raise HTTPError(message=response, status_code=400)
-
-@bp.get('/myroles')
-@bp.doc(tags=["user"])
-@bp.output(RoleSchema(many=True))
-@bp.auth_required(auth)
-@role_required(["User"])
-def user_list_user_roles():
-    success, response = UserService.list_user_roles(auth.current_user.get("user_id"))
-    if success:
-        return response, 200
-    raise HTTPError(message=response, status_code=400)
-
 @bp.route('/update_contact_info', methods=['POST'])
+@auth_required(auth)
+@role_required(["user"])
 def update_contact_info():
     field = request.form.get("field")
     new_value = request.form.get("new_value")
@@ -91,6 +60,8 @@ def update_contact_info():
 
 
 @bp.route("/create_order", methods=["GET", "POST"])
+@auth_required(auth)
+@role_required(["user"])
 def create_order():
     if request.method == "POST":
         form_data = request.form.to_dict(flat=False)
@@ -154,6 +125,8 @@ def create_order():
 
 
 @bp.route("/add_feedback", methods=["POST"])
+@auth_required(auth)
+@role_required(["user"])
 def add_feedback():
     order_id = request.form.get("order_id", type=int)
     feedback = request.form.get("feedback")

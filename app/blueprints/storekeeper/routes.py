@@ -1,10 +1,10 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, session
 from sqlalchemy import and_, func
-
+from flask_login import logout_user
 from app.models.role import Role
 from app.models.user import User
 from app.blueprints.storekeeper import bp
-from app.extensions import db
+from app.extensions import db, auth
 from app.models.courier import Courier
 from app.models.shipment import Shipment
 from app.models.shipmentitem import ShipmentItem
@@ -12,10 +12,26 @@ from app.models.order import Order, Statuses
 from app.models.item import Item
 from app.models.address import Address
 from app.forms.newItemForm import NewItemForm
+from flask_login import current_user
+from functools import wraps
+from flask import redirect, url_for, flash
+from app.blueprints import role_required, auth_required
+
+
+
 
 
 @bp.route('/')
+@auth_required(auth)
+@role_required(["storekeeper"])
 def storekeeper_index():
+    print("Current user:", current_user)  # Ellenőrizzük a `current_user` státuszát
+    print("Is Authenticated:", current_user.is_authenticated)  # Bejelentkezett-e?
+    print("Roles:", [role.name for role in current_user.roles])
+
+    if not current_user.is_authenticated:  # Ha nincs bejelentkezve
+        flash("Előbb jelentkezz be az oldal eléréséhez!", "error")
+        return redirect(url_for("main.login"))
     try:
         items = db.session.query(Item).filter(Item.deleted.is_(0)).all()
         orders = db.session.query(Order).all()
@@ -24,25 +40,30 @@ def storekeeper_index():
         couriers = db.session.query(Courier).all()
         addresses = {address.id: address for address in db.session.query(Address).all()}
         users = db.session.query(User).all()
-        roles = db.session.query(Role).all()
+        all_roles = db.session.query(Role).all()
 
         form = NewItemForm()
 
         available_roles = {
-            user.id: set(roles) - set(user.roles)
+            user.id: set(all_roles) - set(user.roles)
             for user in users
         }
 
-    except LookupError as e:
+        roles = [role.name for role in current_user.roles]
+
+
+    except Exception as e:
         flash(str(e), 'error')
+        items = []
         orders = []
         shipments = []
         shipmentitems = []
         addresses = {}
+        couriers = []
         users = []
-        roles = []
-        form = None
         available_roles = {}
+        form = None
+        roles = [role.name for role in current_user.roles]
 
     return render_template("storekeeper.html",
                            items=items,
@@ -59,6 +80,8 @@ def storekeeper_index():
 
 
 @bp.route('/process_shipment', methods=['GET', 'POST'])
+@auth_required(auth)
+@role_required(["storekeeper"])
 def process_shipment():
 
     shipment_id = request.form.get("shipment_id", type=int)
@@ -95,6 +118,8 @@ def process_shipment():
     return redirect(url_for("main.storekeeper.storekeeper_index"))
 
 @bp.route('/update_order_status', methods=['POST'])
+@auth_required(auth)
+@role_required(["storekeeper"])
 def update_order_status():
     order_id = request.form.get("order_id", type=int)
     status = request.form.get("status")
@@ -125,6 +150,8 @@ def update_order_status():
 
 
 @bp.route('/sign_courier_to_order', methods=['POST'])
+@auth_required(auth)
+@role_required(["storekeeper"])
 def sign_courier_to_order():
 
     order_id = request.form.get("order_id", type=int)
@@ -177,7 +204,10 @@ def check_if_item_exists(item_name):
     else:
         return None
 
+
 @bp.route('/add_new_item', methods=["GET", "POST"])
+@auth_required(auth)
+@role_required(["storekeeper"])
 def add_new_item():
     form = NewItemForm()
     if form.validate_on_submit():
@@ -221,7 +251,10 @@ def add_new_item():
 
     return redirect(url_for("main.storekeeper.storekeeper_index"))
 
+
 @bp.route('/delete_item', methods=['POST'])
+@auth_required(auth)
+@role_required(["storekeeper"])
 def delete_item():
     item_id = request.form.get("item_id", type=int)
     if not item_id:
@@ -242,7 +275,10 @@ def delete_item():
                 flash(f"An error occurred while deleting the item: {str(e)}", "error")
         return redirect(url_for("main.storekeeper.storekeeper_index"))
 
+
 @bp.route('/assign_role', methods=['POST'])
+@auth_required(auth)
+@role_required(["storekeeper"])
 def assign_role():
     user_id = request.form.get("user_id", type=int)
     role_id = request.form.get("role_id", type=int)
@@ -269,7 +305,10 @@ def assign_role():
 
     return redirect(url_for("main.storekeeper.storekeeper_index"))
 
+
 @bp.route('/remove_role', methods=['POST'])
+@auth_required(auth)
+@role_required(["storekeeper"])
 def remove_role():
     user_id = request.form.get("user_id", type=int)
     role_id = request.form.get("role_id", type=int)

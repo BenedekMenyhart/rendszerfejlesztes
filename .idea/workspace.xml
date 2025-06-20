@@ -4,13 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="user és storekeeper felület modernizálása">
-      <change afterPath="$PROJECT_DIR$/app/static/styles.css" afterDir="false" />
+    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="univerzális styles.css fájl létrehozása a táblázatok formázásához és a html-ek felkészítése ehhez. A rendelés véglegesítése, hogy az egyszerre rendelt itemek egy orderbe kerüljenek. Order státuszának visszavétele esetén a futár elvétele a rendeléstől">
+      <change afterPath="$PROJECT_DIR$/app/templates/starter.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/blueprints/courier/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/courier/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/courier/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/courier/service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/item/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/item/routes.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/item/schemas.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/item/service.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/order/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/order/routes.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/order/schemas.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/order/service.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/shipment/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/shipment/routes.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/shipment/schemas.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/shipment/service.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/blueprints/storekeeper/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/storekeeper/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/storekeeper/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/storekeeper/service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/supplier/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/supplier/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/supplier/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/supplier/service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/blueprints/user/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/user/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/courier.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/courier.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/storekeeper.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/storekeeper.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/supplier.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/supplier.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/user.html" afterDir="false" />
@@ -160,7 +180,10 @@
       <workItem from="1749236230086" duration="3561000" />
       <workItem from="1749278594043" duration="4914000" />
       <workItem from="1749283570020" duration="126000" />
-      <workItem from="1749401527938" duration="7645000" />
+      <workItem from="1749401527938" duration="7963000" />
+      <workItem from="1749628810011" duration="9197000" />
+      <workItem from="1750350180042" duration="3397000" />
+      <workItem from="1750405096012" duration="5339000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -346,7 +369,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749283680811</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="univerzális styles.css fájl létrehozása a táblázatok formázásához és a html-ek felkészítése ehhez. A rendelés véglegesítése, hogy az egyszerre rendelt itemek egy orderbe kerüljenek. Order státuszának visszavétele esetén a futár elvétele a rendeléstől">
+      <option name="closed" value="true" />
+      <created>1749464284429</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1749464284429</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -375,10 +406,11 @@
     <MESSAGE value="storekeeper es courier fejlesztese, requirements.txt frissitese" />
     <MESSAGE value="regisztráció befejezése" />
     <MESSAGE value="user és storekeeper felület modernizálása" />
-    <option name="LAST_COMMIT_MESSAGE" value="user és storekeeper felület modernizálása" />
+    <MESSAGE value="univerzális styles.css fájl létrehozása a táblázatok formázásához és a html-ek felkészítése ehhez. A rendelés véglegesítése, hogy az egyszerre rendelt itemek egy orderbe kerüljenek. Order státuszának visszavétele esetén a futár elvétele a rendeléstől" />
+    <option name="LAST_COMMIT_MESSAGE" value="univerzális styles.css fájl létrehozása a táblázatok formázásához és a html-ek felkészítése ehhez. A rendelés véglegesítése, hogy az egyszerre rendelt itemek egy orderbe kerüljenek. Order státuszának visszavétele esetén a futár elvétele a rendeléstől" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1749463981755" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1750410470508" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1745421215202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Rebdszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743439198590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

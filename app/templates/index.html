@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
     <meta charset="utf-8" />
-    <title> Home page - {{title}}</title>
+    <title> Home page - {{ title }}</title>
     <style>
         html, body {
             height: 100%;
@@ -31,32 +31,85 @@
 </head>
 <body>
 <div class="wrapper">
-    <!-- Menu bar-->
+    <!-- Menü sáv -->
     <div>
         <button type="button" onclick="window.location.href='/api/index'">Home</button>
         <button type="button" onclick="window.location.href='/api/logout'">Logout</button>
+
+        {% if 'user' in roles %}
         <button type="button" onclick="window.location.href='/api/user'">User's page</button>
+        {% endif %}
+        {% if 'courier' in roles %}
         <button type="button" onclick="window.location.href='/api/courier'">Courier's page</button>
+        {% endif %}
+        {% if 'storekeeper' in roles %}
         <button type="button" onclick="window.location.href='/api/storekeeper'">Storekeeper's page</button>
+        {% endif %}
+        {% if 'supplier' in roles %}
         <button type="button" onclick="window.location.href='/api/supplier'">Supplier's page</button>
+        {% endif %}
+
+
     </div>
 
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-            <span style="color:red;">{{ message }}</span><br />
-        {% endfor %}
-    {% endif %}
-{% endwith %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <span style="color:red;">{{ message }}</span><br />
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-    <!-- Content -->
+    <!-- Tartalom -->
     <div class="content">
         {% block content %}
-            <h3>This is the home page!</h3>
+            <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+    <h2>About This Project</h2>
+
+    <p>
+        This website is the result of a student project aimed at developing a <strong>warehouse management system</strong>.
+        The goal of the project was to design and implement a functional application that allows efficient handling of
+        warehouse operations such as <em>inventory tracking</em>, <em>product management</em>, and <em>managing orders</em>.
+    </p>
+
+    <h3>Meet the Team</h3>
+    <p>
+        The project is being carried out by four university students:
+    </p>
+    <ul>
+        <li><strong>Nagy Gergő Balázs</strong></li>
+        <li><strong>Mihályfi Dániel</strong></li>
+        <li><strong>Szilágyi Dominik</strong></li>
+        <li><strong>Menyhárt Benedek Károly</strong></li>
+    </ul>
+    <p>Each team member contributed to various parts of the system, including:</p>
+    <ul>
+        <li>Frontend development</li>
+        <li>Backend logic</li>
+        <li>Database design</li>
+        <li>API integration</li>
+    </ul>
+
+    <h3>Technical Features</h3>
+    <p>
+        One of the key technical aspects of the system is <strong>endpoint protection</strong>. To ensure security and
+        data integrity, the application uses <strong>authenticated access</strong>, so only registered and authorized users
+        can interact with the system's core functionalities. All API endpoints are protected using proper authentication
+        mechanisms to prevent unauthorized access and misuse of the platform.
+    </p>
+
+    <h3>Conclusion</h3>
+    <p>
+        This project demonstrates both our teamwork and our ability to apply theoretical knowledge in a
+        practical, real-world context.
+    </p>
+</div>
+
+
         {% endblock %}
     </div>
 
-    <!-- Footer -->
+    <!-- Lábjegyzet -->
     <footer>
         {% include 'footer.html' %}
     </footer>

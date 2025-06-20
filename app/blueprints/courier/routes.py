@@ -3,10 +3,14 @@ from app.models.address import Address
 
 from app.models.order import Order, Statuses
 from flask import render_template, request, redirect, flash
-from app.extensions import db
+from app.extensions import db, auth
+from app.blueprints import role_required, auth_required
+
 
 
 @bp.route("/", methods=["GET"])
+@auth_required(auth)
+@role_required(["courier"])
 def courier_page():
     orders = Order.query.all()
 
@@ -18,6 +22,8 @@ def courier_page():
 
 
 @bp.route("/api/courier/update_order_status", methods=["POST"])
+@auth_required(auth)
+@role_required(["courier"])
 def update_order_status_as_courier():
     order_id = request.form.get("order_id", type=int)
     new_status = request.form.get("new_status")

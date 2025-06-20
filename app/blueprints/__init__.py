@@ -7,7 +7,7 @@ from app.models.role import Role
 bp = APIBlueprint('main', __name__, tag="default")
 from functools import wraps
 from app.extensions import auth, db
-from flask import current_app, session
+from flask import current_app, session, request
 from authlib.jose import jwt
 from datetime import datetime
 from apiflask import HTTPError
@@ -17,11 +17,12 @@ from flask_login import login_user, current_user
 from app.models.user import User
 from werkzeug.security import check_password_hash
 import time
+from flask import jsonify
+from flask_login import logout_user
+from flask import session, redirect, url_for, flash
+from flask_login import logout_user, current_user
+from functools import wraps
 
-@bp.app_context_processor
-def inject_user_roles():
-    roles = [role["name"] for role in auth.current_user.get("roles", [])] if auth.current_user else []
-    return dict(user_roles=roles)
 
 @bp.app_context_processor
 def inject_user_roles():
@@ -29,7 +30,8 @@ def inject_user_roles():
         roles = [role.name for role in current_user.roles]
     else:
         roles = []
-    return {'user_roles': roles}
+    return {'roles': roles}
+
 
 @auth.verify_token
 def verify_token(token):
@@ -44,66 +46,109 @@ def verify_token(token):
     except:
         return None
 
-def role_required(roles):
+def role_required(allowed_roles):
     def wrapper(fn):
         @wraps(fn)
         def decorated_function(*args, **kwargs):
-            user_roles = [item["name"] for item in auth.current_user.get("roles")]
-            for role in roles:
-                if role in user_roles:
-                    return fn(*args, **kwargs)
-            raise HTTPError(message="Access denied", status_code=403)
+            user_roles = [role.name.lower() for role in current_user.roles]
+            normalized_allowed_roles = [role.lower() for role in allowed_roles]
+
+            if not any(role in user_roles for role in normalized_allowed_roles):
+                logout_user()
+                session.clear()
+                session["_flashes"] = [("__flashes", "Permission denied! You have been logged out!", "error")]
+                return redirect(url_for("main.index"))
+
+            return fn(*args, **kwargs)
         return decorated_function
     return wrapper
 
 
+
+def auth_required(auth):
+    def wrapper(fn):
+        @wraps(fn)
+        def decorated_function(*args, **kwargs):
+            # Ellenőrizd, hogy a felhasználó be van-e jelentkezve
+            if not current_user.is_authenticated:
+                flash("Please log in!", "error")
+                return redirect(url_for("main.login"))
+            return fn(*args, **kwargs)
+        return decorated_function
+    return wrapper
+
 @bp.route('/')
 def index():
-    return render_template('base.html',  title='Base page')
+    return render_template('starter.html',  title='Starter page')
 
 @bp.route('/index')
+@auth_required(auth)
 def index2():
-    return render_template('index.html',  title='Base page')
+    return render_template('index.html',  title='Index page')
 
 
 @bp.route('/logout')
+@auth_required(auth)
 def logout():
-    if auth.current_user:
-        auth.current_user = None
-    session.clear()
+    logout_user()  # Flask-Login használatával kijelentkezteti az aktuális felhasználót
+    session.clear()  # Biztosítja a session teljes törlését
+    flash("Successful logout!")
     return redirect(url_for('main.index'))
+
 
 
 @bp.route('/login', methods=["GET", "POST"])
 def login():
     form = LoginForm()
+    # Ha a metódus GET, akkor jelenítsük meg az űrlapot
+    if request.method == "GET":
+        return render_template("login.html", title="Bejelentkezés", form=form)
+
+    # Ha POST és a form validálható (az adatok érkeztek űrlapként)
     if form.validate_on_submit():
         user = User.query.filter_by(name=form.name.data).first()
+
         if user and user.password == form.password.data:
+            # Token adatok előkészítése
             token_data = {
                 "sub": user.name,
                 "id": user.id,
                 "roles": [{"name": role.name} for role in user.roles],
-                "exp": int(time.time()) + 3600
+                "exp": int(time.time()) + 3600  # Token lejárati idő (1 óra)
             }
 
+            # JWT token generálása
             token = jwt.encode(
                 {"alg": "HS256"},
                 token_data,
                 current_app.config['SECRET_KEY']
             )
 
-            login_user(user)
+            login_user(user)  # Flask-Login használatával történő beléptetés
             flash("Sikeres bejelentkezés!")
-            return render_template('index.html',  title='Index page')
+
+
+            roles = [role.name for role in user.roles]
+
+            if len(roles) == 1:
+                if roles[0] == "user":
+                    return redirect("/api/user")
+                elif roles[0] == "courier":
+                    return redirect("/api/courier")
+                elif roles[0] == "storekeeper":
+                    return redirect("/api/storekeeper")
+                elif roles[0] == "supplier":
+                    return redirect("/api/supplier")
+
+            return render_template('index.html', roles=roles, title='Index page')
 
         else:
             flash("Helytelen felhasználónév vagy jelszó!")
+            return redirect(url_for("main.login"))
 
-    return render_template("login.html",
-                         title="Bejelentkezés",
-                         form=form
-                         )
+    # Ha a POST kérés nem valid (pl. adatokat nem adtak meg)
+    return render_template("login.html", title="Bejelentkezés", form=form)
+
 
 def get_address_id(postalcode, city, street):
     address = Address.query.filter(
@@ -180,11 +225,6 @@ def register():
 from app.blueprints.user import bp as bp_user
 bp.register_blueprint(bp_user, url_prefix='/user')
 
-from app.blueprints.item import bp as bp_item
-bp.register_blueprint(bp_item, url_prefix='/item')
-
-from app.blueprints.order import bp as bp_order
-bp.register_blueprint(bp_order, url_prefix='/order')
 
 from app.blueprints.storekeeper import bp as bp_storekeeper
 bp.register_blueprint(bp_storekeeper, url_prefix='/storekeeper')
@@ -192,8 +232,6 @@ bp.register_blueprint(bp_storekeeper, url_prefix='/storekeeper')
 from app.blueprints.courier import bp as bp_courier
 bp.register_blueprint(bp_courier, url_prefix='/courier')
 
-from app.blueprints.shipment import bp as bp_shipment
-bp.register_blueprint(bp_shipment, url_prefix='/shipment')
 
 from app.blueprints.supplier import bp as bp_supplier
 bp.register_blueprint(bp_supplier, url_prefix='/supplier')
