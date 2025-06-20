@@ -2,6 +2,7 @@ from flask_login import current_user
 
 from app.blueprints.courier import bp
 from app.models.address import Address
+from app.models.courier import Courier
 
 from app.models.order import Order, Statuses
 from flask import render_template, request, redirect, flash
@@ -14,13 +15,23 @@ from app.blueprints import role_required, auth_required
 @auth_required(auth)
 @role_required(["courier"])
 def courier_page():
-    orders = Order.query.all()
+    # Separate the orders based on the courier's user ID
+    my_orders = Order.query.filter_by(courier_id=current_user.id).all()
+    other_orders = Order.query.filter(Order.courier_id != current_user.id).all()
 
     statuses = ["DeliveryStarted", "Delivered"]
 
     addresses = {address.id: address for address in db.session.query(Address).all()}
 
-    return render_template("courier.html", orders=orders, statuses=statuses, addresses=addresses, user=current_user)
+    return render_template(
+        "courier.html",
+        my_orders=my_orders,
+        other_orders=other_orders,
+        statuses=statuses,
+        addresses=addresses,
+        user=current_user
+    )
+
 
 
 @bp.route("/api/courier/update_order_status", methods=["POST"])

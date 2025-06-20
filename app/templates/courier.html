@@ -1,52 +1,96 @@
 {%extends "base.html" %}
 
 {% block content %}
-        <h2>Courier's page</h2>
+<h2>Courier's page</h2>
 
-    <table border="1" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
-        <thead>
-            <tr style="background-color: #f4f4f4;">
-                <th>Order ID</th>
-                <th>User ID</th>
-                <th>Courier ID</th>
-                <th>Address</th>
-                <th>Created At</th>
-                <th>Status</th>
-                <th>Update Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
-            <tr>
-                <td style="text-align: center;">{{ order.id }}</td>
-                <td style="text-align: center;">{{ order.user_id }}</td>
-                <td style="text-align: center;">{{ order.courier_id }}</td>
-                <td>
+<!-- My Orders Table -->
+<h3>My Orders</h3>
+{% if my_orders %}
+<table border="1" style="width: 100%; margin-top: 10px; border-collapse: collapse;">
+    <thead>
+        <tr style="background-color: #f4f4f4;">
+            <th>Order ID</th>
+            <th>User ID</th>
+            <th>Courier ID</th>
+            <th>Address</th>
+            <th>Created At</th>
+            <th>Status</th>
+            <th>Update Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in my_orders %}
+        <tr>
+            <td style="text-align: center;">{{ order.id }}</td>
+            <td style="text-align: center;">{{ order.user_id }}</td>
+            <td style="text-align: center;">{{ order.courier_id }}</td>
+            <td>
                 {% if order.address_id in addresses %}
-                    {{ addresses[order.address_id].postalcode }}
-                    {{ addresses[order.address_id].city }},
-                    {{ addresses[order.address_id].street }}
+                {{ addresses[order.address_id].postalcode }}
+                {{ addresses[order.address_id].city }},
+                {{ addresses[order.address_id].street }}
                 {% else %}
-                    Unknown Address
+                Unknown Address
                 {% endif %}
             </td>
-                <td style="text-align: center;">{{ order.created_at }}</td>
-                <td style="text-align: center;">{{ order.status.value }}</td>
-                <td style="text-align: center;">
-                    <form action="{{ url_for('main.courier.update_order_status_as_courier') }}" method="POST" style="margin: 0;">
-                        <input type="hidden" name="order_id" value="{{ order.id }}">
-                        <select name="new_status" required>
-                            {% for status in statuses %}
-                            <option value="{{ status }}"
-                                {% if order.status.value == status %}selected{% endif %}> {{ status.replace("_", " ").title() }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                        <button type="submit" style="margin-top: 5px;">Update</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            <td style="text-align: center;">{{ order.created_at }}</td>
+            <td style="text-align: center;">{{ order.status.value }}</td>
+            <td style="text-align: center;">
+                <form action="{{ url_for('main.courier.update_order_status_as_courier') }}" method="POST" style="margin: 0;">
+                    <input type="hidden" name="order_id" value="{{ order.id }}">
+                    <select name="new_status" required>
+                        {% for status in statuses %}
+                        <option value="{{ status }}"
+                            {% if order.status.value == status %}selected{% endif %}>{{ status.replace("_", " ").title() }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" style="margin-top: 5px;">Update</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>You don't have any orders.</p>
+{% endif %}
+
+<!-- Other Orders Table -->
+<h3>Other Orders</h3>
+{% if other_orders %}
+<table border="1" style="width: 100%; margin-top: 10px; border-collapse: collapse;">
+    <thead>
+        <tr style="background-color: #f4f4f4;">
+            <th>Order ID</th>
+            <th>User ID</th>
+            <th>Courier ID</th>
+            <th>Address</th>
+            <th>Created At</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in other_orders %}
+        <tr>
+            <td style="text-align: center;">{{ order.id }}</td>
+            <td style="text-align: center;">{{ order.user_id }}</td>
+            <td style="text-align: center;">{{ order.courier_id }}</td>
+            <td>
+                {% if order.address_id in addresses %}
+                {{ addresses[order.address_id].postalcode }}
+                {{ addresses[order.address_id].city }},
+                {{ addresses[order.address_id].street }}
+                {% else %}
+                Unknown Address
+                {% endif %}
+            </td>
+            <td style="text-align: center;">{{ order.created_at }}</td>
+            <td style="text-align: center;">{{ order.status.value }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>There's no other orders.</p>
+{% endif %}
 {% endblock %}
