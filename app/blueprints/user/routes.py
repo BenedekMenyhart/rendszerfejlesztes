@@ -19,7 +19,7 @@ from app.models.orderitem import OrderItem
 @role_required(["user"])
 def list_items():
     items = Item.query.filter_by(deleted=0).all()
-    return render_template("user.html", items=items)
+    return render_template("user.html", items=items, user=current_user)
 
 
 @bp.route('/update_contact_info', methods=['POST'])

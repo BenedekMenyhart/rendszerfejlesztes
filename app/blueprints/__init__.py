@@ -84,7 +84,8 @@ def index():
 @bp.route('/index')
 @auth_required(auth)
 def index2():
-    return render_template('index.html',  title='Index page')
+    user=current_user
+    return render_template('index.html',  title='Index page', user=user)
 
 
 @bp.route('/logout')
@@ -124,6 +125,8 @@ def login():
                 current_app.config['SECRET_KEY']
             )
 
+            username = user
+
             login_user(user)  # Flask-Login használatával történő beléptetés
             flash("Sikeres bejelentkezés!")
 
@@ -140,7 +143,7 @@ def login():
                 elif roles[0] == "supplier":
                     return redirect("/api/supplier")
 
-            return render_template('index.html', roles=roles, title='Index page')
+            return render_template('index.html', roles=roles, user=user, title='Index page')
 
         else:
             flash("Helytelen felhasználónév vagy jelszó!")

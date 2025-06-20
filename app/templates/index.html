@@ -27,14 +27,31 @@
             text-align: center;
             font-size: 14px;
         }
+
+        /* Menü alapértelmezett Flexbox-stílusa */
+        div[style*="display: flex;"] {
+            display: flex;
+            justify-content: space-between; /* Balra és jobbra igazított elemek */
+        }
+
+        div[style*="display: flex;"] button {
+            margin-right: 10px; /* Gombok közötti margó */
+        }
+
+        /* Jobb oldali menü szövegezés és gomb */
+        div[style*="display: flex;"] div:last-child {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Szöveg és gomb közötti kisebb margó */
+        }
     </style>
 </head>
 <body>
 <div class="wrapper">
     <!-- Menü sáv -->
+    <div style="display: flex; justify-content: space-between; align-items: center;">
     <div>
         <button type="button" onclick="window.location.href='/api/index'">Home</button>
-        <button type="button" onclick="window.location.href='/api/logout'">Logout</button>
 
         {% if 'user' in roles %}
         <button type="button" onclick="window.location.href='/api/user'">User's page</button>
@@ -48,8 +65,12 @@
         {% if 'supplier' in roles %}
         <button type="button" onclick="window.location.href='/api/supplier'">Supplier's page</button>
         {% endif %}
+    </div>
 
-
+        <div>
+            Logged in as, <strong>{{ user.name }}</strong>!
+            <button type="button" onclick="window.location.href='/api/logout'">Logout</button>
+        </div>
     </div>
 
     {% with messages = get_flashed_messages() %}

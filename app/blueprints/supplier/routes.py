@@ -1,6 +1,6 @@
 from flask import render_template, request, flash, redirect
 
-
+from flask_login import current_user
 from app.blueprints.supplier import bp
 from apiflask import HTTPError
 from app.extensions import auth, db
@@ -14,9 +14,8 @@ from app.blueprints import role_required, auth_required
 @auth_required(auth)
 @role_required(["supplier"])
 def supplier_index():
-    # Fetch items to be shipped
     items = Item.query.all()
-    return render_template('supplier.html', title="Supplier's page", items=items)
+    return render_template('supplier.html', title="Supplier's page", items=items, user=current_user)
 
 @bp.route('/api/supplier/submit_shipment_form', methods=['POST'])
 @auth_required(auth)

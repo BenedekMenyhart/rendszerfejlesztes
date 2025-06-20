@@ -25,9 +25,6 @@ from app.blueprints import role_required, auth_required
 @auth_required(auth)
 @role_required(["storekeeper"])
 def storekeeper_index():
-    print("Current user:", current_user)  # Ellenőrizzük a `current_user` státuszát
-    print("Is Authenticated:", current_user.is_authenticated)  # Bejelentkezett-e?
-    print("Roles:", [role.name for role in current_user.roles])
 
     if not current_user.is_authenticated:  # Ha nincs bejelentkezve
         flash("Előbb jelentkezz be az oldal eléréséhez!", "error")
@@ -75,6 +72,7 @@ def storekeeper_index():
                            users=users,
                            roles=roles,
                            available_roles=available_roles,
+                           user=current_user,
                            form=form)
 
 
