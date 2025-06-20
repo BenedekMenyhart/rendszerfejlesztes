@@ -3,10 +3,6 @@ from flask import render_template, request, flash, redirect
 
 from app.blueprints.supplier import bp
 from apiflask import HTTPError
-
-
-from app.blueprints.supplier.schemas import FewItemResponseSchema
-from app.blueprints.supplier.service import SupplierService
 from app.extensions import auth, db
 from app.models.item import Item
 from app.models.shipment import Shipment
