@@ -70,7 +70,6 @@ def auth_required(auth):
     def wrapper(fn):
         @wraps(fn)
         def decorated_function(*args, **kwargs):
-            # Ellenőrizd, hogy a felhasználó be van-e jelentkezve
             if not current_user.is_authenticated:
                 flash("Please log in!", "error")
                 return redirect(url_for("main.login"))
@@ -92,8 +91,8 @@ def index2():
 @bp.route('/logout')
 @auth_required(auth)
 def logout():
-    logout_user()  # Flask-Login használatával kijelentkezteti az aktuális felhasználót
-    session.clear()  # Biztosítja a session teljes törlését
+    logout_user()
+    session.clear()
     flash("Successful logout!")
     return redirect(url_for('main.index'))
 
@@ -102,16 +101,16 @@ def logout():
 @bp.route('/login', methods=["GET", "POST"])
 def login():
     form = LoginForm()
-    # Ha a metódus GET, akkor jelenítsük meg az űrlapot
-    if request.method == "GET":
-        return render_template("login.html", title="Bejelentkezés", form=form)
 
-    # Ha POST és a form validálható (az adatok érkeztek űrlapként)
+    if request.method == "GET":
+        return render_template("login.html", title="Login", form=form)
+
+
     if form.validate_on_submit():
         user = User.query.filter_by(name=form.name.data).first()
 
         if user and user.password == form.password.data:
-            # Token adatok előkészítése
+
             token_data = {
                 "sub": user.name,
                 "id": user.id,
@@ -127,10 +126,9 @@ def login():
                 current_app.config['SECRET_KEY']
             )
 
-            username = user
 
-            login_user(user)  # Flask-Login használatával történő beléptetés
-            flash("Sikeres bejelentkezés!")
+            login_user(user)
+            flash("Login successful!")
 
 
             roles = [role.name for role in user.roles]
@@ -148,11 +146,11 @@ def login():
             return render_template('index.html', roles=roles, user=user, title='Index page')
 
         else:
-            flash("Helytelen felhasználónév vagy jelszó!")
+            flash("Invalid username or password. Please try again!")
             return redirect(url_for("main.login"))
 
     # Ha a POST kérés nem valid (pl. adatokat nem adtak meg)
-    return render_template("login.html", title="Bejelentkezés", form=form)
+    return render_template("login.html", title="Login", form=form)
 
 
 def get_address_id(postalcode, city, street):
@@ -244,6 +242,78 @@ def register():
 
     return render_template("register.html", title="Register", form=form)
 
+
+@bp.route('/update_contact_info', methods=['POST'])
+@auth_required(auth)
+def update_contact_info():
+    if request.method == "POST":
+        form_data = request.form.to_dict(flat=False)
+
+        email = form_data.get("email", [None])[0]
+        phone_number = form_data.get("phone", [None])[0]
+        postal_code = form_data.get("postal_code", [None])[0]
+        city = form_data.get("city", [None])[0]
+        street = form_data.get("street", [None])[0]
+
+        if email:
+            modifiable=True
+        elif phone_number:
+            modifiable=True
+        elif postal_code:
+            modifiable=True
+        elif city:
+            modifiable=True
+        elif street:
+            modifiable=True
+        else:
+            modifiable=False
+
+        if not modifiable:
+            flash("You have to update a valid field.", "error")
+            return redirect(url_for("main.index2", user=current_user))
+
+
+        user = db.session.query(User).filter_by(id=current_user.id).first()
+        if not user:
+            flash(f"User with {current_user.name} name is invalid.", "error")
+            return redirect(url_for("main.index2", user=current_user))
+
+        try:
+            if email and email != user.email:
+                user.email = email
+
+            if phone_number and user.phonenumber.number != phone_number:
+                user.phonenumber.number = phone_number
+
+            if (postal_code and postal_code != user.address.postalcode) and (city and city != user.address.city):
+                user.address.postalcode = postal_code
+                user.address.city = city
+            elif postal_code and not city:
+                flash("You can't modify your postal code without changing the town's name.", "error")
+                return redirect(url_for("main.index2", user=current_user))
+            elif city and not postal_code:
+                flash("You can't modify your town's name without changing the postal code.", "error")
+                return redirect(url_for("main.index2", user=current_user))
+
+            if street:
+                if postal_code and city:
+                    user.address.street = street
+                elif user.address.street != street:
+                    user.address.street = street
+                else:
+                    flash("You can't modify your street address without changing the postal code and/or town's name.", "error")
+                    return redirect(url_for("main.index2", user=current_user))
+
+
+            db.session.add(user)
+            db.session.commit()
+            flash(f"Successful modification", "success")
+
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Error during update: {str(e)}", "error")
+
+    return redirect("/api/index")
 
 #register blueprints here
 from app.blueprints.user import bp as bp_user

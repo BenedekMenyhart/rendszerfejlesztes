@@ -1,17 +1,15 @@
 {%extends "base.html" %}
 
 {% block content %}
-<h2>Courier's page</h2>
 
-<!-- My Orders Table -->
-<h3>My Orders</h3>
+<h2>My Orders </h2>
+Your courier id is <strong>{{ user.courier_id }}</strong>
 {% if my_orders %}
 <table border="1" style="width: 100%; margin-top: 10px; border-collapse: collapse;">
     <thead>
         <tr style="background-color: #f4f4f4;">
             <th>Order ID</th>
             <th>User ID</th>
-            <th>Courier ID</th>
             <th>Phone Number</th>
             <th>Address</th>
             <th>Created At</th>
@@ -24,7 +22,6 @@
         <tr>
             <td style="text-align: center;">{{ order.id }}</td>
             <td style="text-align: center;">{{ order.user_id }}</td>
-            <td style="text-align: center;">{{ order.courier_id }}</td>
             <td style="text-align: center;">
                 {% if order.phonenumber_id in phonenumbers %}
                 {{ phonenumbers[order.phonenumber_id].number }}
@@ -44,6 +41,7 @@
             <td style="text-align: center;">{{ order.created_at }}</td>
             <td style="text-align: center;">{{ order.status.value }}</td>
             <td style="text-align: center;">
+                {% if order.status.value == "AssignedToCourier" or order.status.value == "DeliveryStarted" %}
                 <form action="{{ url_for('main.courier.update_order_status_as_courier') }}" method="POST" style="margin: 0;">
                     <input type="hidden" name="order_id" value="{{ order.id }}">
                     <select name="new_status" required>
@@ -54,6 +52,10 @@
                     </select>
                     <button type="submit" style="margin-top: 5px;">Update</button>
                 </form>
+
+                    {% elif order.status.value == "ReceptionConfirmed" or order.status.value == "Delivered" %}
+                        <p><i>Delivery completed!</i></p>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
@@ -63,7 +65,7 @@
 <p>You don't have any orders.</p>
 {% endif %}
 
-<!-- Other Orders Table -->
+
 <h3>Other Orders</h3>
 {% if other_orders %}
 <table border="1" style="width: 100%; margin-top: 10px; border-collapse: collapse;">
@@ -107,6 +109,6 @@
     </tbody>
 </table>
 {% else %}
-<p>There's no other orders.</p>
+<p>There's no other order.</p>
 {% endif %}
 {% endblock %}

@@ -44,7 +44,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <!-- Menü sáv -->
+
     <div style="display: flex; justify-content: space-between; align-items: center;">
     <div>
         <button type="button" onclick="window.location.href='/api/index'">Home</button>
@@ -64,7 +64,8 @@
     </div>
 
         <div>
-            Logged in as, <strong>{{ user.name }}</strong>!
+            Logged in as, <strong><i>{{ user.name }}</i></strong>
+            <button type="button" onclick="window.location.href='/api/index#about-you'">Edit Contact Info</button>
             <button type="button" onclick="window.location.href='/api/logout'">Logout</button>
         </div>
     </div>
@@ -77,7 +78,7 @@
         {% endif %}
     {% endwith %}
 
-    <!-- Tartalom -->
+
     <div class="content">
         {% block content %}
             <div style="font-family: Arial, sans-serif; line-height: 1.6;">
@@ -120,11 +121,45 @@
         This project demonstrates both our teamwork and our ability to apply theoretical knowledge in a
         practical, real-world context.
     </p>
-</div>
+    <hr class="section-divider">
 
+        <h3 id="about-you">About You</h3>
+            <form method="POST" action="{{ url_for('main.update_contact_info') }}">
 
+                <label for="email">Current email:</label>
+                <input type="text" value="{{ user.email }}" readonly>
+                <span>&#8594;</span>
+                <input type="text" id="email" name="email" placeholder="your@new.email">
+                <br>
+                <label for="phone">Current phone number:</label>
+                <input type="text" value="{{ user.phonenumber.number }}" readonly>
+                <span>&#8594;</span>
+                <input type="text" id="phone" name="phone" placeholder="+36001234567">
+                <br>
+                <label for="postal_code">Current postal code:</label>
+                <input type="text" value="{{ user.address.postalcode }}" readonly>
+                <span>&#8594;</span>
+                <input type="text" id="postal_code" name="postal_code" placeholder="1234">
+                <br>
+                <label for="city">Current city:</label>
+                <input type="text" value="{{ user.address.city }}" readonly>
+                <span>&#8594;</span>
+                <input type="text" id="city" name="city" placeholder="City">
+                <br>
+                <label for="street">Current address:</label>
+                <input type="text" value="{{ user.address.street }}" readonly>
+                <span>&#8594;</span>
+                <input type="text" id="street" name="street" placeholder="Address">
+                <br>
+                <button type="Submit">Modify</button>
+                <br>
+            </form>
+
+        </div>
         {% endblock %}
     </div>
+
+
 
     <!-- Lábjegyzet -->
     <footer>

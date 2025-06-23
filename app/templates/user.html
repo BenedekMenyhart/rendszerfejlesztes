@@ -2,9 +2,25 @@
 
 {% block content %}
 
+<style>
+    .feedback-textarea {
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .feedback-row.expanded td {
+        background-color: #f9f9f9;
+        transition: all 0.3s ease;
+    }
+
+    .feedback-row.expanded .feedback-textarea {
+        max-width: 100%;
+    }
+</style>
+
 <h2>Available Items</h2>
 <form method="POST" action="{{ url_for('main.user.create_order') }}">
-    <h3>Order Items</h3>
     <table>
         <thead>
             <tr>
@@ -40,7 +56,7 @@
         </tbody>
     </table>
 
-<h4>Shipping Information</h4>
+    <h4>Billing and shipping information</h4>
     <div>
         <label for="email">Email:</label>
         <input
@@ -112,7 +128,7 @@
         </thead>
         <tbody>
             {% for order in my_orders %}
-                <tr>
+                <tr class="feedback-row" id="row-{{ order.id }}">
                     <td>{{ order.id }}</td>
                     <td>
                         {% if order.phonenumber_id in phonenumbers %}
@@ -138,43 +154,52 @@
                                 <input type="hidden" name="order_id" value="{{ order.id }}">
                                 <button type="submit" style="margin-top: 5px;">Confirm Reception</button>
                             </form>
+
+                        {% elif order.status.value == "ReceptionConfirmed" and not order.feedback %}
+                            <form method="POST" action="{{ url_for('main.user.add_feedback') }}">
+                                <input type="hidden" name="order_id" value="{{ order.id }}">
+                                <label for="feedback_{{ order.id }}">Give us feedback:</label>
+                                <textarea class="feedback-textarea"
+                                          id="feedback_{{ order.id }}"
+                                          name="feedback"
+                                          rows="2"
+                                          cols="30"
+                                          data-row-id="{{ order.id }}"
+                                          required></textarea>
+                                <button type="submit">Send</button>
+                            </form>
+
+                        {% elif order.status.value == "ReceptionConfirmed" and order.feedback %}
+                            Your feedback:<br><strong>{{ order.feedback }}</strong>
+
+                        {% elif order.status.value == "DeliveryStarted" %}
+                            <p><i>Your order is on the way!</i></p>
+
                         {% else %}
-                            Order not delivered yet.
+                            <p><i>We are currently working on this order!</i></p>
+
                         {% endif %}
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-
-    <h4>Megjegyzés hozzáadása rendeléshez</h4>
-        <form method="POST" action="{{ url_for('main.user.add_feedback') }}">
-        <label for="order_id">Order ID:</label>
-        <input type="number" id="order_id" name="order_id" required>
-
-        <label for="feedback">Megjegyzés:</label>
-        <textarea id="feedback" name="feedback" rows="4" cols="50" required></textarea>
-
-        <button type="submit">Küldés</button>
-        </form>
 {% endif %}
 
-<h4>Modify Contact Information</h4>
-<form method="POST" action="{{ url_for('main.user.update_contact_info') }}">
-    <label for="field">Frissíteni kívánt adat:</label>
-    <select id="field" name="field" required>
-        <option value="email">Email</option>
-        <option value="phone">Telefon</option>
-    </select>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.feedback-textarea').forEach(textarea => {
+            textarea.addEventListener('focus', function () {
+                const rowId = this.dataset.rowId;
+                document.getElementById('row-' + rowId).classList.add('expanded');
+            });
 
-    <label for="username">Felhasználónév:</label>
-    <input type="text" id="username" name="username" required>
-
-    <label for="new_value">Új adat:</label>
-    <input type="text" id="new_value" name="new_value" required>
-
-    <button type="submit">Adat módosítás</button>
-</form>
-
+            textarea.addEventListener('blur', function () {
+                const rowId = this.dataset.rowId;
+                document.getElementById('row-' + rowId).classList.remove('expanded');
+            });
+        });
+    });
+</script>
 
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h3>Items</h3>
+<h2>Items</h2>
 
     <table border="1" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
         <thead>
@@ -59,7 +59,7 @@
     <button type="submit">Delete</button>
 </form>
 
-<h3>Orders</h3>
+<h2>Orders</h2>
 <table border="1" class="table">
     <thead>
         <tr>
@@ -115,7 +115,6 @@
                             <option value="Received" {% if order.status.value == 'Received' %}selected{% endif %}>Received</option>
                             <option value="Processing" {% if order.status.value == 'Processing' %}selected{% endif %}>Processing</option>
                             <option value="Processed" {% if order.status.value == 'Processed' %}selected{% endif %}>Processed</option>
-                            <option value="AssignedToCourier" {% if order.status.value == 'AssignedToCourier' %}selected{% endif %}>Assigned to Courier</option>
                         </select>
                         <button type="submit" style="margin-top: 5px;">Update</button>
                     </form>
@@ -199,7 +198,7 @@
     }
 </script>
 
-<h3>Couriers</h3>
+<h2>Couriers</h2>
 <table border="1" class="table">
     <thead>
         <tr>
@@ -242,7 +241,7 @@
 
 
 
-<h3>Shipments</h3>
+<h2>Shipments</h2>
 <table class="table" border="1" class="table">
     <thead>
         <tr>
@@ -311,7 +310,7 @@
     }
 </script>
 
-<h3>Users</h3>
+<h2>Users</h2>
 <table border="1" class="table">
     <thead>
         <tr>

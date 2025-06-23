@@ -36,43 +36,6 @@ def list_items():
                            addresses=addresses)
 
 
-@bp.route('/update_contact_info', methods=['POST'])
-@auth_required(auth)
-@role_required(["user"])
-def update_contact_info():
-    field = request.form.get("field")
-    new_value = request.form.get("new_value")
-    username = request.form.get("username")
-
-    if not field or not new_value or not username:
-        flash("Missing information in the request.", "error")
-        return redirect(url_for("main.user.list_items"))
-
-    user = db.session.query(User).filter_by(name=username).first()
-    if not user:
-        flash(f"User with {username} name is invalid.", "error")
-        return redirect(url_for("main.user.list_items"))
-
-    try:
-        if field == "email":
-            user.email = new_value
-        elif field == "phone":
-            user.phone = new_value
-        else:
-            flash("You have tried to update an invalid field.", "error")
-            return redirect(url_for("main.user.list_items"))
-
-        db.session.add(user)
-        db.session.commit()
-        flash(f"Successful update: {field} -> {new_value}", "success")
-
-    except Exception as e:
-        db.session.rollback()
-        flash(f"Error during update: {str(e)}", "error")
-
-    return redirect(url_for("main.user.list_items"))
-
-
 @bp.route("/create_order", methods=["POST"])
 @auth_required(auth)
 @role_required(["user"])
@@ -169,29 +132,28 @@ def add_feedback():
     feedback = request.form.get("feedback")
 
     if not order_id or not feedback:
-        flash("Hiányzó adat!", "error")
+        flash("Missing feedback!", "error")
         return redirect(url_for("main.user.list_items"))
 
-    # Keresd meg a rendelést az ID és a felhasználó alapján
     order = db.session.query(Order).filter_by(id=order_id, user_id=current_user.id).first()
 
     if not order:
-        flash("A rendelés nem található.", "error")
+        flash("There is no order with this ID", "error")
         return redirect(url_for("main.user.list_items"))
 
     if order.status != Statuses.ReceptionConfirmed and order_id == order.id:
-        flash("Megjegyzést csak akkor adhatsz hozzá, ha a rendelés státusza 'Reception_confirmed'.", "error")
+        flash("Please confirm the order's reception first.", "error")
         return redirect(url_for("main.user.list_items"))
 
     try:
         order.feedback = feedback
         db.session.commit()
-        flash("Megjegyzés sikeresen elmentve.", "success")
+        flash("Feedback added. Thank you for your purchase", "success")
     except Exception as e:
         db.session.rollback()
-        flash(f"Hiba történt mentés közben: {str(e)}", "error")
+        flash(f"Error saving the feedback: {str(e)}", "error")
 
-    return render_template("user.html", user=current_user)
+    return redirect("/api/user")
 
 @bp.route("/confirm_reception", methods=["POST"])
 @auth_required(auth)

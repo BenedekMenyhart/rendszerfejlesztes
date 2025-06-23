@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Supplier's Page</h2>
 
     <form method="POST" action="{{ url_for('main.supplier.submit_shipment') }}">
-        <h3>Available Items</h3>
+        <h2>Items</h2>
         <table border="1" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
             <thead>
                 <tr style="background-color: #f4f4f4;">
