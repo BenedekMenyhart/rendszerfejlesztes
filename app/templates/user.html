@@ -120,6 +120,7 @@
             <tr>
                 <th>Order ID</th>
                 <th>Phone Number</th>
+                <th>Contact email</th>
                 <th>Address</th>
                 <th>Created At</th>
                 <th>Status</th>
@@ -137,6 +138,7 @@
                             Unknown Number
                         {% endif %}
                     </td>
+                    <td>{{ order.email }}</td>
                     <td>
                         {% if order.address_id in addresses %}
                             {{ addresses[order.address_id].postalcode }}

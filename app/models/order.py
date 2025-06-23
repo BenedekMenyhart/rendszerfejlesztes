@@ -34,6 +34,7 @@ class Order(db.Model):
 
     # FUTÁR – csak sima integer mező, nem FK
     courier_id: Mapped[Optional[int]] = mapped_column(nullable=True)
+    email: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
 
     phonenumber_id: Mapped[int] = mapped_column(ForeignKey("phonenumbers.id"))
     phonenumber: Mapped["Phonenumber"] = relationship(back_populates="orders")
@@ -45,5 +46,7 @@ class Order(db.Model):
 
     status: Mapped[Statuses] = mapped_column()
     feedback: Mapped[Optional[str]] = mapped_column(nullable=True)
+
+
 
     items: Mapped[List["OrderItem"]] = relationship(back_populates="order")

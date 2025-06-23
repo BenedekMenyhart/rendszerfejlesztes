@@ -86,6 +86,7 @@ def create_order():
                 address_id=address_record.id,
                 created_at=datetime.utcnow(),
                 status=Statuses.Received,
+                email=email
             )
             db.session.add(new_order)
             db.session.flush()
