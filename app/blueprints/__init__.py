@@ -255,6 +255,7 @@ def update_contact_info():
         city = form_data.get("city", [None])[0]
         street = form_data.get("street", [None])[0]
         password = form_data.get("password", [None])[0]
+        password2 = form_data.get("password2", [None])[0]
 
         if email:
             modifiable=True
@@ -287,8 +288,13 @@ def update_contact_info():
 
             if phone_number and user.phonenumber.number != phone_number:
                 user.phonenumber.number = phone_number
+
             if password and user.password != password:
-                user.password = password
+                if password == password2:
+                    user.password = password
+                else:
+                    flash("Your new password and confirmation don't match!", "error")
+                    return redirect(url_for("main.index2", user=current_user))
             else:
                 flash("Your current password is the same as you new password!", "error")
                 return redirect(url_for("main.index2", user=current_user))
