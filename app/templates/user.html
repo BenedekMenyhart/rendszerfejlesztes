@@ -125,6 +125,7 @@
                 <th>Created At</th>
                 <th>Status</th>
                 <th>Feedback</th>
+                <th>View Items</th>
             </tr>
         </thead>
         <tbody>
@@ -174,15 +175,97 @@
                         {% elif order.status.value == "ReceptionConfirmed" and order.feedback %}
                             Your feedback:<br><strong>{{ order.feedback }}</strong>
 
-                        {% elif order.status.value == "DeliveryStarted" %}
+                        {% elif order.status.value == "DeliveryStarted" or order.status.value == "AssignedToCourier" %}
                             <p><i>Your order is on the way!</i></p>
 
-                        {% else %}
-                            <p><i>We are currently working on this order!</i></p>
+                        {% elif order.created_at_dt < (now - timedelta(days=1)) %}
+                            <p><i>You cannot modify this order!</i></p>
 
-                        {% endif %}
+                        {% elif order.created_at_dt >= (now - timedelta(days=1)) and (order.status.value == "Received" or order.status.value == "Processing" or order.status.value == "Processed") %}
+                                <form action="{{ url_for('main.user.modify_order') }}" method="POST">
+                                    <input type="hidden" name="order_id" value="{{ order.id }}">
+                                    <button type="button" onclick="toggleModifyForm({{ order.id }})">Modify Order</button>
+
+                                    <div id="modify-form-{{ order.id }}" style="display: none; margin-top: 10px;">
+                                        <h4>Modify Order #{{ order.id }}</h4>
+
+                                        <label>Email:</label><br>
+                                        <input type="email" name="email" value="{{ order.email }}" required><br><br>
+
+                                        <label>Phone Number:</label><br>
+                                            <input type="text" name="phonenumber" id="phonenumber" value="{{ order.phonenumber.number }}">
+                                        <br><br>
+
+                                        <label>Shipping Address:</label><br>
+                                        <input type="text" name="postalcode" value="{{ addresses[order.address_id].postalcode }}" required placeholder="Postal code"><br>
+                                        <input type="text" name="city" value="{{ addresses[order.address_id].city }}" required placeholder="City"><br>
+                                        <input type="text" name="street" value="{{ addresses[order.address_id].street }}" required placeholder="Street"><br><br>
+
+                                        <h5>Items:</h5>
+                                        <table>
+                                            <thead>
+                                                <tr><th>Item</th><th>Quantity</th></tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for item in items %}
+                                                    {% set existing = order.items | selectattr("item_id", "equalto", item.id) | first %}
+                                                    {% set current_quantity = existing.quantity if existing else 0 %}
+                                                    <tr>
+                                                        <td>{{ item.name }}</td>
+                                                        <td>
+                                                            <input
+                                                                type="number"
+                                                                name="items[{{ item.id }}]"
+                                                                min="0"
+                                                                max="{{ item.quantity_available + current_quantity }}"
+                                                                value="{{ current_quantity }}">
+                                                            <br>
+                                                            <small>Available: {{ item.quantity_available + current_quantity }}</small>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+
+                                            </tbody>
+                                        </table>
+
+                                        <button type="submit" style="margin-top: 10px;">Submit Changes</button>
+                                    </div>
+                                </form>
+
+                            {% else %}
+                                <p><i>We are currently working on this order!</i></p>
+                            {% endif %}
+                    </td>
+                    <td>
+                        <button type="button" onclick="toggleOrderItems({{ order.id }})">View Items</button>
                     </td>
                 </tr>
+                <tr id="order-items-{{ order.id }}" style="display: none;">
+                    <td colspan="8">
+                        <table border="1" style="width: 100%; margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th>Item ID</th>
+                                    <th>Item Name</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order.items %}
+                                <tr>
+                                    <td>{{ item.item_id }}</td>
+                                    <td>
+                                        {% set order_item = items | selectattr("id", "equalto", item.item_id) | first %}
+                                        {{ order_item.name if order_item else "Unknown Item" }}
+                                    </td>
+                                    <td>{{ item.quantity }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+
             {% endfor %}
         </tbody>
     </table>
@@ -202,6 +285,25 @@
             });
         });
     });
+
+
+    function toggleOrderItems(orderId) {
+        const row = document.getElementById(`order-items-${orderId}`);
+        if (row.style.display === 'none') {
+            row.style.display = 'table-row';
+        } else {
+            row.style.display = 'none';
+        }
+    }
+
+    function toggleModifyForm(orderId) {
+    const formDiv = document.getElementById('modify-form-' + orderId);
+    if (formDiv.style.display === 'none') {
+        formDiv.style.display = 'block';
+    } else {
+        formDiv.style.display = 'none';
+    }
+}
 </script>
 
 {% endblock %}

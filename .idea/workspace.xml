@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="style létrehozása a login, register, starter oldalakhoz">
+    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="működő végpont levédés 3, bejelentkezett felhasználó átadása a végpontokra">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/rendszerfejlesztes.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/rendszerfejlesztes.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/courier/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/courier/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/user/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/user/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/to-do.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,16 +61,6 @@
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/BenedekMenyhart/rendszerfejlesztes.git&quot;,
     &quot;accountId&quot;: &quot;5a96ac9f-3b19-4322-998c-5fb0161f333f&quot;
-  },
-  &quot;recentNewPullRequestHead&quot;: {
-    &quot;server&quot;: {
-      &quot;useHttp&quot;: false,
-      &quot;host&quot;: &quot;github.com&quot;,
-      &quot;port&quot;: null,
-      &quot;suffix&quot;: null
-    },
-    &quot;owner&quot;: &quot;BenedekMenyhart&quot;,
-    &quot;repository&quot;: &quot;rendszerfejlesztes&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -116,7 +110,6 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.9 (rendszerfejlesztes)" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -169,13 +162,7 @@
       <workItem from="1749628810011" duration="9197000" />
       <workItem from="1750350180042" duration="3397000" />
       <workItem from="1750405096012" duration="10121000" />
-      <workItem from="1750418333359" duration="7110000" />
-      <workItem from="1750601091558" duration="3948000" />
-      <workItem from="1750615614353" duration="6877000" />
-      <workItem from="1750663738864" duration="4085000" />
-      <workItem from="1750668584678" duration="1004000" />
-      <workItem from="1750673044538" duration="3216000" />
-      <workItem from="1750684374668" duration="7799000" />
+      <workItem from="1750418333359" duration="874000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -393,53 +380,18 @@
       <option name="project" value="LOCAL" />
       <updated>1750415044204</updated>
     </task>
-    <task id="LOCAL-00028" summary="biztonsági mentés adatbázis modell módosítása miatt.">
-      <option name="closed" value="true" />
-      <created>1750419424443</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1750419424443</updated>
-    </task>
-    <task id="LOCAL-00029" summary="átállás új adatbázis modellre, ennek megfelelő frissítések elvégzése">
-      <option name="closed" value="true" />
-      <created>1750673135597</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1750673135597</updated>
-    </task>
-    <task id="LOCAL-00030" summary="profil módosítás megcsinálása">
-      <option name="closed" value="true" />
-      <created>1750689205012</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1750689205012</updated>
-    </task>
-    <task id="LOCAL-00031" summary="email hozzáadása rendeléshez">
-      <option name="closed" value="true" />
-      <created>1750690359512</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1750690359512</updated>
-    </task>
-    <task id="LOCAL-00032" summary="style létrehozása a login, register, starter oldalakhoz">
-      <option name="closed" value="true" />
-      <created>1750691211177</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1750691211177</updated>
-    </task>
-    <option name="localTasksCounter" value="33" />
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="leiras.md frissitve" />
+    <MESSAGE value="__init__ files hotfixed&#10;&#10;leiras.md veglegesitve" />
+    <MESSAGE value="elirasok javitasa" />
+    <MESSAGE value="database előkészítése" />
+    <MESSAGE value="flaskenv update" />
     <MESSAGE value="relationok javitva&#10;qunatity javitva" />
     <MESSAGE value="kis javítás" />
     <MESSAGE value="token generálások befejezése" />
@@ -460,15 +412,11 @@
     <MESSAGE value="működő végpont levédés 1" />
     <MESSAGE value="működő végpont levédés 2" />
     <MESSAGE value="működő végpont levédés 3, bejelentkezett felhasználó átadása a végpontokra" />
-    <MESSAGE value="biztonsági mentés adatbázis modell módosítása miatt." />
-    <MESSAGE value="átállás új adatbázis modellre, ennek megfelelő frissítések elvégzése" />
-    <MESSAGE value="profil módosítás megcsinálása" />
-    <MESSAGE value="email hozzáadása rendeléshez" />
-    <MESSAGE value="style létrehozása a login, register, starter oldalakhoz" />
-    <option name="LAST_COMMIT_MESSAGE" value="style létrehozása a login, register, starter oldalakhoz" />
+    <option name="LAST_COMMIT_MESSAGE" value="működő végpont levédés 3, bejelentkezett felhasználó átadása a végpontokra" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1750692239698" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes_2_$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1750698142434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1747246439178" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1745421215202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Rebdszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743439198590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
