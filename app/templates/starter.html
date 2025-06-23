@@ -1,47 +1,105 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta charset="utf-8" />
     <title>{{ title }}</title>
+    <style>
+        html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.nav-buttons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 10px 16px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #e0e0e0;
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+}
+
+.flash-messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+footer {
+    background: #f1f1f1;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    margin-top: auto;
+}
+
+    </style>
 </head>
 <body>
 <main>
-<div class="wrapper">
-    <!-- Menü sáv -->
-    <div>
+    <div class="nav-buttons">
         <button type="button" onclick="window.location.href='/api/'">Home</button>
         <button type="button" onclick="window.location.href='/api/login'">Login</button>
         <button type="button" onclick="window.location.href='/api/register'">Register</button>
     </div>
 
-    <!-- Üzenetek megjelenítése -->
     {% with messages = get_flashed_messages() %}
         {% if messages %}
-            {% for message in messages %}
-                <span style="color:red;">{{ message }}</span><br />
-            {% endfor %}
+            <ul class="flash-messages">
+                {% for message in messages %}
+                    <li class="error">{{ message }}</li>
+                {% endfor %}
+            </ul>
         {% endif %}
     {% endwith %}
 
-
     <h3>This is the startup page. Please log in or register to continue!</h3>
 
-
-
-
-    <!-- A tartalom blokk, amit az aloldalak töltenek meg -->
     <div class="content">
         {% block content %}
         {% endblock %}
     </div>
-
-
-</div>
 </main>
-<!-- Lábléc -->
-    <footer>
-        {% include 'footer.html' %}
-    </footer>
+
+<footer>
+    {% include 'footer.html' %}
+</footer>
 </body>
 </html>
