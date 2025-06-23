@@ -125,7 +125,9 @@
 
         <h3 id="about-you">About You</h3>
             <form method="POST" action="{{ url_for('main.update_contact_info') }}">
-
+                <label for="password">Change your password:</label>
+                <input type="password" id="password" name="password">
+                <br>
                 <label for="email">Current email:</label>
                 <input type="text" value="{{ user.email }}" readonly>
                 <span>&#8594;</span>
