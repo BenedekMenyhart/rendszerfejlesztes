@@ -12,6 +12,7 @@
             <th>Order ID</th>
             <th>User ID</th>
             <th>Courier ID</th>
+            <th>Phone Number</th>
             <th>Address</th>
             <th>Created At</th>
             <th>Status</th>
@@ -24,6 +25,13 @@
             <td style="text-align: center;">{{ order.id }}</td>
             <td style="text-align: center;">{{ order.user_id }}</td>
             <td style="text-align: center;">{{ order.courier_id }}</td>
+            <td style="text-align: center;">
+                {% if order.phonenumber_id in phonenumbers %}
+                {{ phonenumbers[order.phonenumber_id].number }}
+                {% else %}
+                Unknown Number
+                {% endif %}
+            </td>
             <td>
                 {% if order.address_id in addresses %}
                 {{ addresses[order.address_id].postalcode }}
@@ -64,6 +72,7 @@
             <th>Order ID</th>
             <th>User ID</th>
             <th>Courier ID</th>
+            <th>Phone Number</th>
             <th>Address</th>
             <th>Created At</th>
             <th>Status</th>
@@ -75,6 +84,13 @@
             <td style="text-align: center;">{{ order.id }}</td>
             <td style="text-align: center;">{{ order.user_id }}</td>
             <td style="text-align: center;">{{ order.courier_id }}</td>
+            <td style="text-align: center;">
+                {% if order.phonenumber_id in phonenumbers %}
+                {{ phonenumbers[order.phonenumber_id].number }}
+                {% else %}
+                Unknown Number
+                {% endif %}
+            </td>
             <td>
                 {% if order.address_id in addresses %}
                 {{ addresses[order.address_id].postalcode }}

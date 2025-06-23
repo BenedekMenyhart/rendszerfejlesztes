@@ -2,13 +2,12 @@ from flask_login import current_user
 
 from app.blueprints.courier import bp
 from app.models.address import Address
-from app.models.courier import Courier
 
 from app.models.order import Order, Statuses
 from flask import render_template, request, redirect, flash
 from app.extensions import db, auth
 from app.blueprints import role_required, auth_required
-
+from app.models.phonenumbers import Phonenumber
 
 
 @bp.route("/", methods=["GET"])
@@ -16,11 +15,12 @@ from app.blueprints import role_required, auth_required
 @role_required(["courier"])
 def courier_page():
     # Separate the orders based on the courier's user ID
-    my_orders = Order.query.filter_by(courier_id=current_user.id).all()
-    other_orders = Order.query.filter(Order.courier_id != current_user.id).all()
+    my_orders = Order.query.filter_by(courier_id=current_user.courier_id).all()
+    other_orders = Order.query.filter(Order.courier_id != current_user.courier_id).all()
 
     statuses = ["DeliveryStarted", "Delivered"]
 
+    phonenumbers = {phonenumber.id: phonenumber for phonenumber in db.session.query(Phonenumber).all()}
     addresses = {address.id: address for address in db.session.query(Address).all()}
 
     return render_template(
@@ -28,6 +28,7 @@ def courier_page():
         my_orders=my_orders,
         other_orders=other_orders,
         statuses=statuses,
+        phonenumbers=phonenumbers,
         addresses=addresses,
         user=current_user
     )

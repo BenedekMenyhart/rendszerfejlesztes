@@ -8,10 +8,12 @@ from app.extensions import auth, db
 
 from app.blueprints.user import bp
 from app.blueprints import role_required, auth_required
+from app.models.address import Address
 
 from app.models.item import Item
 from app.models.order import Order, Statuses
 from app.models.orderitem import OrderItem
+from app.models.phonenumbers import Phonenumber
 
 
 @bp.route("/")
@@ -20,7 +22,18 @@ from app.models.orderitem import OrderItem
 def list_items():
     items = Item.query.filter_by(deleted=0).all()
     my_orders = Order.query.filter_by(user_id=current_user.id).all()
-    return render_template("user.html", items=items, user=current_user, my_orders=my_orders)
+    phonenumbers = {
+        phonenumber.id: phonenumber for phonenumber in
+        db.session.query(Phonenumber).filter(Phonenumber.number.isnot(None)).all()
+    }
+
+    addresses = {address.id: address for address in db.session.query(Address).all()}
+    return render_template("user.html",
+                           items=items,
+                           user=current_user,
+                           my_orders=my_orders,
+                           phonenumbers=phonenumbers,
+                           addresses=addresses)
 
 
 @bp.route('/update_contact_info', methods=['POST'])
@@ -32,12 +45,12 @@ def update_contact_info():
     username = request.form.get("username")
 
     if not field or not new_value or not username:
-        flash("Hiányzó mezők a kérésben.", "error")
+        flash("Missing information in the request.", "error")
         return redirect(url_for("main.user.list_items"))
 
     user = db.session.query(User).filter_by(name=username).first()
     if not user:
-        flash(f"A(z) {username} nevű felhasználó nem található.", "error")
+        flash(f"User with {username} name is invalid.", "error")
         return redirect(url_for("main.user.list_items"))
 
     try:
@@ -46,26 +59,36 @@ def update_contact_info():
         elif field == "phone":
             user.phone = new_value
         else:
-            flash("Érvénytelen mezőt próbáltál frissíteni.", "error")
+            flash("You have tried to update an invalid field.", "error")
             return redirect(url_for("main.user.list_items"))
 
         db.session.add(user)
         db.session.commit()
-        flash(f"Sikeres frissítés: {field} -> {new_value}", "success")
+        flash(f"Successful update: {field} -> {new_value}", "success")
 
     except Exception as e:
         db.session.rollback()
-        flash(f"Hiba történt a frissítés során: {str(e)}", "error")
+        flash(f"Error during update: {str(e)}", "error")
 
     return redirect(url_for("main.user.list_items"))
 
 
-@bp.route("/create_order", methods=["GET", "POST"])
+@bp.route("/create_order", methods=["POST"])
 @auth_required(auth)
 @role_required(["user"])
 def create_order():
     if request.method == "POST":
         form_data = request.form.to_dict(flat=False)
+
+        email = form_data.get("email", [None])[0]
+        phone_number = form_data.get("phone", [None])[0]
+        postal_code = form_data.get("postal_code", [None])[0]
+        city = form_data.get("city", [None])[0]
+        street = form_data.get("street", [None])[0]
+
+        if not all([email, phone_number, postal_code, city, street]):
+            flash("All shipping information fields are required.", "error")
+            return redirect(url_for("main.user.list_items"))
 
         try:
             items = {int(key.replace('items[', '').replace(']', '')): int(value[0])
@@ -73,7 +96,6 @@ def create_order():
                      if key.startswith('items[') and value[0].strip() and int(value[0]) > 0}
 
         except ValueError:
-
             flash("Invalid or missing quantity in one or more selected items.", "error")
             return redirect(url_for("main.user.list_items"))
 
@@ -82,17 +104,30 @@ def create_order():
             return redirect(url_for("main.user.list_items"))
 
         try:
+            phone_record = db.session.query(Phonenumber).filter_by(number=phone_number).first()
+            if not phone_record:
+                phone_record = Phonenumber(number=phone_number)
+                db.session.add(phone_record)
+                db.session.flush()
+
+            address_record = db.session.query(Address).filter_by(
+                postalcode=postal_code, city=city, street=street).first()
+            if not address_record:
+                address_record = Address(postalcode=postal_code, city=city, street=street)
+                db.session.add(address_record)
+                db.session.flush()
+
             new_order = Order(
                 user_id=current_user.id,
-                address_id=current_user.address_id,
+                phonenumber_id=phone_record.id,
+                address_id=address_record.id,
                 created_at=datetime.utcnow(),
-                status="Received"
+                status=Statuses.Received,
             )
             db.session.add(new_order)
             db.session.flush()
 
             order_items = []
-
             for item_id, quantity in items.items():
                 item = db.session.query(Item).filter_by(id=item_id).first()
 
@@ -122,7 +157,8 @@ def create_order():
             flash(f"An error occurred while placing the order: {str(e)}", "error")
             return redirect(url_for("main.user.list_items"))
 
-    return render_template("user.html")
+    return render_template("user.html", user=current_user)
+
 
 
 @bp.route("/add_feedback", methods=["POST"])
@@ -155,4 +191,24 @@ def add_feedback():
         db.session.rollback()
         flash(f"Hiba történt mentés közben: {str(e)}", "error")
 
-    return render_template("user.html")
+    return render_template("user.html", user=current_user)
+
+@bp.route("/confirm_reception", methods=["POST"])
+@auth_required(auth)
+@role_required(["user"])
+def confirm_reception():
+    order_id = request.form.get("order_id", type=int)
+    if not order_id:
+        flash("Missing order id", "error")
+        return redirect(url_for("main.user.list_items"))
+    order = db.session.query(Order).filter_by(id=order_id).first()
+    if not order:
+        flash("Order not found", "error")
+    try:
+        order.status = Statuses.ReceptionConfirmed
+        db.session.commit()
+        flash("Order confirmed", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error updating order status: {str(e)}", "error")
+    return redirect("/api/user")

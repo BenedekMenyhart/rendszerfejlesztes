@@ -36,7 +36,7 @@ table tbody tr:hover {
 }
 
 /* Táblázat beágyazott elemeinek stílusa (gombok, űrlap-elemek) */
-table button {
+button {
     padding: 5px 10px;
     border: none;
     border: 1px black;
@@ -86,4 +86,26 @@ table select:focus {
 
 .form-row input {
     flex: 2;
+}
+
+footer {
+            background: #f1f1f1;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
 }

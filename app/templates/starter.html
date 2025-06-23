@@ -1,44 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta charset="utf-8" />
     <title>{{ title }}</title>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
-
-        .wrapper {
-            min-height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .content {
-            flex: 1;
-            padding: 20px;
-        }
-
-        footer {
-            background: #f1f1f1;
-            padding: 10px;
-            text-align: center;
-            font-size: 14px;
-        }
-    </style>
 </head>
 <body>
+<main>
 <div class="wrapper">
     <!-- Menü sáv -->
     <div>
         <button type="button" onclick="window.location.href='/api/'">Home</button>
         <button type="button" onclick="window.location.href='/api/login'">Login</button>
+        <button type="button" onclick="window.location.href='/api/register'">Register</button>
     </div>
-
-
-    <h3>This is the startup page. Please log in to continue!</h3>
-
 
     <!-- Üzenetek megjelenítése -->
     {% with messages = get_flashed_messages() %}
@@ -49,16 +24,24 @@
         {% endif %}
     {% endwith %}
 
+
+    <h3>This is the startup page. Please log in or register to continue!</h3>
+
+
+
+
     <!-- A tartalom blokk, amit az aloldalak töltenek meg -->
     <div class="content">
         {% block content %}
         {% endblock %}
     </div>
 
-    <!-- Lábléc -->
+
+</div>
+</main>
+<!-- Lábléc -->
     <footer>
         {% include 'footer.html' %}
     </footer>
-</div>
 </body>
 </html>

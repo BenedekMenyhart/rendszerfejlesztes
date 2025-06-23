@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from app.extensions import db
-from typing import List
+from typing import List, Optional
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import String
 
@@ -13,6 +13,7 @@ class Item(db.Model):
     description: Mapped[str] = mapped_column(String(255))
     price: Mapped[int]
     quantity_available: Mapped[int]=mapped_column(nullable=False)
+    requested: Mapped[Optional[int]] = mapped_column()
 
     order_items: Mapped[List["OrderItem"]] = relationship(back_populates="item")
 

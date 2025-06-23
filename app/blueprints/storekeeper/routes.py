@@ -1,11 +1,12 @@
 from flask import render_template, redirect, url_for, flash, request, session
 from sqlalchemy import and_, func
 from flask_login import logout_user
+
+from app.models.phonenumbers import Phonenumber
 from app.models.role import Role
 from app.models.user import User
 from app.blueprints.storekeeper import bp
 from app.extensions import db, auth
-from app.models.courier import Courier
 from app.models.shipment import Shipment
 from app.models.shipmentitem import ShipmentItem
 from app.models.order import Order, Statuses
@@ -17,24 +18,25 @@ from functools import wraps
 from flask import redirect, url_for, flash
 from app.blueprints import role_required, auth_required
 
-
-
-
-
 @bp.route('/')
 @auth_required(auth)
 @role_required(["storekeeper"])
 def storekeeper_index():
 
-    if not current_user.is_authenticated:  # Ha nincs bejelentkezve
-        flash("Előbb jelentkezz be az oldal eléréséhez!", "error")
+    if not current_user.is_authenticated:
+        flash("Please log in to view this page!", "error")
         return redirect(url_for("main.login"))
     try:
         items = db.session.query(Item).filter(Item.deleted.is_(0)).all()
         orders = db.session.query(Order).all()
         shipments = db.session.query(Shipment).all()
         shipmentitems = db.session.query(ShipmentItem).all()
-        couriers = db.session.query(Courier).all()
+        couriers = db.session.query(User).filter(User.courier_id.isnot(None), User.courier_id != 0).all()
+        phonenumbers = {
+            phonenumber.id: phonenumber for phonenumber in
+            db.session.query(Phonenumber).filter(Phonenumber.number.isnot(None)).all()
+        }
+
         addresses = {address.id: address for address in db.session.query(Address).all()}
         users = db.session.query(User).all()
         all_roles = db.session.query(Role).all()
@@ -55,6 +57,7 @@ def storekeeper_index():
         orders = []
         shipments = []
         shipmentitems = []
+        phonenumbers = {}
         addresses = {}
         couriers = []
         users = []
@@ -68,14 +71,13 @@ def storekeeper_index():
                            shipments=shipments,
                            shipmentitems=shipmentitems,
                            couriers=couriers,
+                           phonenumbers=phonenumbers,
                            addresses=addresses,
                            users=users,
                            roles=roles,
                            available_roles=available_roles,
                            user=current_user,
                            form=form)
-
-
 
 @bp.route('/process_shipment', methods=['GET', 'POST'])
 @auth_required(auth)
@@ -115,6 +117,7 @@ def process_shipment():
 
     return redirect(url_for("main.storekeeper.storekeeper_index"))
 
+
 @bp.route('/update_order_status', methods=['POST'])
 @auth_required(auth)
 @role_required(["storekeeper"])
@@ -133,6 +136,11 @@ def update_order_status():
 
     try:
         order.status = status
+
+        if status == "DeliveryStarted" or status == "Delivered" or status == "ReceptionConfirmed":
+            flash("You can't change the status of this order. It had been delivered.", "error")
+            return redirect(url_for("main.storekeeper.storekeeper_index"))
+
 
         if status == Statuses.Received.value or status == Statuses.Processing.value or status == Statuses.Processed.value:
             order.courier_id = None
@@ -172,7 +180,7 @@ def sign_courier_to_order():
         return redirect(url_for("main.storekeeper.storekeeper_index"))
 
 
-    courier = db.session.query(Courier).filter_by(id=courier_id).first()
+    courier = db.session.query(User).filter_by(courier_id=courier_id).first()
     if not courier:
         flash(f"Courier with ID {courier_id} does not exist.", "error")
         return redirect(url_for("main.storekeeper.storekeeper_index"))
@@ -294,6 +302,12 @@ def assign_role():
 
     try:
         user.roles.append(role)
+
+        if role.name.lower() == "courier":
+            max_courier_id = db.session.query(func.max(User.courier_id)).scalar() or 0
+
+            user.courier_id = max_courier_id + 1
+
         db.session.add(user)
         db.session.commit()
         flash(f"Role '{role.name}' successfully assigned to user '{user.name}'.", "success")
@@ -310,21 +324,60 @@ def assign_role():
 def remove_role():
     user_id = request.form.get("user_id", type=int)
     role_id = request.form.get("role_id", type=int)
+
     if not user_id or not role_id:
         flash("Invalid user or role ID.", "error")
         return redirect(url_for("main.storekeeper.storekeeper_index"))
-    else:
-        user = db.session.query(User).filter_by(id=user_id).first()
-        role = db.session.query(Role).filter_by(id=role_id).first()
-        if not user or not role:
-            flash("Invalid user or role.", "error")
-            return redirect(url_for("main.storekeeper.storekeeper_index"))
-        try:
+
+    user = db.session.query(User).filter_by(id=user_id).first()
+    role = db.session.query(Role).filter_by(id=role_id).first()
+
+    if not user or not role:
+        flash("Invalid user or role.", "error")
+        return redirect(url_for("main.storekeeper.storekeeper_index"))
+
+    try:
+        if role.name.lower() == "courier":
+            user.courier_id = None
+
+        if role in user.roles:
             user.roles.remove(role)
             db.session.add(user)
             db.session.commit()
             flash(f"Role '{role.name}' successfully removed from user '{user.name} (id={user.id})'.", "success")
-        except Exception as e:
-            db.session.rollback()
-            flash(f"An error occurred while removing the role: {str(e)}", "error")
-        return redirect(url_for("main.storekeeper.storekeeper_index"))
+        else:
+            flash(f"User '{user.name}' does not have role '{role.name}' assigned.", "warning")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"An error occurred while removing the role: {str(e)}", "error")
+
+    return redirect(url_for("main.storekeeper.storekeeper_index"))
+
+@bp.route('/requiest_items', methods=["POST"])
+@auth_required(auth)
+@role_required(["storekeeper"])
+def requiest_items():
+    try:
+        item_id = request.form.get("item_id", type=int)
+        new_requested_amount = request.form.get("new_requested_amount", type=int)
+
+        if not item_id or not new_requested_amount or new_requested_amount < 1:
+            flash("Invalid item ID or quantity.", "error")
+            return redirect(url_for("main.storekeeper.storekeeper_index"))
+
+
+        item = db.session.query(Item).filter_by(id=item_id).first()
+        if not item:
+            flash(f"Item with ID {item_id} does not exist.", "error")
+            return redirect(url_for("main.storekeeper.storekeeper_index"))
+
+        item.requested = (item.requested or 0) + new_requested_amount
+        db.session.add(item)
+        db.session.commit()
+
+        flash(f"{new_requested_amount} unit(s) successfully added to the requested amount for Item ID {item_id}.", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"An error occurred: {str(e)}", "error")
+
+    return redirect(url_for("main.storekeeper.storekeeper_index"))

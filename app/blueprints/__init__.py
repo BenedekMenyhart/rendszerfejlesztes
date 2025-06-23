@@ -3,6 +3,7 @@ from apiflask import APIBlueprint
 from sqlalchemy import func, and_
 from app.forms.registrationForm import RegistrationForm
 from app.models.address import Address
+from app.models.phonenumbers import Phonenumber
 from app.models.role import Role
 bp = APIBlueprint('main', __name__, tag="default")
 from functools import wraps
@@ -114,6 +115,7 @@ def login():
             token_data = {
                 "sub": user.name,
                 "id": user.id,
+                "courier_id": user.courier_id,
                 "roles": [{"name": role.name} for role in user.roles],
                 "exp": int(time.time()) + 3600  # Token lejárati idő (1 óra)
             }
@@ -167,6 +169,13 @@ def get_address_id(postalcode, city, street):
     else:
         return None
 
+def get_phone_id(number):
+    phonenumber = Phonenumber.query.filter_by(number=number).first()
+    if phonenumber:
+        return phonenumber.id
+    else:
+        return None
+
 
 @bp.route('/register', methods=["GET", "POST"])
 def register():
@@ -199,14 +208,26 @@ def register():
             db.session.commit()
             address_id = new_address.id
 
+        phone_id = get_phone_id(form.phone.data)
+        if not phone_id:
+            max_phone_id = db.session.query(func.max(Phonenumber.id)).scalar() or 0
+            new_phone = Phonenumber(
+                id=max_phone_id + 1,
+                number=form.phone.data
+            )
+            db.session.add(new_phone)
+            db.session.commit()
+            phone_id = new_phone.id
+
         max_user_id = db.session.query(func.max(User.id)).scalar() or 0
         new_user = User(
             id=max_user_id + 1,
             name=form.name.data,
             email=form.email.data,
             password=form.password.data,
-            phone=form.phone.data,
-            address_id=address_id
+            phonenumber_id=phone_id,
+            address_id=address_id,
+            courier_id=None
         )
 
         new_user.roles.append(default_role)

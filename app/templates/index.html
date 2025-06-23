@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta charset="utf-8" />
     <title> Home page - {{ title }}</title>
     <style>
@@ -32,10 +32,6 @@
         div[style*="display: flex;"] {
             display: flex;
             justify-content: space-between; /* Balra és jobbra igazított elemek */
-        }
-
-        div[style*="display: flex;"] button {
-            margin-right: 10px; /* Gombok közötti margó */
         }
 
         /* Jobb oldali menü szövegezés és gomb */

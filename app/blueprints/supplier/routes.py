@@ -1,4 +1,4 @@
-from flask import render_template, request, flash, redirect
+from flask import render_template, request, flash, redirect, url_for
 
 from flask_login import current_user
 from app.blueprints.supplier import bp
@@ -17,50 +17,73 @@ def supplier_index():
     items = Item.query.all()
     return render_template('supplier.html', title="Supplier's page", items=items, user=current_user)
 
-@bp.route('/api/supplier/submit_shipment_form', methods=['POST'])
+@bp.route('/submit_shipment', methods=['POST'])
 @auth_required(auth)
 @role_required(["supplier"])
-def submit_shipment_form():
-        # Get form data
-        item_id = request.form.get('item_id', type=int)
-        delivery_date = request.form.get('delivery_date')
-        shipment_quantity = request.form.get('shipment_quantity', type=int)
+def submit_shipment():
+    form_data = request.form.to_dict(flat=False)
+    delivery_date = form_data.get("delivery_date", [None])[0]
 
-        if not item_id or not delivery_date or not shipment_quantity:
-            flash('Invalid form submission. Please fill out all fields.', 'error')
-            return redirect('/api/supplier')
+    if not delivery_date:
+        flash("Expected delivery date is missing.", "error")
+        return redirect(url_for("main.supplier.supplier_index"))
 
-        item = Item.query.get(item_id)
-        if not item:
-            flash(f'Item with ID {item_id} not found.', 'error')
-            return redirect('/api/supplier')
+    try:
+        items = {int(key.replace('items[', '').replace(']', '')): int(value[0])
+                 for key, value in form_data.items()
+                 if key.startswith('items[') and value[0].strip() and int(value[0]) > 0}
+    except ValueError:
+        flash("Invalid or missing quantity in one or more selected items.", "error")
+        return redirect(url_for("main.supplier.supplier_index"))
 
+    if not items:
+        flash("No valid items selected for shipment.", "error")
+        return redirect(url_for("main.supplier.supplier_index"))
 
-        shipment = Shipment(
+    try:
+        new_shipment = Shipment(
             expected_at=delivery_date,
             received=False
         )
-        db.session.add(shipment)
+        db.session.add(new_shipment)
         db.session.flush()
 
-        shipment_item = ShipmentItem(
-            shipment_id=shipment.id,
-            item_id=item_id,
-            quantity=shipment_quantity,
-        )
-        db.session.add(shipment_item)
+        shipment_items = []
+
+        for item_id, quantity in items.items():
+            item = db.session.query(Item).filter_by(id=item_id).first()
+
+            if not item:
+                flash(f"Item with ID {item_id} not found.", "error")
+                continue
+
+            item.requested = update_requested_quantity(item.requested, quantity)
+            db.session.add(item)
+
+            shipment_items.append(ShipmentItem(
+                shipment_id=new_shipment.id,
+                item_id=item_id,
+                quantity=quantity
+            ))
+
+        db.session.add_all(shipment_items)
+        db.session.commit()
+        flash("Shipment successfully submitted.", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"An error occurred: {str(e)}", "error")
+
+    return redirect(url_for("main.supplier.supplier_index"))
 
 
+def update_requested_quantity(current_requested, shipped_quantity):
+    if not current_requested or current_requested == 0:
+        return 0
 
-        try:
-            db.session.commit()
-            flash('Shipment successfully created.', 'success')
-        except Exception as e:
-            db.session.rollback()
-            flash(f'An error occurred while saving the shipment: {str(e)}', 'error')
+    if shipped_quantity >= current_requested:
+        return 0
 
-        return redirect('/api/supplier')
-
+    return current_requested - shipped_quantity
 
 
 

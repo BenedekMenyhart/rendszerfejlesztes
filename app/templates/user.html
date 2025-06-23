@@ -4,6 +4,7 @@
 
 <h2>Available Items</h2>
 <form method="POST" action="{{ url_for('main.user.create_order') }}">
+    <h3>Order Items</h3>
     <table>
         <thead>
             <tr>
@@ -39,24 +40,124 @@
         </tbody>
     </table>
 
+<h4>Shipping Information</h4>
+    <div>
+        <label for="email">Email:</label>
+        <input
+            type="email"
+            id="email"
+            name="email"
+            value="{{ user.email }}"
+            required
+        >
+    </div>
+    <div>
+        <label for="phone">Phone Number:</label>
+        <input
+            type="text"
+            id="phone"
+            name="phone"
+            value="{{ user.phonenumber.number }}"
+            required
+        >
+    </div>
+    <div>
+        <label for="postal_code">Postal Code:</label>
+        <input
+            type="text"
+            id="postal_code"
+            name="postal_code"
+            value="{{ user.address.postalcode if user.address else '' }}"
+            required
+        >
+    </div>
+    <div>
+        <label for="city">City:</label>
+        <input
+            type="text"
+            id="city"
+            name="city"
+            value="{{ user.address.city if user.address else '' }}"
+            required
+        >
+    </div>
+    <div>
+        <label for="street">Shipping Address:</label>
+        <input
+            type="text"
+            id="street"
+            name="street"
+            value="{{ user.address.street if user.address else '' }}"
+            required
+        >
+    </div>
+
     <div class="left-align">
         <button type="submit">Place order</button>
     </div>
 </form>
 
-<h2>My Previous Orders</h2>
+{% if my_orders %}
+    <h2>My Previous Orders</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Created At</th>
+                <th>Status</th>
+                <th>Feedback</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in my_orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>
+                        {% if order.phonenumber_id in phonenumbers %}
+                            {{ phonenumbers[order.phonenumber_id].number }}
+                        {% else %}
+                            Unknown Number
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if order.address_id in addresses %}
+                            {{ addresses[order.address_id].postalcode }}
+                            {{ addresses[order.address_id].city }} ,
+                            {{ addresses[order.address_id].street }}
+                        {% else %}
+                            Unknown Address
+                        {% endif %}
+                    </td>
+                    <td>{{ order.created_at }}</td>
+                    <td>{{ order.status.value }}</td>
+                    <td>
+                        {% if order.status.value == "Delivered" %}
+                            <form action="{{ url_for('main.user.confirm_reception') }}" method="POST" style="margin: 0;">
+                                <input type="hidden" name="order_id" value="{{ order.id }}">
+                                <button type="submit" style="margin-top: 5px;">Confirm Reception</button>
+                            </form>
+                        {% else %}
+                            Order not delivered yet.
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
+    <h4>Megjegyzés hozzáadása rendeléshez</h4>
+        <form method="POST" action="{{ url_for('main.user.add_feedback') }}">
+        <label for="order_id">Order ID:</label>
+        <input type="number" id="order_id" name="order_id" required>
 
-<h4>Megjegyzés hozzáadása rendeléshez</h4>
-<form method="POST" action="{{ url_for('main.user.add_feedback') }}">
-    <label for="order_id">Order ID:</label>
-    <input type="number" id="order_id" name="order_id" required>
+        <label for="feedback">Megjegyzés:</label>
+        <textarea id="feedback" name="feedback" rows="4" cols="50" required></textarea>
 
-    <label for="feedback">Megjegyzés:</label>
-    <textarea id="feedback" name="feedback" rows="4" cols="50" required></textarea>
-
-    <button type="submit">Küldés</button>
-</form>
+        <button type="submit">Küldés</button>
+        </form>
+{% endif %}
 
 <h4>Modify Contact Information</h4>
 <form method="POST" action="{{ url_for('main.user.update_contact_info') }}">

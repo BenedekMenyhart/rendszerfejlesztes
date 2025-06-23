@@ -3,32 +3,43 @@
 {% block content %}
 
 <h3>Items</h3>
-<table>
-    <thead>
-        <tr>
-            <th>Item Id</th>
-            <th>Item</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Available quantity</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in items %}
-        <tr>
-            <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.description }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.quantity_available }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
 
-    <h4>Add a new item</h4>
+    <table border="1" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>Item Id</th>
+                <th>Item Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Available Quantity</th>
+                <th>Requested Quantity</th>
+                <th>Requested More Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.quantity_available }}</td>
+                <td>{{ item.requested or 0 }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('main.storekeeper.requiest_items') }}">
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <input type="number" name="new_requested_amount" min="1" placeholder="Amount" required>
+                        <button type="submit">Add</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-    <form method="POST" action="{{ url_for('main.storekeeper.add_new_item') }}">
+
+<h4>Add a new item</h4>
+<form method="POST" action="{{ url_for('main.storekeeper.add_new_item') }}">
     {{ form.hidden_tag() }}
     <div>
         {{ form.item_name.label }} {{ form.item_name }}
@@ -48,15 +59,13 @@
     <button type="submit">Delete</button>
 </form>
 
-
-
-
 <h3>Orders</h3>
 <table border="1" class="table">
     <thead>
         <tr>
             <th>Order Id</th>
             <th>User Id</th>
+            <th>Phone Number</th>
             <th>Address</th>
             <th>Created At</th>
             <th>Status</th>
@@ -70,7 +79,21 @@
         {% for order in orders %}
         <tr>
             <td>{{ order.id }}</td>
-            <td>{{ order.user_id }}</td>
+            <td>
+                {{ order.user_id }}
+                {% for user in users %}
+                        {% if user.id == order.user_id %}
+                            ({{ user.name }})
+                        {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% if order.phonenumber_id in phonenumbers %}
+                    {{ phonenumbers[order.phonenumber_id].number }}
+                {% else %}
+                    Unknown Number
+                {% endif %}
+            </td>
             <td>
                 {% if order.address_id in addresses %}
                     {{ addresses[order.address_id].postalcode }}
@@ -83,23 +106,29 @@
             <td>{{ order.created_at }}</td>
             <td>{{ order.status.value }}</td>
             <td>
-                <form method="POST" action="{{ url_for('main.storekeeper.update_order_status') }}" style="margin: 0;">
-                    <input type="hidden" name="order_id" value="{{ order.id }}">
-                    <select name="status" required>
-                        <option value="Received" {% if order.status.value == 'Received' %}selected{% endif %}>Received</option>
-                        <option value="Processing" {% if order.status.value == 'Processing' %}selected{% endif %}>Processing</option>
-                        <option value="Processed" {% if order.status.value == 'Processed' %}selected{% endif %}>Processed</option>
-                        <option value="AssignedToCourier" {% if order.status.value == 'AssignedToCourier' %}selected{% endif %}>Assigned to Courier</option>
-                        <option value="DeliveryStarted" {% if order.status.value == 'DeliveryStarted' %}selected{% endif %}>Delivery Started</option>
-                        <option value="Delivered" {% if order.status.value == 'Delivered' %}selected{% endif %}>Delivered</option>
-                        <option value="ReceptionConfirmed" {% if order.status.value == 'ReceptionConfirmed' %}selected{% endif %}>Reception Confirmed</option>
-                    </select>
-                    <button type="submit" style="margin-top: 5px;">Update</button>
-                </form>
+                {% if order.status.value == "DeliveryStarted" or order.status.value == "Delivered" or  order.status.value == "ReceptionConfirmed" %}
+                    <p>Order is out from the warehouse</p>
+                {% else %}
+                    <form method="POST" action="{{ url_for('main.storekeeper.update_order_status') }}" style="margin: 0;">
+                        <input type="hidden" name="order_id" value="{{ order.id }}">
+                        <select name="status" required>
+                            <option value="Received" {% if order.status.value == 'Received' %}selected{% endif %}>Received</option>
+                            <option value="Processing" {% if order.status.value == 'Processing' %}selected{% endif %}>Processing</option>
+                            <option value="Processed" {% if order.status.value == 'Processed' %}selected{% endif %}>Processed</option>
+                            <option value="AssignedToCourier" {% if order.status.value == 'AssignedToCourier' %}selected{% endif %}>Assigned to Courier</option>
+                        </select>
+                        <button type="submit" style="margin-top: 5px;">Update</button>
+                    </form>
+                {% endif %}
             </td>
             <td>
                 {% if order.courier_id %}
                     {{ order.courier_id }}
+                    {% for courier in couriers %}
+                        {% if courier.id == order.courier_id %}
+                            ({{ courier.name }})
+                        {% endif %}
+                    {% endfor %}
                 {% else %}
                     <form method="POST" action="{{ url_for('main.storekeeper.sign_courier_to_order') }}" style="margin: 0;">
                         <input type="hidden" name="order_id" value="{{ order.id }}">
@@ -113,14 +142,13 @@
                     </form>
                 {% endif %}
             </td>
-
             <td>{{ order.feedback }}</td>
             <td>
                 <button onclick="toggleOrderItems({{ order.id }})">View Items</button>
             </td>
         </tr>
         <tr id="order-items-{{ order.id }}" style="display: none;">
-            <td colspan="9">
+            <td colspan="10">
                 <table border="1" style="width: 100%; margin-top: 10px;">
                     <thead>
                         <tr>
@@ -179,22 +207,39 @@
             <th>Name</th>
             <th>Phone</th>
             <th>Email</th>
-            <th>Orders</th>
+            <th>Assigned to Orders</th>
         </tr>
     </thead>
     <tbody>
         {% for courier in couriers %}
-            <td>{{ courier.id }}</td>
+        <tr>
+            <!-- Megjelenítjük a courier_id mezőt -->
+            <td>{{ courier.courier_id }}</td>
             <td>{{ courier.name }}</td>
-            <td>{{ courier.phone }}</td>
-            <td>{{ courier.email }}</td>
+
+            <!-- A telefonról a phonenumber_id alapján -->
             <td>
-                {% for order in orders if order.courier_id == courier.id %}
+                {% if courier.phonenumber_id and courier.phonenumber_id in phonenumbers %}
+                    {{ phonenumbers[courier.phonenumber_id].number }}
+                {% else %}
+                    Unknown Phone
+                {% endif %}
+
+            </td>
+
+            <td>{{ courier.email }}</td>
+
+            <!-- A rendelések megjelenítése, amelyeket a futár kapott -->
+            <td>
+                {% for order in orders if order.courier_id == courier.courier_id %}
                     {{ order.id }}
                 {% endfor %}
+            </td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>
+
 
 
 <h3>Shipments</h3>
@@ -274,6 +319,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Courier ID</th>
             <th>Roles</th>
             <th>Add Role</th>
             <th>Remove Role</th>
@@ -285,7 +331,14 @@
             <td>{{ user.id }}</td>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
-            <td>{{ user.phone }}</td>
+            <td>{{ user.phonenumber.number }}</td>
+            <td>
+                {% if user.courier_id and user.courier_id > 0 %}
+                    {{ user.courier_id }}
+                {% else %}
+                    <p>Not a Courier</p>
+                {% endif %}
+            </td>
             <td>
                 {% if user.roles %}
                     {% for role in user.roles %}
