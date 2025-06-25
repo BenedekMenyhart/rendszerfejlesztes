@@ -17,9 +17,94 @@
         }
 
         .content {
-            flex: 1;
-            padding: 20px;
-        }
+    flex: 1;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    color: #333;
+    box-sizing: border-box;
+}
+
+.content h2, .content h3 {
+    text-align: center;
+    color: #8B4513;
+    margin-bottom: 20px;
+}
+
+.content p {
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+    text-align: justify;
+}
+
+.content ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.content li {
+    margin-bottom: 8px;
+}
+
+.content form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.content label {
+    display: inline-block;
+    width: 180px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.content input[type="text"],
+.content input[type="password"] {
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 240px;
+    font-size: 14px;
+}
+
+.content span {
+    margin: 0 10px;
+    font-size: 16px;
+}
+
+.content button[type="submit"],
+.content button {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 10px 16px;
+    margin-top: 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    align-self: center;
+}
+
+.content button:hover {
+    background-color: #e0e0e0;
+}
+
+hr.section-divider {
+    border: none;
+    height: 3px;
+    background-color: #8B4513;
+    margin: 40px auto;
+    width: 80%;
+    border-radius: 2px;
+}
 
         footer {
             background: #f1f1f1;
@@ -40,6 +125,50 @@
             align-items: center;
             gap: 10px; /* Szöveg és gomb közötti kisebb margó */
         }
+
+        .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.form-row label {
+    width: 180px;
+    font-weight: bold;
+}
+
+.form-row input[type="text"],
+.form-row input[type="password"] {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    flex: 1;
+}
+
+.form-row span {
+    font-size: 18px;
+    color: #666;
+}
+
+.content button[type="submit"] {
+    background-color: #D2691E;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    align-self: center;
+}
+
+.content button[type="submit"]:hover {
+    background-color: #b5541a;
+}
+
+
     </style>
 </head>
 <body>
@@ -78,7 +207,11 @@
         {% endif %}
     {% endwith %}
 
-
+    <header style="text-align: center; margin-top: 30px;">
+        <h1 style="font-size: 36px; font-weight: bold; font-family: 'Arial Black', sans-serif; color: #8B4513;">
+            The ware<span style="color: #D2691E; font-style: italic;">Mause</span>
+        </h1>
+    </header>
     <div class="content">
         {% block content %}
             <div style="font-family: Arial, sans-serif; line-height: 1.6;">
@@ -95,10 +228,10 @@
         The project is being carried out by four university students:
     </p>
     <ul>
-        <li><strong>Nagy Gergő Balázs</strong></li>
-        <li><strong>Mihályfi Dániel</strong></li>
-        <li><strong>Szilágyi Dominik</strong></li>
-        <li><strong>Menyhárt Benedek Károly</strong></li>
+        <li><strong>Gergő Balázs Nagy</strong></li>
+        <li><strong>Dániel Mihályfi</strong></li>
+        <li><strong>Dominik Szilágyi</strong></li>
+        <li><strong>Benedek Károly Menyhárt</strong></li>
     </ul>
     <p>Each team member contributed to various parts of the system, including:</p>
     <ul>
@@ -118,42 +251,59 @@
 
     <h3>Conclusion</h3>
     <p>
-        This project demonstrates both our teamwork and our ability to apply theoretical knowledge in a
-        practical, real-world context.
+        The name of the project is
+        <span style="font-weight: bold; color: #8B4513;">
+            The ware<span style="color: #D2691E;">Mause</span>
+        </span>
+        which is a playful combination of the words <em>"warehouse"</em> and <em>"mouse"</em>. It reflects the system's main functionality—managing a warehouse—but with a unique twist: the warehouse specializes in the trading and distribution of various types of rodents. This quirky theme adds character to the application while still demonstrating robust, real-world logistics management.
     </p>
+
+
     <hr class="section-divider">
 
         <h3 id="about-you">About You</h3>
             <form method="POST" action="{{ url_for('main.update_contact_info') }}">
+                <div class="form-row">
                 <label for="password">Change your password:</label>
                 <input type="password" id="password" name="password">
                 <label for="password2">Confirm password:</label>
                 <input type="password" id="password2" name="password2">
+                </div>
                 <br>
+                <div class="form-row">
                 <label for="email">Current email:</label>
                 <input type="text" value="{{ user.email }}" readonly>
                 <span>&#8594;</span>
                 <input type="text" id="email" name="email" placeholder="your@new.email">
+                </div>
                 <br>
+                <div class="form-row">
                 <label for="phone">Current phone number:</label>
                 <input type="text" value="{{ user.phonenumber.number }}" readonly>
                 <span>&#8594;</span>
                 <input type="text" id="phone" name="phone" placeholder="+36001234567">
+                </div>
                 <br>
+                <div class="form-row">
                 <label for="postal_code">Current postal code:</label>
                 <input type="text" value="{{ user.address.postalcode }}" readonly>
                 <span>&#8594;</span>
                 <input type="text" id="postal_code" name="postal_code" placeholder="1234">
+                </div>
                 <br>
+                <div class="form-row">
                 <label for="city">Current city:</label>
                 <input type="text" value="{{ user.address.city }}" readonly>
                 <span>&#8594;</span>
                 <input type="text" id="city" name="city" placeholder="City">
+                </div>
                 <br>
+                <div class="form-row">
                 <label for="street">Current address:</label>
                 <input type="text" value="{{ user.address.street }}" readonly>
                 <span>&#8594;</span>
                 <input type="text" id="street" name="street" placeholder="Address">
+                </div>
                 <br>
                 <button type="Submit">Modify</button>
                 <br>

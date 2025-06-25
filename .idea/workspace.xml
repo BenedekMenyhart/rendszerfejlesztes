@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="order törlésének a lehetősége a módosítás során, price adattag bevezetése és dinamikus számítása a táblázatokban">
+    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="deleted orderek kezelése a storekeeper.html-en">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/user/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/user/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/storekeeper.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/storekeeper.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/courier.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/courier.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/starter.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/starter.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -179,7 +180,7 @@
       <workItem from="1750684374668" duration="7799000" />
       <workItem from="1750716136302" duration="662000" />
       <workItem from="1750757857497" duration="3519000" />
-      <workItem from="1750840772166" duration="10004000" />
+      <workItem from="1750840772166" duration="13617000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -453,14 +454,21 @@
       <option name="project" value="LOCAL" />
       <updated>1750848258405</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="deleted orderek kezelése a storekeeper.html-en">
+      <option name="closed" value="true" />
+      <created>1750851210726</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1750851210726</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="token generálások befejezése" />
     <MESSAGE value="sikeres bejelentkezesi fazis 1" />
     <MESSAGE value="alap bejelentkezesek" />
     <MESSAGE value="felesleges html-ek elrejtése" />
@@ -485,10 +493,11 @@
     <MESSAGE value="style létrehozása a login, register, starter oldalakhoz" />
     <MESSAGE value="végső finomítások" />
     <MESSAGE value="order törlésének a lehetősége a módosítás során, price adattag bevezetése és dinamikus számítása a táblázatokban" />
-    <option name="LAST_COMMIT_MESSAGE" value="order törlésének a lehetősége a módosítás során, price adattag bevezetése és dinamikus számítása a táblázatokban" />
+    <MESSAGE value="deleted orderek kezelése a storekeeper.html-en" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleted orderek kezelése a storekeeper.html-en" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1750850663183" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1750854421504" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1745421215202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Rebdszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743439198590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

@@ -84,33 +84,35 @@ Your courier id is <strong>{{ user.courier_id }}</strong>
     </thead>
     <tbody>
         {% for order in other_orders %}
-        <tr>
-            <td style="text-align: center;">{{ order.id }}</td>
-            <td style="text-align: center;">{{ order.user_id }}</td>
-            {% if order.courier_id %}
-                <td style="text-align: center;">{{ order.courier_id }}</td>
-            {% else %}
-                <td style="text-align: center;">Not assigned to any courier</td>
+            {% if order.status.value == "AssignedToCourier" or order.status.value == "DeliveryStarted" or order.status.value == "Delivered" or order.status.value == "ReceptionConfirmed" %}
+                <tr>
+                    <td style="text-align: center;">{{ order.id }}</td>
+                    <td style="text-align: center;">{{ order.user_id }}</td>
+                    {% if order.courier_id %}
+                        <td style="text-align: center;">{{ order.courier_id }} </td>
+                    {% else %}
+                        <td style="text-align: center;">Not assigned to any courier</td>
+                    {% endif %}
+                    <td style="text-align: center;">
+                        {% if order.phonenumber_id in phonenumbers %}
+                        {{ phonenumbers[order.phonenumber_id].number }}
+                        {% else %}
+                        Unknown Number
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if order.address_id in addresses %}
+                        {{ addresses[order.address_id].postalcode }}
+                        {{ addresses[order.address_id].city }},
+                        {{ addresses[order.address_id].street }}
+                        {% else %}
+                        Unknown Address
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">{{ order.created_at }}</td>
+                    <td style="text-align: center;">{{ order.status.value }}</td>
+                </tr>
             {% endif %}
-            <td style="text-align: center;">
-                {% if order.phonenumber_id in phonenumbers %}
-                {{ phonenumbers[order.phonenumber_id].number }}
-                {% else %}
-                Unknown Number
-                {% endif %}
-            </td>
-            <td>
-                {% if order.address_id in addresses %}
-                {{ addresses[order.address_id].postalcode }}
-                {{ addresses[order.address_id].city }},
-                {{ addresses[order.address_id].street }}
-                {% else %}
-                Unknown Address
-                {% endif %}
-            </td>
-            <td style="text-align: center;">{{ order.created_at }}</td>
-            <td style="text-align: center;">{{ order.status.value }}</td>
-        </tr>
         {% endfor %}
     </tbody>
 </table>

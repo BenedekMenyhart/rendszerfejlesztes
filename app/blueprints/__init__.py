@@ -289,15 +289,17 @@ def update_contact_info():
             if phone_number and user.phonenumber.number != phone_number:
                 user.phonenumber.number = phone_number
 
-            if password and user.password != password:
-                if password == password2:
-                    user.password = password
-                else:
-                    flash("Your new password and confirmation don't match!", "error")
+            if password:
+                if user.password == password:
+                    flash("You can't modify your password without entering a new one.", "error")
                     return redirect(url_for("main.index2", user=current_user))
-            else:
-                flash("Your current password is the same as you new password!", "error")
-                return redirect(url_for("main.index2", user=current_user))
+                else:
+                    if password == password2:
+                        user.password = password
+                    else:
+                        flash("Your new password and confirmation don't match!", "error")
+                        return redirect(url_for("main.index2", user=current_user))
+
 
             if (postal_code and postal_code != user.address.postalcode) and (city and city != user.address.city):
                 user.address.postalcode = postal_code
