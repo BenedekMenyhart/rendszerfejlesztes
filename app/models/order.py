@@ -1,6 +1,6 @@
 import enum
 from typing import List, Optional
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.extensions import db
 
@@ -24,6 +24,8 @@ class Statuses(enum.Enum):
 class Order(db.Model):
     __tablename__ = "orders"
     id: Mapped[int] = mapped_column(primary_key=True)
+    price: Mapped[Optional[int]] = mapped_column(nullable=True)
+    deleted: Mapped[Optional[int]] = mapped_column(Integer, default=0, nullable=False)
 
     # FELHASZNÁLÓ – idegen kulcsos kapcsolat
     user_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"))

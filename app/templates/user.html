@@ -27,7 +27,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Price (Ft)</th>
+                <th>Price</th>
                 <th>Quantity Available</th>
                 <th>Order Quantity</th>
             </tr>
@@ -39,7 +39,7 @@
                         <td>{{ item.id }}</td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.description }}</td>
-                        <td>{{ item.price }}</td>
+                        <td>{{ item.price }} Ft</td>
                         <td>{{ item.quantity_available }}</td>
                         <td>
                             <input
@@ -48,6 +48,8 @@
                                 min="0"
                                 max="{{ item.quantity_available }}"
                                 placeholder="Quantity"
+                                data-price="{{ item.price }}"
+                                class="order-quantity"
                                 style="width: 100%;">
                         </td>
                     </tr>
@@ -108,6 +110,16 @@
         >
     </div>
 
+    <div>
+        <label for="price">Total Price:</label>
+        <input
+            type="text"
+            id="price"
+            name="price"
+            readonly
+        >
+    </div>
+
     <div class="left-align">
         <button type="submit">Place order</button>
     </div>
@@ -125,6 +137,7 @@
                 <th>Created At</th>
                 <th>Status</th>
                 <th>Feedback</th>
+                <th>Price</th>
                 <th>View Items</th>
             </tr>
         </thead>
@@ -204,18 +217,26 @@
                                         <h5>Items:</h5>
                                         <table>
                                             <thead>
-                                                <tr><th>Item</th><th>Quantity</th></tr>
+                                                <tr>
+                                                    <th>Item</th>
+                                                    <th>Quantity</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 {% for item in items %}
                                                     {% set existing = order.items | selectattr("item_id", "equalto", item.id) | first %}
                                                     {% set current_quantity = existing.quantity if existing else 0 %}
                                                     <tr>
-                                                        <td>{{ item.name }}</td>
+                                                        <td>
+                                                            {{ item.name }}
+                                                            <br>({{ item.price }} Ft)
+                                                        </td>
                                                         <td>
                                                             <input
                                                                 type="number"
                                                                 name="items[{{ item.id }}]"
+                                                                class="order-quantity-{{ order.id }}"
+                                                                data-price="{{ item.price }}"
                                                                 min="0"
                                                                 max="{{ item.quantity_available + current_quantity }}"
                                                                 value="{{ current_quantity }}">
@@ -224,11 +245,13 @@
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
-
                                             </tbody>
                                         </table>
 
-                                        <button type="submit" style="margin-top: 10px;">Submit Changes</button>
+                                        <label>Total Price:</label>
+                                        <input type="text" id="total-price-{{ order.id }}" name="total_price_{{ order.id }}" readonly><br><br>
+
+                                        <button type="submit" id="submit-button-{{ order.id }}" style="margin-top: 10px;">Submit Changes</button>
                                     </div>
                                 </form>
 
@@ -236,6 +259,7 @@
                                 <p><i>We are currently working on this order!</i></p>
                             {% endif %}
                     </td>
+                    <td>{{ order.price }} Ft</td>
                     <td>
                         <button type="button" onclick="toggleOrderItems({{ order.id }})">View Items</button>
                     </td>
@@ -247,7 +271,9 @@
                                 <tr>
                                     <th>Item ID</th>
                                     <th>Item Name</th>
+                                    <th>Item's Price</th>
                                     <th>Quantity</th>
+                                    <th>Summary</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -258,7 +284,22 @@
                                         {% set order_item = items | selectattr("id", "equalto", item.item_id) | first %}
                                         {{ order_item.name if order_item else "Unknown Item" }}
                                     </td>
+                                    <td>
+                                        {% for product in items %}
+                                            {% if product.id==item.item_id %}
+                                               {{ product.price }} Ft
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
                                     <td>{{ item.quantity }}</td>
+                                    <td>
+                                        {% set product = items | selectattr("id", "equalto", item.item_id) | first %}
+                                        {% if product %}
+                                            {{ product.price * item.quantity }} Ft
+                                        {% else %}
+                                            Unknown Price
+                                        {% endif %}
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -302,8 +343,65 @@
         formDiv.style.display = 'block';
     } else {
         formDiv.style.display = 'none';
+    }}
+
+    document.addEventListener("DOMContentLoaded", function () {
+    // === 1. Create order űrlap kezelése ===
+    const createQuantityInputs = document.querySelectorAll(".order-quantity");
+    const createTotalPriceInput = document.getElementById("price");
+
+    function updateCreateOrderTotal() {
+        let total = 0;
+        createQuantityInputs.forEach(input => {
+            const quantity = parseInt(input.value) || 0;
+            const price = parseFloat(input.dataset.price) || 0;
+            total += quantity * price;
+        });
+        if (createTotalPriceInput) {
+            createTotalPriceInput.value = total.toFixed(2) + " Ft";
+        }
     }
-}
+
+    createQuantityInputs.forEach(input => {
+        input.addEventListener("input", updateCreateOrderTotal);
+    });
+    updateCreateOrderTotal();
+
+    // === 2. Modify order formok kezelése ===
+    document.querySelectorAll("[id^='modify-form-']").forEach(formDiv => {
+        const orderId = formDiv.id.split("-")[2];
+        const quantityInputs = formDiv.querySelectorAll(`.order-quantity-${orderId}`);
+        const totalPriceInput = formDiv.querySelector(`#total-price-${orderId}`);
+
+        function updateTotalPrice() {
+            let total = 0;
+            quantityInputs.forEach(input => {
+                const quantity = parseInt(input.value) || 0;
+                const price = parseFloat(input.dataset.price) || 0;
+                total += quantity * price;
+            });
+
+            if (totalPriceInput) {
+                totalPriceInput.value = total.toFixed(2) + " Ft";
+            }
+
+            const submitBtn = document.getElementById(`submit-button-${orderId}`);
+            if (submitBtn) {
+                if (total === 0) {
+                    submitBtn.textContent = "Delete order";
+                } else {
+                    submitBtn.textContent = "Submit Changes";
+                }
+            }
+        }
+
+
+        quantityInputs.forEach(input => {
+            input.addEventListener("input", updateTotalPrice);
+        });
+        updateTotalPrice();
+    });
+});
 </script>
 
 {% endblock %}

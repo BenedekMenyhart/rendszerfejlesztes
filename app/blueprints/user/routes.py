@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
-
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user
-from sqlalchemy import func
+from sqlalchemy import func, and_
 
 from app import User
 from app.extensions import auth, db
@@ -22,7 +21,12 @@ from app.models.phonenumbers import Phonenumber
 @role_required(["user"])
 def list_items():
     items = Item.query.filter_by(deleted=0).all()
-    my_orders = Order.query.filter_by(user_id=current_user.id).all()
+    my_orders = Order.query.filter(
+        and_(
+            Order.user_id == current_user.id,
+            Order.deleted == 0
+        )
+    ).all()
     phonenumbers = {
         phonenumber.id: phonenumber for phonenumber in
         db.session.query(Phonenumber).filter(Phonenumber.number.isnot(None)).all()
@@ -54,6 +58,7 @@ def create_order():
         postal_code = form_data.get("postal_code", [None])[0]
         city = form_data.get("city", [None])[0]
         street = form_data.get("street", [None])[0]
+        price = form_data.get("price", [None])[0]
 
         if not all([email, phone_number, postal_code, city, street]):
             flash("All shipping information fields are required.", "error")
@@ -92,7 +97,8 @@ def create_order():
                 address_id=address_record.id,
                 created_at=datetime.utcnow(),
                 status=Statuses.Received,
-                email=email
+                email=email,
+                price=price
             )
             db.session.add(new_order)
             db.session.flush()
@@ -182,6 +188,16 @@ def confirm_reception():
         flash(f"Error updating order status: {str(e)}", "error")
     return redirect("/api/user")
 
+
+def parse_price_to_int(price_str: str) -> int:
+    if not price_str:
+        return 0
+    try:
+        return int(float(price_str.replace("Ft", "").strip()))
+    except ValueError:
+        return 0
+
+
 @bp.route("/modify_order", methods=["POST"])
 @auth_required(auth)
 @role_required(["user"])
@@ -192,73 +208,83 @@ def modify_order():
     postalcode = request.form.get("postalcode")
     city = request.form.get("city")
     street = request.form.get("street")
+    total_price = parse_price_to_int(request.form.get(f"total_price_{order_id}"))
 
     order = Order.query.get(order_id)
     if not order:
         flash("Order not found.", "error")
         return redirect(url_for("main.user.list_items", user=current_user))
 
-    phone_id = get_phone_id(number)
-    if not phone_id:
-        max_phone_id = db.session.query(func.max(Phonenumber.id)).scalar() or 0
-        new_phone = Phonenumber(id=max_phone_id + 1, number=number)
-        db.session.add(new_phone)
+    if total_price>0:
+        phone_id = get_phone_id(number)
+        if not phone_id:
+            max_phone_id = db.session.query(func.max(Phonenumber.id)).scalar() or 0
+            new_phone = Phonenumber(id=max_phone_id + 1, number=number)
+            db.session.add(new_phone)
+            db.session.commit()
+            phone_id = new_phone.id
+
+        address_id = get_address_id(postalcode, city, street)
+        if not address_id:
+            max_address_id = db.session.query(func.max(Address.id)).scalar() or 0
+            new_address = Address(
+                id=max_address_id + 1,
+                postalcode=postalcode,
+                city=city,
+                street=street
+            )
+            db.session.add(new_address)
+            db.session.commit()
+            address_id = new_address.id
+
+        order.email = email
+        order.phonenumber_id = phone_id
+        order.address_id = address_id
+
+        item_quantities = {
+            int(key.replace("items[", "").replace("]", "")): int(value)
+            for key, value in request.form.items()
+            if key.startswith("items[")
+        }
+
+        existing_orderitems = {oi.item_id: oi for oi in order.items}
+
+        for item_id, new_quantity in item_quantities.items():
+            item = Item.query.get(item_id)
+            if not item:
+                flash(f"Item with ID {item_id} not found.", "error")
+                return redirect(url_for("main.user.list_items"))
+
+            old_quantity = existing_orderitems[item_id].quantity if item_id in existing_orderitems else 0
+            quantity_diff = new_quantity - old_quantity
+
+            if quantity_diff > item.quantity_available:
+                flash(f"Only {item.quantity_available + old_quantity} units available for {item.name}.", "error")
+                return redirect(url_for("main.user.list_items"))
+
+            item.quantity_available -= quantity_diff
+
+            if new_quantity == 0 and item_id in existing_orderitems:
+                db.session.delete(existing_orderitems[item_id])
+            elif item_id in existing_orderitems:
+                existing_orderitems[item_id].quantity = new_quantity
+            else:
+                new_order_item = OrderItem(order_id=order.id, item_id=item_id, quantity=new_quantity)
+                db.session.add(new_order_item)
+
+        try:
+            db.session.commit()
+            flash("Order updated successfully!", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Error updating order: {str(e)}", "error")
+
+    elif total_price==0 and order:
+        order.deleted = 1
         db.session.commit()
-        phone_id = new_phone.id
+        flash(f"Order #{order_id} has been deleted.", "success")
 
-    address_id = get_address_id(postalcode, city, street)
-    if not address_id:
-        max_address_id = db.session.query(func.max(Address.id)).scalar() or 0
-        new_address = Address(
-            id=max_address_id + 1,
-            postalcode=postalcode,
-            city=city,
-            street=street
-        )
-        db.session.add(new_address)
-        db.session.commit()
-        address_id = new_address.id
-
-    order.email = email
-    order.phonenumber_id = phone_id
-    order.address_id = address_id
-
-    item_quantities = {
-        int(key.replace("items[", "").replace("]", "")): int(value)
-        for key, value in request.form.items()
-        if key.startswith("items[")
-    }
-
-    existing_orderitems = {oi.item_id: oi for oi in order.items}
-
-    for item_id, new_quantity in item_quantities.items():
-        item = Item.query.get(item_id)
-        if not item:
-            flash(f"Item with ID {item_id} not found.", "error")
-            return redirect(url_for("main.user.list_items"))
-
-        old_quantity = existing_orderitems[item_id].quantity if item_id in existing_orderitems else 0
-        quantity_diff = new_quantity - old_quantity
-
-        if quantity_diff > item.quantity_available:
-            flash(f"Only {item.quantity_available + old_quantity} units available for {item.name}.", "error")
-            return redirect(url_for("main.user.list_items"))
-
-        item.quantity_available -= quantity_diff
-
-        if new_quantity == 0 and item_id in existing_orderitems:
-            db.session.delete(existing_orderitems[item_id])
-        elif item_id in existing_orderitems:
-            existing_orderitems[item_id].quantity = new_quantity
-        else:
-            new_order_item = OrderItem(order_id=order.id, item_id=item_id, quantity=new_quantity)
-            db.session.add(new_order_item)
-
-    try:
-        db.session.commit()
-        flash("Order updated successfully!", "success")
-    except Exception as e:
-        db.session.rollback()
-        flash(f"Error updating order: {str(e)}", "error")
+    else:
+        flash(f"Order #{order_id} not found.", "error")
 
     return redirect(url_for("main.user.list_items"))

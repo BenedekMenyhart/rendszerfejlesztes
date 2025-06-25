@@ -20,7 +20,8 @@ class User(UserMixin, db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
     email: Mapped[Optional[str]]
-    password: Mapped[str] = mapped_column(String(30))
+    password: Mapped[str] = mapped_column(String(200))
+
 
     # Egyedi courier_id mező – ez nem kapcsolat, csak érték
     courier_id: Mapped[Optional[int]] = mapped_column(nullable=True)

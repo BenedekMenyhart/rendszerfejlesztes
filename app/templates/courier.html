@@ -87,7 +87,11 @@ Your courier id is <strong>{{ user.courier_id }}</strong>
         <tr>
             <td style="text-align: center;">{{ order.id }}</td>
             <td style="text-align: center;">{{ order.user_id }}</td>
-            <td style="text-align: center;">{{ order.courier_id }}</td>
+            {% if order.courier_id %}
+                <td style="text-align: center;">{{ order.courier_id }}</td>
+            {% else %}
+                <td style="text-align: center;">Not assigned to any courier</td>
+            {% endif %}
             <td style="text-align: center;">
                 {% if order.phonenumber_id in phonenumbers %}
                 {{ phonenumbers[order.phonenumber_id].number }}

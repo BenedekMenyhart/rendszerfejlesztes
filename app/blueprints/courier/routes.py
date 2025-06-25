@@ -8,20 +8,25 @@ from flask import render_template, request, redirect, flash
 from app.extensions import db, auth
 from app.blueprints import role_required, auth_required
 from app.models.phonenumbers import Phonenumber
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 
 
 @bp.route("/", methods=["GET"])
 @auth_required(auth)
 @role_required(["courier"])
 def courier_page():
-    # Separate the orders based on the courier's user ID
-    my_orders = Order.query.filter_by(courier_id=current_user.courier_id).all()
+    my_orders = Order.query.filter(
+        and_(
+            Order.courier_id == current_user.courier_id,
+            Order.deleted == 0
+        )
+    ).all()
     other_orders = Order.query.filter(
         or_(
             Order.courier_id != current_user.courier_id,
             Order.courier_id.is_(None)
-        )
+        ),
+        Order.deleted == 0
     ).all()
 
     statuses = ["DeliveryStarted", "Delivered"]

@@ -22,7 +22,7 @@
                 <td>{{ item.id }}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.description }}</td>
-                <td>{{ item.price }}</td>
+                <td>{{ item.price }} Ft</td>
                 <td>{{ item.quantity_available }}</td>
                 <td>{{ item.requested or 0 }}</td>
                 <td>
@@ -63,8 +63,9 @@
 <table border="1" class="table">
     <thead>
         <tr>
+            <th>Deleted</th>
             <th>Order Id</th>
-            <th>User Id</th>
+            <th>User</th>
             <th>Phone Number</th>
             <th>Contact email</th>
             <th>Address</th>
@@ -73,15 +74,24 @@
             <th>Update Status</th>
             <th>Courier ID</th>
             <th>Feedback</th>
+            <th>Price</th>
             <th>Ordered Items</th>
         </tr>
     </thead>
     <tbody>
         {% for order in orders %}
-        <tr>
+        <tr {% if order.deleted == 1 %} style="background-color: #e5e5e5;" {% endif %}>
+            <td>
+                {% if order.deleted==1 %}
+                    <strong>This order has been deleted!</strong>
+                {% else %}
+                    <p></p>
+                {% endif %}
+            </td>
             <td>{{ order.id }}</td>
             <td>
-                {{ order.user_id }}
+                id = {{ order.user_id }}
+                <br>
                 {% for user in users %}
                         {% if user.id == order.user_id %}
                             ({{ user.name }})
@@ -108,6 +118,7 @@
             <td>{{ order.created_at }}</td>
             <td>{{ order.status.value }}</td>
             <td>
+            {% if order.deleted==0 %}
                 {% if order.status.value == "DeliveryStarted" or order.status.value == "Delivered" or  order.status.value == "ReceptionConfirmed" %}
                     <p>Order is out from the warehouse</p>
                 {% else %}
@@ -121,31 +132,54 @@
                         <button type="submit" style="margin-top: 5px;">Update</button>
                     </form>
                 {% endif %}
+            {% else %}
+                <i>Order deleted by the customer.</i>
+            {% endif %}
             </td>
             <td>
                 {% if order.courier_id %}
                     {{ order.courier_id }}
+                    <br>
                     {% for courier in couriers %}
-                        {% if courier.id == order.courier_id %}
+                        {% if courier.courier_id == order.courier_id %}
                             ({{ courier.name }})
                         {% endif %}
                     {% endfor %}
-                {% else %}
+                {% elif order.deleted==0 %}
                     <form method="POST" action="{{ url_for('main.storekeeper.sign_courier_to_order') }}" style="margin: 0;">
                         <input type="hidden" name="order_id" value="{{ order.id }}">
                         <select name="courier_id" required style="width: 100%;">
                             <option value="" disabled selected>Add a courier</option>
                             {% for courier in couriers %}
-                                <option value="{{ courier.id }}">{{ courier.id }}</option>
+                                <option value="{{ courier.courier_id }}">{{ courier.courier_id }} ({{ courier.name }})</option>
                             {% endfor %}
                         </select>
                         <button type="submit" style="margin-top: 5px;">Submit</button>
                     </form>
+                {% else %}
+                    <p></p>
                 {% endif %}
             </td>
-            <td>{{ order.feedback }}</td>
             <td>
-                <button onclick="toggleOrderItems({{ order.id }})">View Items</button>
+                {% if order.deleted==0 %}
+                    {{ order.feedback }}
+                {% else %}
+                    <p></p>
+                {% endif %}
+            </td>
+            <td>
+                {% if order.deleted==0 %}
+                    {{ order.price }} Ft
+                {% else %}
+                    <p></p>
+                {% endif %}
+            </td>
+            <td>
+                {% if order.deleted==0 %}
+                    <button onclick="toggleOrderItems({{ order.id }})">View Items</button>
+                {% else %}
+                    <p></p>
+                {% endif %}
             </td>
         </tr>
         <tr id="order-items-{{ order.id }}" style="display: none;">
@@ -155,7 +189,9 @@
                         <tr>
                             <th>Item ID</th>
                             <th>Item Name</th>
+                            <th>Item's Price</th>
                             <th>Quantity</th>
+                            <th>Summary</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -166,7 +202,22 @@
                                 {% set order_item = items | selectattr("id", "equalto", item.item_id) | first %}
                                 {{ order_item.name if order_item else "Unknown Item" }}
                             </td>
+                            <td>
+                                {% for product in items %}
+                                    {% if product.id==item.item_id %}
+                                        {{ product.price }} Ft
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
                             <td>{{ item.quantity }}</td>
+                            <td>
+                                {% set product = items | selectattr("id", "equalto", item.item_id) | first %}
+                                {% if product %}
+                                    {{ product.price * item.quantity }} Ft
+                                {% else %}
+                                    Unknown Price
+                                {% endif %}
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -362,7 +413,7 @@
                     <button type="submit">Add</button>
                 </form>
                 {% else %}
-                    All roles reserved
+                    All roles received
                 {% endif %}
             </td>
             <td>

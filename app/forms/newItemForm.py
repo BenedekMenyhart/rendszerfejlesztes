@@ -5,5 +5,5 @@ from wtforms.validators import DataRequired
 class NewItemForm(FlaskForm):
     item_name = StringField("Name", validators=[DataRequired()])
     description = StringField("Description", validators=[DataRequired()])
-    price = StringField("Price", validators=[DataRequired()])
+    price = StringField("Price (Ft)", validators=[DataRequired()])
     submit = SubmitField("Add")
