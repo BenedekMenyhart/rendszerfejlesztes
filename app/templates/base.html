@@ -28,28 +28,20 @@
             font-size: 14px;
         }
 
-        /* Menü alapértelmezett Flexbox-stílusa */
         div[style*="display: flex;"] {
             display: flex;
-            justify-content: space-between; /* Balra és jobbra igazított elemek */
+            justify-content: space-between;
         }
 
-
-
-        /* Jobb oldali menü szövegezés és gomb */
         div[style*="display: flex;"] div:last-child {
             display: flex;
             align-items: center;
-            gap: 10px; /* Szöveg és gomb közötti kisebb margó */
+            gap: 10px;
         }
-
-
-
     </style>
 </head>
 <body>
 <div class="wrapper">
-    <!-- Menü sáv -->
     <div style="display: flex; justify-content: space-between; align-items: center;">
     <div>
         <button type="button" onclick="window.location.href='/api/index'">Home</button>
@@ -75,8 +67,6 @@
     </div>
 </div>
 
-
-    <!-- Üzenetek megjelenítése -->
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
@@ -85,13 +75,11 @@
         {% endif %}
     {% endwith %}
 
-    <!-- A tartalom blokk, amit az aloldalak töltenek meg -->
     <div class="content">
         {% block content %}
         {% endblock %}
     </div>
 
-    <!-- Lábléc -->
     <footer>
         {% include 'footer.html' %}
     </footer>

@@ -6,7 +6,6 @@ from typing import List, Optional
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
-# Szerepkörök kapcsolótáblája
 UserRole = Table(
     "userroles",
     Base.metadata,
@@ -21,25 +20,19 @@ class User(UserMixin, db.Model):
     name: Mapped[str] = mapped_column(String(30))
     email: Mapped[Optional[str]]
     password: Mapped[str] = mapped_column(String(200))
-
-
-    # Egyedi courier_id mező – ez nem kapcsolat, csak érték
     courier_id: Mapped[Optional[int]] = mapped_column(nullable=True)
 
-    # Szerepek kapcsolata (sok-sok)
     roles: Mapped[List["Role"]] = relationship(
         secondary=UserRole,
         back_populates="users"
     )
 
-    # Cím és telefonszám kapcsolatok
     address_id: Mapped[Optional[int]] = mapped_column(ForeignKey("addresses.id"))
     address: Mapped["Address"] = relationship(back_populates="user", lazy=True)
 
     phonenumber_id: Mapped[Optional[int]] = mapped_column(ForeignKey("phonenumbers.id"))
     phonenumber: Mapped["Phonenumber"] = relationship(back_populates="user", lazy=True)
 
-    # Felhasználó által leadott rendelések (user_id alapján)
     orders: Mapped[List["Order"]] = relationship(
         back_populates="user",
         foreign_keys="Order.user_id",

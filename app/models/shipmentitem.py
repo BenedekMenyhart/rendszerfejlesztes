@@ -1,9 +1,6 @@
 from app.extensions import db
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey
-from typing import Optional
-
-
 
 class ShipmentItem(db.Model):
     __tablename__ = "shipmentitems"

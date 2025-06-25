@@ -4,11 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="apróbb javítások">
+    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="password hash bevezetése">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/blueprints/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/blueprints/courier/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/courier/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/storekeeper/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/storekeeper/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/blueprints/supplier/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/supplier/routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/blueprints/user/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/user/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/forms/loginForm.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms/loginForm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/phonenumbers.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/phonenumbers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/role.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/role.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/shipment.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/shipment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/shipmentitem.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/shipmentitem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/register.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -186,6 +197,7 @@
       <workItem from="1750870048999" duration="1795000" />
       <workItem from="1750872095353" duration="2817000" />
       <workItem from="1750874994574" duration="955000" />
+      <workItem from="1750879354992" duration="956000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -483,14 +495,21 @@
       <option name="project" value="LOCAL" />
       <updated>1750861020452</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="password hash bevezetése">
+      <option name="closed" value="true" />
+      <created>1750879404080</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1750879404080</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="felesleges html-ek elrejtése" />
     <MESSAGE value="fejlesztések (frontend)" />
     <MESSAGE value="nagyjabol mukodo storekeeper" />
     <MESSAGE value="madjnem teljes storekeeper" />
@@ -515,10 +534,11 @@
     <MESSAGE value="deleted orderek kezelése a storekeeper.html-en" />
     <MESSAGE value="kisebb desig javítás, jelszócsere bug javítása" />
     <MESSAGE value="apróbb javítások" />
-    <option name="LAST_COMMIT_MESSAGE" value="apróbb javítások" />
+    <MESSAGE value="password hash bevezetése" />
+    <option name="LAST_COMMIT_MESSAGE" value="password hash bevezetése" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1750875474759" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1750879450665" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1745421215202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Rebdszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743439198590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

@@ -1,8 +1,6 @@
 from flask import render_template, request, flash, redirect, url_for
-
 from flask_login import current_user
 from app.blueprints.supplier import bp
-from apiflask import HTTPError
 from app.extensions import auth, db
 from app.models.item import Item
 from app.models.shipment import Shipment

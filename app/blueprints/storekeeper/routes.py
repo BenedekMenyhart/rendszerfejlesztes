@@ -14,7 +14,6 @@ from app.models.item import Item
 from app.models.address import Address
 from app.forms.newItemForm import NewItemForm
 from flask_login import current_user
-from functools import wraps
 from flask import redirect, url_for, flash
 from app.blueprints import role_required, auth_required
 

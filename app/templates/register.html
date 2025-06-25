@@ -4,95 +4,86 @@
     <meta charset="utf-8" />
     <title> Registration page </title>
     <style>
-        /* Teljes magasság biztosítása */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #ffffff;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-}
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
 
-/* A main tartalom rugalmasan tölti ki a helyet */
-main {
-    flex: 1;
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    width: 100%;
-    box-sizing: border-box;
-}
+        main {
+            flex: 1;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-/* Címsor */
-h3 {
-    text-align: center;
-    margin-bottom: 20px;
-}
+        h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-/* Navigációs gombok */
-.nav-buttons {
-    text-align: center;
-    margin-bottom: 20px;
-}
+        .nav-buttons {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-button {
-    background-color: #f1f1f1;
-    border: 1px solid #ccc;
-    padding: 10px 16px;
-    margin: 0 5px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 14px;
-}
+        button {
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            padding: 10px 16px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+        }
 
-button:hover {
-    background-color: #e0e0e0;
-}
+        button:hover {
+            background-color: #e0e0e0;
+        }
 
-/* Űrlap elemek */
-.form-group {
-    margin-bottom: 15px;
-}
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 14px;
-}
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
 
-/* Hibák */
-.error {
-    color: red;
-    font-size: 13px;
-}
+        .error {
+            color: red;
+            font-size: 13px;
+        }
 
-/* Flash üzenetek listája */
-.flash-messages {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 20px;
-    text-align: center;
-}
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
-/* Sticky footer */
-footer {
-    background: #f1f1f1;
-    padding: 10px;
-    text-align: center;
-    font-size: 14px;
-    margin-top: auto;
-}
-
+        footer {
+            background: #f1f1f1;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            margin-top: auto;
+        }
     </style>
 </head>
 <body>

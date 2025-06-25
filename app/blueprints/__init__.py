@@ -6,20 +6,16 @@ from app.models.address import Address
 from app.models.phonenumbers import Phonenumber
 from app.models.role import Role
 bp = APIBlueprint('main', __name__, tag="default")
-from functools import wraps
 from app.extensions import auth, db
-from flask import current_app, session, request
+from flask import current_app, request
 from authlib.jose import jwt
 from datetime import datetime
-from apiflask import HTTPError
-from flask import render_template, flash, redirect, url_for
+from flask import render_template
 from app.forms.loginForm import LoginForm
-from flask_login import login_user, current_user
+from flask_login import login_user
 from app.models.user import User
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 import time
-from flask import jsonify
-from flask_login import logout_user
 from flask import session, redirect, url_for, flash
 from flask_login import logout_user, current_user
 from functools import wraps
@@ -119,17 +115,14 @@ def login():
                     "exp": int(time.time()) + 3600  # Token lejárati idő (1 óra)
                 }
 
-                # JWT token generálása
                 token = jwt.encode(
                     {"alg": "HS256"},
                     token_data,
                     current_app.config['SECRET_KEY']
                 )
 
-
                 login_user(user)
                 flash("Login successful!")
-
 
                 roles = [role.name for role in user.roles]
 
@@ -149,7 +142,6 @@ def login():
                 flash("Invalid username or password. Please try again!")
                 return redirect(url_for("main.login"))
 
-    # Ha a POST kérés nem valid (pl. adatokat nem adtak meg)
     return render_template("login.html", title="Login", form=form)
 
 

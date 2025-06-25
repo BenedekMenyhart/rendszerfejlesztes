@@ -1,8 +1,6 @@
 from flask_login import current_user
-
 from app.blueprints.courier import bp
 from app.models.address import Address
-
 from app.models.order import Order, Statuses
 from flask import render_template, request, redirect, flash
 from app.extensions import db, auth

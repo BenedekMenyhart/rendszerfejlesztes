@@ -27,14 +27,12 @@ class Order(db.Model):
     price: Mapped[Optional[int]] = mapped_column(nullable=True)
     deleted: Mapped[Optional[int]] = mapped_column(Integer, default=0, nullable=False)
 
-    # FELHASZNÁLÓ – idegen kulcsos kapcsolat
     user_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"))
     user: Mapped[Optional["User"]] = relationship(
         back_populates="orders",
         foreign_keys=[user_id]
     )
 
-    # FUTÁR – csak sima integer mező, nem FK
     courier_id: Mapped[Optional[int]] = mapped_column(nullable=True)
     email: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
 
@@ -48,7 +46,5 @@ class Order(db.Model):
 
     status: Mapped[Statuses] = mapped_column()
     feedback: Mapped[Optional[str]] = mapped_column(nullable=True)
-
-
 
     items: Mapped[List["OrderItem"]] = relationship(back_populates="order")

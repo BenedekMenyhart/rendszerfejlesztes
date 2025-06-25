@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 from app.extensions import db
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List

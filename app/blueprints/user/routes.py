@@ -2,14 +2,10 @@ from datetime import datetime, timedelta
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user
 from sqlalchemy import func, and_
-
-from app import User
 from app.extensions import auth, db
-
 from app.blueprints.user import bp
 from app.blueprints import role_required, auth_required, get_phone_id, get_address_id
 from app.models.address import Address
-
 from app.models.item import Item
 from app.models.order import Order, Statuses
 from app.models.orderitem import OrderItem
