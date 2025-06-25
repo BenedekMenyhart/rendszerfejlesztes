@@ -241,50 +241,51 @@ def modify_order():
         order.phonenumber_id = phone_id
         order.address_id = address_id
 
-        item_quantities = {
-            int(key.replace("items[", "").replace("]", "")): int(value)
-            for key, value in request.form.items()
-            if key.startswith("items[")
-        }
+    item_quantities = {
+        int(key.replace("items[", "").replace("]", "")): int(value)
+        for key, value in request.form.items()
+        if key.startswith("items[")
+    }
 
-        existing_orderitems = {oi.item_id: oi for oi in order.items}
+    existing_orderitems = {oi.item_id: oi for oi in order.items}
 
-        for item_id, new_quantity in item_quantities.items():
-            item = Item.query.get(item_id)
-            if not item:
-                flash(f"Item with ID {item_id} not found.", "error")
-                return redirect(url_for("main.user.list_items"))
+    for item_id, new_quantity in item_quantities.items():
+        item = Item.query.get(item_id)
+        if not item:
+            flash(f"Item with ID {item_id} not found.", "error")
+            return redirect(url_for("main.user.list_items"))
 
-            old_quantity = existing_orderitems[item_id].quantity if item_id in existing_orderitems else 0
-            quantity_diff = new_quantity - old_quantity
+        old_quantity = existing_orderitems[item_id].quantity if item_id in existing_orderitems else 0
+        quantity_diff = new_quantity - old_quantity
 
-            if quantity_diff > item.quantity_available:
-                flash(f"Only {item.quantity_available + old_quantity} units available for {item.name}.", "error")
-                return redirect(url_for("main.user.list_items"))
+        if quantity_diff > item.quantity_available:
+            flash(f"Only {item.quantity_available + old_quantity} units available for {item.name}.", "error")
+            return redirect(url_for("main.user.list_items"))
 
-            item.quantity_available -= quantity_diff
+        item.quantity_available -= quantity_diff
 
-            if new_quantity == 0 and item_id in existing_orderitems:
-                db.session.delete(existing_orderitems[item_id])
-            elif item_id in existing_orderitems:
-                existing_orderitems[item_id].quantity = new_quantity
-            else:
-                new_order_item = OrderItem(order_id=order.id, item_id=item_id, quantity=new_quantity)
-                db.session.add(new_order_item)
+        if new_quantity == 0 and item_id in existing_orderitems:
+            db.session.delete(existing_orderitems[item_id])
+        elif item_id in existing_orderitems:
+            existing_orderitems[item_id].quantity = new_quantity
+        else:
+            new_order_item = OrderItem(order_id=order.id, item_id=item_id, quantity=new_quantity)
+            db.session.add(new_order_item)
 
-        try:
-            db.session.commit()
-            flash("Order updated successfully!", "success")
-        except Exception as e:
-            db.session.rollback()
-            flash(f"Error updating order: {str(e)}", "error")
+    try:
+        if total_price==0:
+            order.deleted = 1
+        else:
+            order.price = total_price
+            order.status = Statuses.Received
 
-    elif total_price==0 and order:
-        order.deleted = 1
         db.session.commit()
-        flash(f"Order #{order_id} has been deleted.", "success")
-
-    else:
-        flash(f"Order #{order_id} not found.", "error")
+        if total_price!=0:
+            flash(f"Order #{order_id} updated successfully!", "success")
+        else:
+            flash(f"Order #{order_id} has been deleted.", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error updating order: {str(e)}", "error")
 
     return redirect(url_for("main.user.list_items"))

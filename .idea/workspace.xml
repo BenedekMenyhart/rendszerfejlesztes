@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="végső finomítások">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/rendszerfejlesztes.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/rendszerfejlesztes.iml" afterDir="false" />
+    <list default="true" id="64909a3e-3ff2-4e01-974c-7308c1db5d95" name="Changes" comment="order törlésének a lehetősége a módosítás során, price adattag bevezetése és dinamikus számítása a táblázatokban">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/blueprints/courier/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/courier/routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/blueprints/user/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/blueprints/user/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/forms/newItemForm.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms/newItemForm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/courier.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/courier.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/starter.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/starter.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/storekeeper.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/storekeeper.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/user.html" afterDir="false" />
     </list>
@@ -187,7 +179,7 @@
       <workItem from="1750684374668" duration="7799000" />
       <workItem from="1750716136302" duration="662000" />
       <workItem from="1750757857497" duration="3519000" />
-      <workItem from="1750840772166" duration="7165000" />
+      <workItem from="1750840772166" duration="10004000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -453,14 +445,21 @@
       <option name="project" value="LOCAL" />
       <updated>1750699733264</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="order törlésének a lehetősége a módosítás során, price adattag bevezetése és dinamikus számítása a táblázatokban">
+      <option name="closed" value="true" />
+      <created>1750848258405</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1750848258405</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="kis javítás" />
     <MESSAGE value="token generálások befejezése" />
     <MESSAGE value="sikeres bejelentkezesi fazis 1" />
     <MESSAGE value="alap bejelentkezesek" />
@@ -485,10 +484,11 @@
     <MESSAGE value="email hozzáadása rendeléshez" />
     <MESSAGE value="style létrehozása a login, register, starter oldalakhoz" />
     <MESSAGE value="végső finomítások" />
-    <option name="LAST_COMMIT_MESSAGE" value="végső finomítások" />
+    <MESSAGE value="order törlésének a lehetősége a módosítás során, price adattag bevezetése és dinamikus számítása a táblázatokban" />
+    <option name="LAST_COMMIT_MESSAGE" value="order törlésének a lehetősége a módosítás során, price adattag bevezetése és dinamikus számítása a táblázatokban" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1750847592406" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rendszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1750850663183" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/rendszerfejlesztes_raktár_$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1745421215202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Rebdszerfejlesztes$rendszerfejlesztes.coverage" NAME="rendszerfejlesztes Coverage Results" MODIFIED="1743439198590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

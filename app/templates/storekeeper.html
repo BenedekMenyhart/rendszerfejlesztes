@@ -63,7 +63,6 @@
 <table border="1" class="table">
     <thead>
         <tr>
-            <th>Deleted</th>
             <th>Order Id</th>
             <th>User</th>
             <th>Phone Number</th>
@@ -80,14 +79,8 @@
     </thead>
     <tbody>
         {% for order in orders %}
-        <tr {% if order.deleted == 1 %} style="background-color: #e5e5e5;" {% endif %}>
-            <td>
-                {% if order.deleted==1 %}
-                    <strong>This order has been deleted!</strong>
-                {% else %}
-                    <p></p>
-                {% endif %}
-            </td>
+            {% if order.deleted==0 %}
+        <tr>
             <td>{{ order.id }}</td>
             <td>
                 id = {{ order.user_id }}
@@ -118,7 +111,6 @@
             <td>{{ order.created_at }}</td>
             <td>{{ order.status.value }}</td>
             <td>
-            {% if order.deleted==0 %}
                 {% if order.status.value == "DeliveryStarted" or order.status.value == "Delivered" or  order.status.value == "ReceptionConfirmed" %}
                     <p>Order is out from the warehouse</p>
                 {% else %}
@@ -132,9 +124,6 @@
                         <button type="submit" style="margin-top: 5px;">Update</button>
                     </form>
                 {% endif %}
-            {% else %}
-                <i>Order deleted by the customer.</i>
-            {% endif %}
             </td>
             <td>
                 {% if order.courier_id %}
@@ -145,7 +134,7 @@
                             ({{ courier.name }})
                         {% endif %}
                     {% endfor %}
-                {% elif order.deleted==0 %}
+                {% else %}
                     <form method="POST" action="{{ url_for('main.storekeeper.sign_courier_to_order') }}" style="margin: 0;">
                         <input type="hidden" name="order_id" value="{{ order.id }}">
                         <select name="courier_id" required style="width: 100%;">
@@ -156,31 +145,11 @@
                         </select>
                         <button type="submit" style="margin-top: 5px;">Submit</button>
                     </form>
-                {% else %}
-                    <p></p>
                 {% endif %}
             </td>
-            <td>
-                {% if order.deleted==0 %}
-                    {{ order.feedback }}
-                {% else %}
-                    <p></p>
-                {% endif %}
-            </td>
-            <td>
-                {% if order.deleted==0 %}
-                    {{ order.price }} Ft
-                {% else %}
-                    <p></p>
-                {% endif %}
-            </td>
-            <td>
-                {% if order.deleted==0 %}
-                    <button onclick="toggleOrderItems({{ order.id }})">View Items</button>
-                {% else %}
-                    <p></p>
-                {% endif %}
-            </td>
+            <td>{{ order.feedback }}</td>
+            <td>{{ order.price }} Ft</td>
+            <td><button onclick="toggleOrderItems({{ order.id }})">View Items</button></td>
         </tr>
         <tr id="order-items-{{ order.id }}" style="display: none;">
             <td colspan="10">
@@ -224,11 +193,89 @@
                 </table>
             </td>
         </tr>
+            {% endif %}
         {% endfor %}
     </tbody>
 </table>
 
+<h3 style="display: inline;">Deleted Orders</h3>
+<button onclick="toggleDeletedOrders()" id="toggle-deleted-orders-btn" style="margin-left: 10px;">Show</button>
+
+<div id="deleted-orders-table" style="display: none; margin-top: 10px;">
+    <table border="1" class="table">
+        <thead>
+            <tr>
+                <th>Deleted</th>
+                <th>Order ID</th>
+                <th>User</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                {% if order.deleted == 1 %}
+                    <tr id="order-row-{{ order.id }}" style="background-color: #e5e5e5;">
+                        <td>
+                            <strong>Deleted order</strong><br>
+                            <button onclick="hideOrder({{ order.id }})">Hide</button>
+                        </td>
+                        <td>{{ order.id }}</td>
+                        <td>
+                            id = {{ order.user_id }}<br>
+                            {% for user in users %}
+                                {% if user.id == order.user_id %}
+                                    ({{ user.name }})
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% if order.phonenumber_id in phonenumbers %}
+                                {{ phonenumbers[order.phonenumber_id].number }}
+                            {% else %}
+                                Unknown
+                            {% endif %}
+                        </td>
+                        <td>{{ order.email }}</td>
+                        <td>
+                            {% if order.address_id in addresses %}
+                                {{ addresses[order.address_id].postalcode }},
+                                {{ addresses[order.address_id].city }},
+                                {{ addresses[order.address_id].street }}
+                            {% else %}
+                                Unknown Address
+                            {% endif %}
+                        </td>
+                        <td>{{ order.created_at }}</td>
+                    </tr>
+                    <tr id="show-row-{{ order.id }}" style="display: none;">
+                        <td colspan="13" style="text-align: center; background-color: #f5f5f5;">
+                            <button onclick="showOrder({{ order.id }})">Show deleted order (id {{ order.id }})</button>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
 <script>
+    function toggleDeletedOrders() {
+        const table = document.getElementById("deleted-orders-table");
+        const button = document.getElementById("toggle-deleted-orders-btn");
+
+        if (table.style.display === "none") {
+            table.style.display = "block";
+            button.textContent = "Hide";
+        } else {
+            table.style.display = "none";
+            button.textContent = "Show";
+        }
+    }
     function toggleOrderItems(orderId) {
         const row = document.getElementById(`order-items-${orderId}`);
         if (row.style.display === 'none') {
@@ -237,6 +284,16 @@
             row.style.display = 'none';
         }
     }
+
+    function hideOrder(orderId) {
+    document.getElementById(`order-row-${orderId}`).style.display = 'none';
+    document.getElementById(`show-row-${orderId}`).style.display = 'table-row';
+}
+
+function showOrder(orderId) {
+    document.getElementById(`order-row-${orderId}`).style.display = 'table-row';
+    document.getElementById(`show-row-${orderId}`).style.display = 'none';
+}
 </script>
 
 

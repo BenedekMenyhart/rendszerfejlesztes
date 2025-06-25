@@ -226,28 +226,30 @@
                                                 {% for item in items %}
                                                     {% set existing = order.items | selectattr("item_id", "equalto", item.id) | first %}
                                                     {% set current_quantity = existing.quantity if existing else 0 %}
-                                                    <tr>
-                                                        <td>
-                                                            {{ item.name }}
-                                                            <br>({{ item.price }} Ft)
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="number"
-                                                                name="items[{{ item.id }}]"
-                                                                class="order-quantity-{{ order.id }}"
-                                                                data-price="{{ item.price }}"
-                                                                min="0"
-                                                                max="{{ item.quantity_available + current_quantity }}"
-                                                                value="{{ current_quantity }}">
-                                                            <br>
-                                                            <small>Available: {{ item.quantity_available + current_quantity }}</small>
-                                                        </td>
-                                                    </tr>
+                                                    {% set total_available = item.quantity_available + current_quantity %}
+                                                    {% if total_available > 0 %}
+                                                        <tr>
+                                                            <td>
+                                                                {{ item.name }}
+                                                                <br>({{ item.price }} Ft)
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    type="number"
+                                                                    name="items[{{ item.id }}]"
+                                                                    class="order-quantity-{{ order.id }}"
+                                                                    data-price="{{ item.price }}"
+                                                                    min="0"
+                                                                    max="{{ total_available }}"
+                                                                    value="{{ current_quantity }}">
+                                                                <br>
+                                                                <small>Available: {{ total_available }}</small>
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
                                                 {% endfor %}
                                             </tbody>
                                         </table>
-
                                         <label>Total Price:</label>
                                         <input type="text" id="total-price-{{ order.id }}" name="total_price_{{ order.id }}" readonly><br><br>
 
