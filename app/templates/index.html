@@ -272,35 +272,35 @@ hr.section-divider {
                 <br>
                 <div class="form-row">
                 <label for="email">Current email:</label>
-                <input type="text" value="{{ user.email }}" readonly>
+                <input type="text" value="{{ user.email }}" readonly disabled>
                 <span>&#8594;</span>
                 <input type="text" id="email" name="email" placeholder="your@new.email">
                 </div>
                 <br>
                 <div class="form-row">
                 <label for="phone">Current phone number:</label>
-                <input type="text" value="{{ user.phonenumber.number }}" readonly>
+                <input type="text" value="{{ user.phonenumber.number }}" readonly disabled>
                 <span>&#8594;</span>
                 <input type="text" id="phone" name="phone" placeholder="+36001234567">
                 </div>
                 <br>
                 <div class="form-row">
                 <label for="postal_code">Current postal code:</label>
-                <input type="text" value="{{ user.address.postalcode }}" readonly>
+                <input type="text" value="{{ user.address.postalcode }}" readonly disabled>
                 <span>&#8594;</span>
                 <input type="text" id="postal_code" name="postal_code" placeholder="1234">
                 </div>
                 <br>
                 <div class="form-row">
                 <label for="city">Current city:</label>
-                <input type="text" value="{{ user.address.city }}" readonly>
+                <input type="text" value="{{ user.address.city }}" readonly disabled>
                 <span>&#8594;</span>
                 <input type="text" id="city" name="city" placeholder="City">
                 </div>
                 <br>
                 <div class="form-row">
                 <label for="street">Current address:</label>
-                <input type="text" value="{{ user.address.street }}" readonly>
+                <input type="text" value="{{ user.address.street }}" readonly disabled>
                 <span>&#8594;</span>
                 <input type="text" id="street" name="street" placeholder="Address">
                 </div>
@@ -313,7 +313,6 @@ hr.section-divider {
         {% endblock %}
     </div>
 
-    <!-- Lábjegyzet -->
     <footer>
         {% include 'footer.html' %}
     </footer>
