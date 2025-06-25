@@ -102,6 +102,16 @@ footer {
             <button type="button" onclick="window.location.href='/api/login'">Login</button>
         </div>
 
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for message in messages %}
+            <li class="error">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
         <h3>Register</h3>
         <form action="" method="post" novalidate>
             {{ form.hidden_tag() }}

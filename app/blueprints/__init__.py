@@ -16,7 +16,7 @@ from flask import render_template, flash, redirect, url_for
 from app.forms.loginForm import LoginForm
 from flask_login import login_user, current_user
 from app.models.user import User
-from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 import time
 from flask import jsonify
 from flask_login import logout_user
@@ -79,7 +79,7 @@ def auth_required(auth):
 
 @bp.route('/')
 def index():
-    return render_template('starter.html',  title='Starter page')
+    return render_template('starter.html', title='Starter page')
 
 @bp.route('/index')
 @auth_required(auth)
@@ -109,45 +109,45 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(name=form.name.data).first()
 
-        if user and user.password == form.password.data:
+        if user:
+            if user.check_password(form.password.data):
+                token_data = {
+                    "sub": user.name,
+                    "id": user.id,
+                    "courier_id": user.courier_id,
+                    "roles": [{"name": role.name} for role in user.roles],
+                    "exp": int(time.time()) + 3600  # Token lejárati idő (1 óra)
+                }
 
-            token_data = {
-                "sub": user.name,
-                "id": user.id,
-                "courier_id": user.courier_id,
-                "roles": [{"name": role.name} for role in user.roles],
-                "exp": int(time.time()) + 3600  # Token lejárati idő (1 óra)
-            }
-
-            # JWT token generálása
-            token = jwt.encode(
-                {"alg": "HS256"},
-                token_data,
-                current_app.config['SECRET_KEY']
-            )
-
-
-            login_user(user)
-            flash("Login successful!")
+                # JWT token generálása
+                token = jwt.encode(
+                    {"alg": "HS256"},
+                    token_data,
+                    current_app.config['SECRET_KEY']
+                )
 
 
-            roles = [role.name for role in user.roles]
+                login_user(user)
+                flash("Login successful!")
 
-            if len(roles) == 1:
-                if roles[0] == "user":
-                    return redirect("/api/user")
-                elif roles[0] == "courier":
-                    return redirect("/api/courier")
-                elif roles[0] == "storekeeper":
-                    return redirect("/api/storekeeper")
-                elif roles[0] == "supplier":
-                    return redirect("/api/supplier")
 
-            return render_template('index.html', roles=roles, user=user, title='Index page')
+                roles = [role.name for role in user.roles]
 
-        else:
-            flash("Invalid username or password. Please try again!")
-            return redirect(url_for("main.login"))
+                if len(roles) == 1:
+                    if roles[0] == "user":
+                        return redirect("/api/user")
+                    elif roles[0] == "courier":
+                        return redirect("/api/courier")
+                    elif roles[0] == "storekeeper":
+                        return redirect("/api/storekeeper")
+                    elif roles[0] == "supplier":
+                        return redirect("/api/supplier")
+
+                return render_template('index.html', roles=roles, user=user, title='Index page')
+
+            else:
+                flash("Invalid username or password. Please try again!")
+                return redirect(url_for("main.login"))
 
     # Ha a POST kérés nem valid (pl. adatokat nem adtak meg)
     return render_template("login.html", title="Login", form=form)
@@ -179,9 +179,9 @@ def get_phone_id(number):
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(name=form.name.data).first()
         if user:
-            flash("Email already registered.")
+            flash(f"Username: {form.name.data} has been taken.", "error")
             return render_template("register.html", title="Register", form=form)
 
         default_role = Role.query.filter_by(id=1).first()
@@ -217,12 +217,14 @@ def register():
             db.session.commit()
             phone_id = new_phone.id
 
+        hashed_password = generate_password_hash(form.password.data)
+
         max_user_id = db.session.query(func.max(User.id)).scalar() or 0
         new_user = User(
             id=max_user_id + 1,
             name=form.name.data,
             email=form.email.data,
-            password=form.password.data,
+            password=hashed_password,
             phonenumber_id=phone_id,
             address_id=address_id,
             courier_id=None
@@ -290,12 +292,12 @@ def update_contact_info():
                 user.phonenumber.number = phone_number
 
             if password:
-                if user.password == password:
+                if user.check_password(password):
                     flash("You can't modify your password without entering a new one.", "error")
                     return redirect(url_for("main.index2", user=current_user))
                 else:
                     if password == password2:
-                        user.password = password
+                        user.set_password(password)
                     else:
                         flash("Your new password and confirmation don't match!", "error")
                         return redirect(url_for("main.index2", user=current_user))

@@ -58,7 +58,7 @@ def create_order():
         postal_code = form_data.get("postal_code", [None])[0]
         city = form_data.get("city", [None])[0]
         street = form_data.get("street", [None])[0]
-        price = form_data.get("price", [None])[0]
+        price = parse_price_to_int(form_data.get("price", [None])[0])
 
         if not all([email, phone_number, postal_code, city, street]):
             flash("All shipping information fields are required.", "error")
@@ -90,6 +90,7 @@ def create_order():
                 address_record = Address(postalcode=postal_code, city=city, street=street)
                 db.session.add(address_record)
                 db.session.flush()
+
 
             new_order = Order(
                 user_id=current_user.id,

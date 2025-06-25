@@ -22,11 +22,11 @@ def courier_page():
         )
     ).all()
     other_orders = Order.query.filter(
-        or_(
+        and_(
             Order.courier_id != current_user.courier_id,
-            Order.courier_id.is_(None)
-        ),
-        Order.deleted == 0
+            Order.courier_id.is_not(None),
+            Order.deleted == 0
+        )
     ).all()
 
     statuses = ["DeliveryStarted", "Delivered"]
