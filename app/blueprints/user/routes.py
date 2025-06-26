@@ -55,6 +55,8 @@ def create_order():
         city = form_data.get("city", [None])[0]
         street = form_data.get("street", [None])[0]
         price = parse_price_to_int(form_data.get("price", [None])[0])
+        print(form_data.get("price", [None])[0])
+        print(price)
 
         if not all([email, phone_number, postal_code, city, street]):
             flash("All shipping information fields are required.", "error")
@@ -190,6 +192,7 @@ def parse_price_to_int(price_str: str) -> int:
     if not price_str:
         return 0
     try:
+
         return int(float(price_str.replace("Ft", "").strip()))
     except ValueError:
         return 0
